@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29215.179
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "open-source-pos", "open-source-pos\open-source-pos.csproj", "{EDBB0D2F-3EC1-4743-9F1D-11C9D635FFF2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EDBB0D2F-3EC1-4743-9F1D-11C9D635FFF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDBB0D2F-3EC1-4743-9F1D-11C9D635FFF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDBB0D2F-3EC1-4743-9F1D-11C9D635FFF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDBB0D2F-3EC1-4743-9F1D-11C9D635FFF2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C99DAA5B-DCE4-4A6A-B12B-0792F23A47DB}
+	EndGlobalSection
+EndGlobal

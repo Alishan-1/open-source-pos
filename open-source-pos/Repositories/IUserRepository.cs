@@ -8,8 +8,10 @@ namespace Repositories
 {
     public interface IUserRepository
     {
+        Task<int> AddUserAsync(UserCred model);
         Task<UserCred> GetUserByEmailAsync(string email);
-    
+        Task<UserCred> GetUserByIDAsync(int userId);
+        Task<int> UpdUserAsync(UserCred model);
         /// <summary>
         /// This Function is used to update User log table with successful and unsuccessful attempts
         /// </summary>

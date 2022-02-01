@@ -22,6 +22,48 @@ namespace Repositories
             _repo = repo;
             _logIt = logIt;
         }
+        public async Task<int> AddUserAsync(UserCred model)
+        {
+            try
+            {
+                return await _repo.WithConnection(async cmd =>
+                {
+                    var p = new DynamicParameters();
+
+                    p.Add("AppID", model.AppID, DbType.Int64);
+                    p.Add("AppRoleID", model.AppRoleID, DbType.Int64);
+                    p.Add("UserEmail", model.UserEmail, DbType.String);
+                    p.Add("FirstName", model.FirstName, DbType.String);
+                    p.Add("MiddleName", model.MiddleName, DbType.String);
+                    p.Add("LastName", model.LastName, DbType.String);
+                    p.Add("PasswordHash", model.PasswordHash, DbType.String);
+                    p.Add("PasswordSalt", model.PasswordSalt, DbType.String);
+                    p.Add("CreateDate", model.CreateDate, DbType.DateTime);
+                    p.Add("PhoneNumber", model.PhoneNumber, DbType.String);
+                    p.Add("ExpirePassword", model.ExpirePassword, DbType.DateTime);
+                    p.Add("IsTemp", model.IsTemp, DbType.Boolean);
+                    p.Add("IsDeleted", model.IsDeleted, DbType.Boolean);
+                    p.Add("IsAdmin", model.IsAdmin, DbType.Boolean);
+                    p.Add("IsCustomer", model.IsCustomer, DbType.Boolean);
+                    p.Add("EmailConfirmed", model.EmailConfirmed, DbType.Boolean);
+                    p.Add("LockoutEnabled", model.LockoutEnabled, DbType.Boolean);
+                    p.Add("AccessFailedCount", model.AccessFailedCount, DbType.Int64);
+                    p.Add("IsActive", model.IsActive, DbType.Boolean);
+
+                    var result = await cmd.ExecuteScalarAsync<int>("usp_Users_AddData", p, commandType: CommandType.StoredProcedure);
+                    return result;
+                });
+
+            }
+            catch (Exception ex)
+            {
+                _logIt.ExceptionLogFunc(ex);
+                return Task.FromException<int>(ex).Result;
+            }
+        }
+
+
+
 
         public async Task<UserCred> GetUserByEmailAsync(string email)
         {
@@ -42,6 +84,71 @@ namespace Repositories
             {
                 _logIt.ExceptionLogFunc(ex);
                 return Task.FromException<UserCred>(ex).Result;
+            }
+        }
+
+        public async Task<UserCred> GetUserByIDAsync(int userId)
+        {
+            try
+            {
+                return await _repo.WithConnection(async cmd =>
+                {
+                    var p = new DynamicParameters();
+                    p.Add("UserID", userId, DbType.Int64);
+
+
+                    var result = await cmd.QueryMultipleAsync("usp_Users_GetDataBy_UserID", param: p, commandType: CommandType.StoredProcedure);
+                    UserCred user = result.ReadAsync<UserCred>().Result.FirstOrDefault();
+                    return user;
+                });
+            }
+            catch (Exception ex)
+            {
+                _logIt.ExceptionLogFunc(ex);
+                return Task.FromException<UserCred>(ex).Result;
+            }
+        }
+
+        public async Task<int> UpdUserAsync(UserCred model)
+        {
+            try
+            {
+                return await _repo.WithConnection(async cmd =>
+                {
+                    var p = new DynamicParameters();
+
+                    p.Add("UserID", model.UserID, DbType.Int64);
+                    p.Add("AppID", model.AppID, DbType.Int64);
+                    p.Add("AppRoleID", model.AppRoleID, DbType.Int64);
+                    p.Add("UserEmail", model.UserEmail, DbType.String);
+                    p.Add("FirstName", model.FirstName, DbType.String);
+                    p.Add("MiddleName", model.MiddleName, DbType.String);
+                    p.Add("LastName", model.LastName, DbType.String);
+                    p.Add("PasswordHash", model.PasswordHash, DbType.String);
+                    p.Add("PasswordSalt", model.PasswordSalt, DbType.String);
+                    p.Add("PhoneNumber", model.PhoneNumber, DbType.String);
+                    p.Add("ExpirePassword", model.ExpirePassword, DbType.DateTime);
+                    p.Add("IsTemp", model.IsTemp, DbType.Boolean);
+                    p.Add("IsDeleted", model.IsDeleted, DbType.Boolean);
+                    p.Add("IsAdmin", model.IsAdmin, DbType.Boolean);
+                    p.Add("IsCustomer", model.IsCustomer, DbType.Boolean);
+                    p.Add("EmailConfirmed", model.EmailConfirmed, DbType.Boolean);
+                    p.Add("LockoutEnabled", model.LockoutEnabled, DbType.Boolean);
+                    p.Add("AccessFailedCount", model.AccessFailedCount, DbType.Int64);
+                    p.Add("IsActive", model.IsActive, DbType.Boolean);
+                    p.Add("PreviousPassword", model.PreviousPassword, DbType.String);
+                    p.Add("IsForgetPassword", model.IsForgetPassword, DbType.Boolean);
+                    //in usp_Users_UpdDataBy_Email UserEmail and Userid both are requied 
+                    //all other parameters are optional and the column value will not be changed if the parameter value is null
+                    var result = await cmd.ExecuteScalarAsync<int>("usp_Users_UpdDataBy_Email", p, commandType: CommandType.StoredProcedure);
+                    return result;
+                });
+
+            }
+            catch (Exception ex)
+            {
+                _logIt.ExceptionLogFunc(ex);
+                return Task.FromException<int>(ex).Result;
             }
         }
 
@@ -102,6 +209,5 @@ namespace Repositories
                 return Task.FromException<AuthenticationResult>(ex).Result;
             }
         }
-
     }
 }

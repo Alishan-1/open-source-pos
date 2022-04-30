@@ -1,9 +1,8 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Services.ViewModels
+namespace Models
 {
     public class ServiceResponse
     {
@@ -18,4 +17,3 @@ namespace Services.ViewModels
 
     }
 }
-

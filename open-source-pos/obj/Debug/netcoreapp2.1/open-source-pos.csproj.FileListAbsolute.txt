@@ -3,6 +3,12 @@ D:\open-source-pos\open-source-pos\bin\Debug\netcoreapp2.1\open-source-pos.runti
 D:\open-source-pos\open-source-pos\bin\Debug\netcoreapp2.1\open-source-pos.runtimeconfig.dev.json
 D:\open-source-pos\open-source-pos\bin\Debug\netcoreapp2.1\open-source-pos.dll
 D:\open-source-pos\open-source-pos\bin\Debug\netcoreapp2.1\open-source-pos.pdb
+D:\open-source-pos\open-source-pos\bin\Debug\netcoreapp2.1\Models.dll
+D:\open-source-pos\open-source-pos\bin\Debug\netcoreapp2.1\Repositories.dll
+D:\open-source-pos\open-source-pos\bin\Debug\netcoreapp2.1\Services.dll
+D:\open-source-pos\open-source-pos\bin\Debug\netcoreapp2.1\Services.pdb
+D:\open-source-pos\open-source-pos\bin\Debug\netcoreapp2.1\Models.pdb
+D:\open-source-pos\open-source-pos\bin\Debug\netcoreapp2.1\Repositories.pdb
 D:\open-source-pos\open-source-pos\obj\Debug\netcoreapp2.1\open-source-pos.csprojAssemblyReference.cache
 D:\open-source-pos\open-source-pos\obj\Debug\netcoreapp2.1\open-source-pos.csproj.CoreCompileInputs.cache
 D:\open-source-pos\open-source-pos\obj\Debug\netcoreapp2.1\open-source-pos.RazorAssemblyInfo.cache
@@ -10,5 +16,6 @@ D:\open-source-pos\open-source-pos\obj\Debug\netcoreapp2.1\open-source-pos.Razor
 D:\open-source-pos\open-source-pos\obj\Debug\netcoreapp2.1\open-source-pos.AssemblyInfoInputs.cache
 D:\open-source-pos\open-source-pos\obj\Debug\netcoreapp2.1\open-source-pos.AssemblyInfo.cs
 D:\open-source-pos\open-source-pos\obj\Debug\netcoreapp2.1\open-source-pos.RazorTargetAssemblyInfo.cache
+D:\open-source-pos\open-source-pos\obj\Debug\netcoreapp2.1\open-source-pos.csproj.CopyComplete
 D:\open-source-pos\open-source-pos\obj\Debug\netcoreapp2.1\open-source-pos.dll
 D:\open-source-pos\open-source-pos\obj\Debug\netcoreapp2.1\open-source-pos.pdb

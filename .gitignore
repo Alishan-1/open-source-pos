@@ -1,3 +1,6 @@
 bin
 /open-source-pos.txt
 .vs
+coreui admin template backup
+node_modules
+.github

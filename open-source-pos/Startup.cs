@@ -21,6 +21,7 @@ using Models;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Serialization;
 
 namespace open_source_pos
 {
@@ -36,14 +37,47 @@ namespace open_source_pos
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+
+            var policy = new Microsoft.AspNetCore.Cors.Infrastructure.CorsPolicy();
+
+            policy.Headers.Add("*");
+            policy.Methods.Add("*");
+            policy.Origins.Add("*");
+            policy.SupportsCredentials = true;
+
+            services.AddCors(x => x.AddPolicy("corsGlobalPolicy", policy));
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll",
+                    builder =>
+                    {
+                        builder
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
+                    });
+            });
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddJsonOptions(opt =>
+                {
+                    var resolver = opt.SerializerSettings.ContractResolver;
+                    if (resolver != null)
+                    {
+                        var res = resolver as DefaultContractResolver;
+                        res.NamingStrategy = null;
+                    }
+                }); 
 
 
             // Obtain database connection string once and resuse by Connection class
             var connectionString = Configuration.GetValue<string>("DBConnection:ConnectionString");
-            
+            var FNNConnectionString = Configuration.GetValue<string>("DBConnection:FNNConnectionString");
+
             /*Configure dependency injunction*/
-            services.AddScoped<IConnection>(x => new Connection(connectionString));
+            services.AddScoped<IConnection>(x => new Connection(FNNConnectionString, connectionString, connectionString));
 
             services.AddScoped<IRepository, Repository>();
             services.AddScoped<ILogIt, LogIt>();
@@ -53,7 +87,14 @@ namespace open_source_pos
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
 
+            services.AddScoped<IPOSService, POSService>();
+            services.AddScoped<IPOSRepository, POSRepository>();
 
+            // Read email settings
+            services.Configure<EmailConfig>(Configuration.GetSection("Email"));
+            services.Configure<SMSoptions>(Configuration.GetSection("SMSTwilio"));
+            services.AddTransient<IEmailSender, AuthMessageSender>();
+            services.AddTransient<ISmsSender, AuthMessageSender>();
 
             /********************************************************************/
             /*************************Identity configuration****************************/
@@ -110,7 +151,8 @@ namespace open_source_pos
             {
                 app.UseHsts();
             }
-
+            app.UseAuthentication();
+            app.UseCors("AllowAll");
             app.UseHttpsRedirection();
             app.UseMvc();
         }

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Models;
-using Services.ViewModels;
 
 namespace Services
 {

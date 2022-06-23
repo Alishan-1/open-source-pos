@@ -5,3 +5,4 @@ coreui admin template backup
 node_modules
 .github
 obj
+/open-source-pos/appsettings.json

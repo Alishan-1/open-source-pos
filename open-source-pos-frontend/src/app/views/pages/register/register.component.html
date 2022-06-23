@@ -1,0 +1,56 @@
+<div class="bg-light min-vh-100 d-flex flex-row align-items-center">
+  <c-container>
+    <c-row class="justify-content-center">
+      <c-col lg="7" md="9" xl="6">
+        <c-toaster #ToasterViewChild [ngClass]="'p-3'" position="fixed" placement="top-end"></c-toaster>
+        <c-card class="mx-4">
+          <c-card-body class="p-4">
+            <form cForm
+              novalidate
+              #posRegisterForm="ngForm"
+              (ngSubmit)="registerUser()"
+              [validated]="posRegisterFormValidated"
+              class="needs-validation">
+              <h1>Register</h1>
+              <p class="text-medium-emphasis">Create your account</p>
+
+              <c-input-group class="mb-3">
+                <span cInputGroupText>@</span>
+                <input autoComplete="email" cFormControl name="UserEmail" placeholder="Email"
+                [(ngModel)]="UserInfo.UserEmail"
+                type="email" required
+                 />
+              </c-input-group>
+              
+              <c-input-group class="mb-3">
+                <span cInputGroupText>
+                  <svg cIcon name="cilUser"></svg>
+                </span>
+                <input autoComplete="First Name" cFormControl  
+                name="FirstName" placeholder="First Name"
+                [(ngModel)]="UserInfo.FirstName" required type="text"
+                />
+              </c-input-group>
+
+              <c-input-group class="mb-3">
+                <span cInputGroupText>
+                  <svg cIcon name="cilUser"></svg>
+                </span>
+                <input autoComplete="Last name" cFormControl placeholder="Last name" 
+                  [(ngModel)]="UserInfo.LastName" type="text" required name="LastName" />
+              </c-input-group>
+              
+              
+              <div class="d-grid">
+                <button [attr.disabled] = "isRequestProcessing || !posRegisterForm.valid ? '' : null"
+                  cButton color="primary">
+                  Create Account <img *ngIf="isRequestProcessing"  class="form-submit-loader" src="assets/img/785.gif" />
+                </button>
+              </div>
+            </form>
+          </c-card-body>
+        </c-card>
+      </c-col>
+    </c-row>
+  </c-container>
+</div>

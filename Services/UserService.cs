@@ -58,6 +58,15 @@ namespace Services
             }
             user.UsersGeoLocation = userParam.UsersGeoLocation;
             user.StartDate = userParam.StartDate;
+            user.DeviceInfo = userParam.DeviceInfo;
+            //create a user session
+            //Guid id = Guid.NewGuid().ToString();            
+
+            user.SessionToken = Guid.NewGuid().ToString();
+            user.RememberUser = userParam.RememberUser;
+            user.TokenExpirationDate = DateTimeOffset.Now.AddDays(1);
+            user.SessionDate = userParam.SessionDate;
+
             var authenticationresult = await _repo.UserAuthenticationAndUpdatesAfterLoginAsync(user);
             user.authenticationResult = authenticationresult;
             if (!isPasswordCorrect)
@@ -469,6 +478,124 @@ namespace Services
 
         }
 
+        public async Task<ServiceResponse> IsUserLogedInAndRemembered(UserCred userParam, int userID)
+        {
+            try
+            {
+                ServiceResponse vmServiceResponse = ServiceValidation.Validate(userParam, new IsUserLogedInAndRememberedValidator(userID));
+
+
+                if (vmServiceResponse.IsValid)
+                {
+                    UserSessionLog userSession = await _repo.GetUserLogBySessionTokenAsync(userParam);
+
+                    if (userSession == null)
+                    {
+                        vmServiceResponse.Title = ServiceErrorsMessages.Title;
+                        vmServiceResponse.Message = "No Session found";
+                        vmServiceResponse.Flag = false;
+                        vmServiceResponse.IsValid = false;
+                        return vmServiceResponse;
+                    }
+
+                    if (!userSession.RememberUser)
+                    {
+                        vmServiceResponse.Title = ServiceErrorsMessages.Title;
+                        vmServiceResponse.Message = "User Not Clicked Remember Me";
+                        vmServiceResponse.Flag = false;
+                        vmServiceResponse.IsValid = false;
+                    }
+                    //user is remembered, Now check if session expired or not
+                    else if (userSession.TokenExpirationDate >= DateTimeOffset.UtcNow)
+                    {
+                        vmServiceResponse.Title = ServiceMessages.Title;
+                        vmServiceResponse.Message = "Remember Me was checked and token not expired yet";
+                        vmServiceResponse.Flag = true;
+                        vmServiceResponse.IsValid = true;
+                        vmServiceResponse.Data = true;
+                    }
+                    ////user is remembered, But session expired
+                    else
+                    {
+                        vmServiceResponse.Title = ServiceErrorsMessages.Title;
+                        vmServiceResponse.Message = "user is remembered, But session expired";
+                        vmServiceResponse.Flag = false;
+                        vmServiceResponse.IsValid = false;
+                    }
+                }
+
+                else
+                {
+                    vmServiceResponse.Title = ServiceErrorsMessages.Title;
+                    vmServiceResponse.Message = ServiceErrorsMessages.DataInvalid;
+                    vmServiceResponse.Flag = false;
+                }
+
+                return vmServiceResponse;
+
+            }
+            catch (Exception ex)
+            {
+                _log.ExceptionLogFunc(ex);
+                return Task.FromException<ServiceResponse>(ex).Result;
+            }
+        }
+
+        public async Task<ServiceResponse> LogOut(UserCred userParam, int userID)
+        {
+            try
+            {
+                ServiceResponse vmServiceResponse = ServiceValidation.Validate(userParam, new LogOutValidator());
+
+                int result = 0;
+                if (vmServiceResponse.IsValid)
+                {
+
+
+                    result = await _repo.LogOutUserAsync(userParam);
+                    vmServiceResponse.Data = result;
+
+                    if (result <= 0)
+                    {
+                        vmServiceResponse.Title = ServiceErrorsMessages.Title;
+                        vmServiceResponse.Message = ServiceMessages.DataNotSaved;
+                        vmServiceResponse.Flag = false;
+                        vmServiceResponse.IsValid = false;
+                    }
+                    else if (result == 1)
+                    {
+                        vmServiceResponse.Title = ServiceMessages.Title;
+                        vmServiceResponse.Message = ServiceMessages.DataSaved;
+                        vmServiceResponse.Flag = true;
+                        vmServiceResponse.IsValid = true;
+                    }
+                    else
+                    {
+                        vmServiceResponse.Title = ServiceErrorsMessages.Title;
+                        vmServiceResponse.Message = "One row was expected to be updated but More rows "
+                            + "has been updated against userid " + userParam.UserID + " and user Email " + userParam.UserEmail + " ";
+                        vmServiceResponse.Flag = false;
+                        vmServiceResponse.IsValid = false;
+
+                    }
+                }
+
+                else
+                {
+                    vmServiceResponse.Title = ServiceErrorsMessages.Title;
+                    vmServiceResponse.Message = ServiceErrorsMessages.DataInvalid;
+                    vmServiceResponse.Flag = false;
+                }
+
+                return vmServiceResponse;
+
+            }
+            catch (Exception ex)
+            {
+                _log.ExceptionLogFunc(ex);
+                return Task.FromException<ServiceResponse>(ex).Result;
+            }
+        }
 
     }
 }

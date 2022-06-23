@@ -1,0 +1,301 @@
+<div class="app-body">
+  <main class="main d-flex"> <!-- align-items-center -->
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 mx-auto">
+          <div class="card-group">
+              
+            
+            
+               
+            
+              <div class="card">
+                <div class="card-header">
+                  Point of Sale
+                </div>
+                
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="InvoiceNo">Invoice No</label>  
+                            <input pInputText class="form-control" type="text" id="InvoiceNo" [(ngModel)]="form.InvoiceNo!">
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                        <div class="form-group">
+                            <label for="InvoiceDate">Invoice Date</label>  
+                            <!-- <input pInputText class="form-control" type="text"  id="InvoiceDate" [(ngModel)]="form.InvoiceDate"> -->
+                            <input pInputText class="form-control" type="text"  id="InvoiceDate" 
+                              [ngModel]="form.InvoiceDate! | date:DateTimeFormate" (ngModelChange)="form.InvoiceDate!=$event">
+                        </div>
+                      </div>
+                      <div class="col-sm-3">
+                          <div class="form-group">
+                              <label for="Cashier">Cashier</label>  
+                            <input pInputText class="form-control" type="text"  id="Cashier" [(ngModel)]="form.Cashier!">
+                          </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="POSCode">POS</label>  
+                              <input pInputText class="form-control" type="text"  id="POSCode" [(ngModel)]="form.POSCode!">
+                            </div>
+                          </div>
+                  </div>
+                  <!-- there should be nothing between the hr and the p-table otherwise focus will not work correctly -->
+                  <hr #hrBeforeDtl />  
+                  <p-table  [value]="posItemRows!" >
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Sr#</th>
+                            <th>Custom Code</th>
+                            <th>Description</th>
+                            <th>Qty</th>
+                            <th>Rate</th>
+                            <th>Amount</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+                        <tr>
+                            <td >    
+                              {{rowData.SrNo}}
+                            </td>
+                            <td pEditableColumn>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input pInputText type="text" [(ngModel)]="rowData.customCode"
+                                        (keydown.enter)="onKeydown($event, rowData, rowIndex)" required>
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{rowData.customCode}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                            <td >
+                              {{rowData.Description}}
+                            </td>
+                            <td pEditableColumn>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input pInputText type="number" [(ngModel)]="rowData.Quantity" 
+                                          (keyup)="onKeyupQty($event, rowData, rowIndex)"
+                                          (blur)="onBlurQtyAndRate($event, rowData, rowIndex)">
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{rowData.Quantity}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                            <td pEditableColumn>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input pInputText type="text" [(ngModel)]="rowData.SalePrice" [disabled]="disabled"
+                                        (blur)="onBlurQtyAndRate($event, rowData, rowIndex)">
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{rowData.SalePrice}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td>
+                            <td>
+                              {{rowData.Amount}}
+                            </td>
+                            <!-- <td pEditableColumn>
+                                <p-cellEditor>
+                                    <ng-template pTemplate="input">
+                                        <input pInputText type="text" [(ngModel)]="rowData.Amount">
+                                    </ng-template>
+                                    <ng-template pTemplate="output">
+                                        {{rowData.Amount}}
+                                    </ng-template>
+                                </p-cellEditor>
+                            </td> -->
+                        </tr>
+                    </ng-template>
+                  </p-table>
+                  <hr/>
+                   <!-- Invoice Total -->
+                  <div class="row">
+                      <div class="col-sm-3">
+                          <div class="form-group">
+                              <label for="txtTotalAmount">Total Amount</label>  
+                            <input pInputText class="form-control" type="text" id="txtTotalAmount" [(ngModel)]="txtTotalAmount">
+                          </div>
+                      </div>
+                      
+                  </div>
+                </div>
+
+                <div class="card-footer">
+                  <!-- receive amount -->
+                  <p-button icon="pi pi-check" iconPos="right" label="receive amount"
+                    (onClick)="BtnReceiveAmountClick($event)"></p-button>
+
+                  
+                  </div>
+              </div>
+            
+
+            
+             
+              <!-- <p-table [value]="cars2" dataKey="vin" editMode="row">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Vin</th>
+                        <th>Year</th>
+                        <th>Brand</th>
+                        <th>Color</th>
+                        <th style="width:8em"></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+                    <tr [pEditableRow]="rowData">
+                        <td>
+                            {{rowData.vin}}
+                        </td>
+                        <td>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input pInputText type="text" [(ngModel)]="rowData.year" required>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{rowData.year}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <p-dropdown [options]="brands" [(ngModel)]="rowData.brand" [style]="{'width':'100%'}"></p-dropdown>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{rowData.brand}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input pInputText type="text" [(ngModel)]="rowData.color">
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{rowData.color}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td style="text-align:center">
+                            <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="onRowEditInit(rowData)"></button>
+                            <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" class="ui-button-success" style="margin-right: .5em" (click)="onRowEditSave(rowData)"></button>
+                            <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times" class="ui-button-danger" (click)="onRowEditCancel(rowData, ri)"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table> -->
+
+          
+
+           
+           
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ItemSearchModal -->
+<p-dialog header="Search Items" [(visible)]="displayItemSearchModal" [modal]="true" [style]="{width: '50vw'}" [maximizable]="true" [baseZIndex]="10000"
+    [draggable]="true" [resizable]="false">
+    
+    <!-- search text box -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="txtSearch">Search</label>  
+              <input autofocus pInputText class="form-control" type="text" id="txtSearch" [(ngModel)]="txtSearch" (keyup)="onPosItemSearchKeyUp($event)">
+            </div>
+          </div>
+    </div>
+    
+    <div style="height: 250px">
+      <!-- items table -->
+      <p-table [value]="posItemSearch!" selectionMode="single" [(selection)]="selectedItemFromSearch" dataKey="id"
+      (onRowSelect)="onPosItemRowSelect($event)" [scrollable]="true" scrollHeight="200px" >
+          <ng-template pTemplate="header">
+              <tr>
+                  <th>Custom Code</th>
+                  <th>Item Description</th>
+                  <th>Rate</th>
+                  
+              </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-Item>
+              <tr [pSelectableRow]="Item">
+                  <td>{{Item.customCode}}</td>
+                  <td>{{Item.Description}}</td>
+                  <td>{{Item.SalePrice}}</td>
+              </tr>
+          </ng-template>
+      </p-table>
+    </div>
+        <!-- <p-footer>
+            <button type="button" pButton icon="pi pi-check" (click)="displayItemSearchModal=false" label="Yes"></button>
+            <button type="button" pButton icon="pi pi-times" (click)="displayItemSearchModal=false" label="No" class="ui-button-secondary"></button>
+        </p-footer> -->
+</p-dialog>
+
+
+<!-- Invoice Total Modal-->
+<p-dialog header="Invoice Total" [(visible)]="displayInvoiceTotalModal" [modal]="true" [style]="{width: '20vw'}" [maximizable]="true" [baseZIndex]="10000"
+    [draggable]="true" [resizable]="false">
+    
+    <!-- search text box -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="txtMTotalAmount">Total Amount</label>  
+              <input pInputText  class="form-control" type="text" id="txtMTotalAmount" [(ngModel)]="modelTotalAmount" [disabled]="true">
+            </div>
+          </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="txtdiscountPercnt">Discount %</label>  
+              <input pInputText class="form-control" type="text" id="txtdiscountPercnt" 
+                [(ngModel)]="discountPercnt" (keyup)="CalculateReceiveAmountValues($event)">
+            </div>
+          </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="txtnetAmount">Net Amount</label>  
+              <input pInputText [disabled]="true" class="form-control" type="text" id="txtnetAmount" [(ngModel)]="netAmount">
+            </div>
+          </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="txtReceiveAmount">Receive Amount</label>  
+              <input pInputText class="form-control" type="text" id="txtReceiveAmount" 
+                [(ngModel)]="receiveAmount" (keyup)="CalculateReceiveAmountValues($event)">
+            </div>
+          </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <label for="txtBalanceAmount">Balance Amount</label>  
+              <input pInputText [disabled]="true" class="form-control" type="text" id="txtBalanceAmount" [(ngModel)]="balanceAmount">
+            </div>
+          </div>
+    </div>
+     
+        <p-footer>
+            <button type="button" pButton icon="pi pi-check" (click)="displayInvoiceTotalModal=false" label="Yes"></button>
+            <button type="button" pButton icon="pi pi-times" (click)="displayInvoiceTotalModal=false" label="No" class="ui-button-secondary"></button>
+        </p-footer>
+</p-dialog>

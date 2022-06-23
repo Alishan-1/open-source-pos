@@ -29,6 +29,7 @@ namespace Models
         public bool? IsCustomer { get; set; }
         public bool? EmailConfirmed { get; set; }
         public bool? LockoutEnabled { get; set; }
+        
         /// <summary>
         /// Shows that the password of user is expired or not
         /// </summary>
@@ -37,7 +38,7 @@ namespace Models
         /// Shows that whather the password entered by user is correct or not
         /// </summary>
         public bool? IsPasswordCorrect { get; set; }
-        public DateTime? LockoutEnd { get; set; }
+        public DateTimeOffset? LockoutEnd { get; set; }
         public int? AccessFailedCount { get; set; }
         public bool? IsActive { get; set; }
         public DateTime? StartDate { get; set; }
@@ -61,6 +62,15 @@ namespace Models
         /// represents device detected information including browser, os and other useful information regarding the device. The information is based on user-agent.
         /// </summary>
         public DeviceInfo DeviceInfo { get; set; }
+
+        public bool? RememberUser { get; set; }
+        public string SessionToken { get; set; }
+        public DateTimeOffset TokenExpirationDate { get; set; }
+        /// <summary>
+        /// on login this field will be used as session start date time,
+        /// on logout this field will be used as session end date time
+        /// </summary>
+        public DateTimeOffset SessionDate { get; set; }
 
 
     }

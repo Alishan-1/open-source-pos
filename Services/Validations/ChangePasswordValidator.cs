@@ -34,4 +34,31 @@ namespace Services.Validations
 
 
     }
+
+    public class LogOutValidator : AbstractValidator<UserCred>
+    {
+
+        public LogOutValidator()
+        {
+            RuleFor(user => user.UserEmail).NotEmpty().EmailAddress();
+            RuleFor(user => user.SessionToken).NotEmpty();
+
+        }
+    }
+
+    public class IsUserLogedInAndRememberedValidator : AbstractValidator<UserCred>
+    {
+
+        public IsUserLogedInAndRememberedValidator()
+        {
+            RuleFor(user => user.UserID).NotEmpty().GreaterThan(0);
+            RuleFor(user => user.SessionToken).NotEmpty();
+        }
+
+        public IsUserLogedInAndRememberedValidator(int UserIDFromToken)
+        {
+            RuleFor(user => user.UserID).NotEmpty().GreaterThan(0).Must(uid => uid == UserIDFromToken).WithMessage("Invalid Request");
+            RuleFor(user => user.SessionToken).NotEmpty();
+        }
+    }
 }

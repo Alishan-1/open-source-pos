@@ -1,0 +1,102 @@
+<div class="bg-light min-vh-100 d-flex flex-row align-items-center">
+  <c-container>
+    <c-row class="justify-content-center">
+      <c-col md="8">
+        <c-toaster #ToasterViewChild [ngClass]="'p-3'" position="fixed" placement="top-end"></c-toaster>
+        <c-card-group>
+          <c-card class="p-4">
+            <c-card-body>
+              <form cForm 
+                novalidate
+                #posLoginForm="ngForm"
+                
+                [validated]="posLoginFormValidated"
+                class="needs-validation">
+                <h1>Login</h1>
+                <p class="text-medium-emphasis">Sign In to your account</p>
+                <c-input-group class="mb-3">
+                  <span cInputGroupText>
+                    <svg cIcon name="cilUser"></svg>
+                  </span>
+                  <input 
+                    name="UserEmail" 
+                    [(ngModel)]="UserInfoModel.UserEmail" 
+                    autoComplete="email" 
+                    cFormControl 
+                    placeholder="email" 
+                    required
+                    type="email"
+                    />
+                    <c-form-feedback [valid]="false">Please provide a valid email.</c-form-feedback>
+                </c-input-group>
+                <c-input-group class="mb-4">
+                  <span cInputGroupText>
+                    <svg cIcon name="cilLockLocked"></svg>
+                  </span>
+                  <input
+                    name="UserPassword"
+                    [(ngModel)]="UserInfoModel.UserPassword"    
+                    autoComplete="current-password"
+                    cFormControl
+                    placeholder="Password"
+                    type="password"
+                    required
+                  />
+                </c-input-group>
+
+                <c-form-check>
+                  <input cFormCheckInput id="RememberMe" name="RememberMe" 
+                    type="checkbox" [(ngModel)]="UserInfoModel.RememberUser"/>
+                  <label cFormCheckLabel for="RememberMe">Remember Me</label>
+                </c-form-check>
+
+                <c-row>
+                  <c-col xs="6">
+                    <button [attr.disabled] = "isRequestProcessing || !posLoginForm.valid ? '' : null"  
+                    cButton class="px-4" color="primary" 
+                    type="submit" (click)="loginUser()">
+                      Login <img *ngIf="isRequestProcessing"  class="form-submit-loader" src="assets/img/785.gif" />
+                    </button>
+                    
+                    <!-- test button <button   (click)="togglelockedModel()"  cButton class="px-4" color="primary"> togglelockedModel() </button> -->
+
+                  </c-col>
+                  <c-col class="text-right" xs="6">
+                    <button cButton class="px-0" color="link" (click)="ForgerPassword()">
+                      Forgot password?
+                    </button>
+                  </c-col>
+                </c-row>
+              </form>
+            </c-card-body>
+          </c-card>
+          <c-card [ngStyle]="{'width.%': 44}" class="text-white bg-primary py-5">
+            <c-card-body class="text-center">
+              <div>
+                <h2>Sign up</h2>
+                <p>
+                  Create an account to open a new store in Point of sale application
+                </p>
+                <button [active]="true" cButton class="mt-3" color="primary" routerLink="/register">
+                  Register Now!
+                </button>
+              </div>
+            </c-card-body>
+          </c-card>
+        </c-card-group>
+      </c-col>
+    </c-row>
+  </c-container>
+</div>
+
+<c-modal #AccountLockedCountdounTimerModel [visible]="lockedModelVisible" backdrop="static" id="ALCTM" tabindex="-1" role="dialog" aria-hidden="true">
+  <c-modal-header>
+    <h5 cModalTitle>Your account is locked</h5>
+    
+  </c-modal-header>
+  <c-modal-body>
+    Your account is locked because of too many unsuccessful attempts. You will be un-locked in
+    <countdown-timer (zeroTrigger)="hidelockedModel()" [end]="LockoutEndTime"></countdown-timer>
+  </c-modal-body>
+  
+</c-modal>

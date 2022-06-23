@@ -18,5 +18,8 @@ namespace Repositories
         /// <param name="model"></param>
         /// <returns></returns>
         Task<AuthenticationResult> UserAuthenticationAndUpdatesAfterLoginAsync(UserCred model);
+
+        Task<int> LogOutUserAsync(UserCred userParam);
+        Task<UserSessionLog> GetUserLogBySessionTokenAsync(UserCred userParam);
     }
 }

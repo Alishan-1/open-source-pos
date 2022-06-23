@@ -196,6 +196,23 @@ namespace Repositories
                     p.Add("org", model.UsersGeoLocation.org, DbType.String);
                     //p.Add("PreviousPassword", model.PreviousPassword, DbType.String);
 
+
+
+                    p.Add("browser", model.DeviceInfo.browser, DbType.String);
+                    p.Add("os", model.DeviceInfo.os, DbType.String);
+                    p.Add("device", model.DeviceInfo.device, DbType.String);
+                    p.Add("userAgent", model.DeviceInfo.userAgent, DbType.String);
+                    p.Add("os_version", model.DeviceInfo.os_version, DbType.String);
+                    p.Add("isMobile", model.DeviceInfo.isMobile, DbType.Boolean);
+                    p.Add("isTablet", model.DeviceInfo.isTablet, DbType.Boolean);
+                    p.Add("isDesktop", model.DeviceInfo.isDesktop, DbType.Boolean);
+                    p.Add("RememberUser", model.RememberUser, DbType.Boolean);
+                    p.Add("SessionToken", model.SessionToken, DbType.String);
+                    p.Add("TokenExpirationDate", model.TokenExpirationDate, DbType.DateTimeOffset);
+                    //used as session start date
+                    p.Add("SessionDate", model.SessionDate, DbType.DateTimeOffset);
+
+
                     var result = await cmd.QueryFirstAsync<AuthenticationResult>
                         ("usp_User_Authentication_Procedure", p, commandType: CommandType.StoredProcedure);
 
@@ -209,5 +226,53 @@ namespace Repositories
                 return Task.FromException<AuthenticationResult>(ex).Result;
             }
         }
+
+        public async Task<UserSessionLog> GetUserLogBySessionTokenAsync(UserCred userParam)
+        {
+            try
+            {
+                return await _repo.WithConnection(async cmd =>
+                {
+                    var p = new DynamicParameters();
+                    p.Add("UserID", userParam.UserID, DbType.Int64);
+                    p.Add("SessionToken", userParam.SessionToken, DbType.String);
+
+                    var result = await cmd.QueryMultipleAsync("usp_UserLog_GetData_BySessionToken", param: p, commandType: CommandType.StoredProcedure);
+                    UserSessionLog user = result.ReadAsync<UserSessionLog>().Result.FirstOrDefault();
+                    return user;
+                });
+            }
+            catch (Exception ex)
+            {
+                _logIt.ExceptionLogFunc(ex);
+                return Task.FromException<UserSessionLog>(ex).Result;
+            }
+        }
+
+        public async Task<int> LogOutUserAsync(UserCred model)
+        {
+            try
+            {
+                return await _repo.WithConnection(async cmd =>
+                {
+                    var p = new DynamicParameters();
+
+                    p.Add("UserID", model.UserID, DbType.Int64);
+                    p.Add("UserEmail", model.UserEmail, DbType.String);
+                    p.Add("SessionToken", model.SessionToken, DbType.String);
+                    p.Add("SessionEndDateTime", model.SessionDate, DbType.DateTimeOffset);
+                    var result = await cmd.ExecuteScalarAsync<int>("usp_Users_LogOutUser", p, commandType: CommandType.StoredProcedure);
+                    return result;
+                });
+
+            }
+            catch (Exception ex)
+            {
+                _logIt.ExceptionLogFunc(ex);
+                return Task.FromException<int>(ex).Result;
+            }
+        }
+
+
     }
 }

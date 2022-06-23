@@ -45,7 +45,11 @@ namespace open_source_pos.Controllers
 
                 if (user.authenticationResult.IsLockoutEnabled.GetValueOrDefault(false))
                 {
-                    return BadRequest(new { message = "Your account is locked for some time because of too many unsuccessful attempts" });
+                    return BadRequest(new
+                    {
+                        message = "Your account is locked for some time because of too many unsuccessful attempts",
+                        data = new { IsLockoutEnabled = user.LockoutEnabled, user.LockoutEnd }
+                    });
                 }
 
                 if (!user.authenticationResult.IsAuthorisedCurrently.GetValueOrDefault(true))
@@ -56,6 +60,54 @@ namespace open_source_pos.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
+            }
+
+        }
+
+        [Authorize]
+        [HttpPost("IsUserLogedInAndRemembered")]
+        public async Task<IActionResult> IsUserLogedInAndRemembered([FromBody]UserCred userParam)
+        {
+            try
+            {
+                var userIdClaim = HttpContext.User.Claims.Where(c => c.Type == ClaimTypes.Name).First();
+                var userID = int.Parse(userIdClaim.Value);
+                var serviceResponse = await _userService.IsUserLogedInAndRemembered(userParam, userID);
+
+                if (serviceResponse == null)
+                    return BadRequest(new { message = "An error occoured!" });
+                return StatusCode((int)(serviceResponse.IsValid ? HttpStatusCode.OK : HttpStatusCode.BadRequest), serviceResponse);
+
+
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = ex.Message });
+            }
+
+        }
+
+        [Authorize]
+        [HttpPost("LogOut")]
+        public async Task<IActionResult> LogOut([FromBody]UserCred userParam)
+        {
+            try
+            {
+                var userIdClaim = HttpContext.User.Claims.Where(c => c.Type == ClaimTypes.Name).First();
+                var userID = int.Parse(userIdClaim.Value);
+                var serviceResponse = await _userService.LogOut(userParam, userID);
+
+                if (serviceResponse == null)
+                    return BadRequest(new { message = "An error occoured!" });
+                return StatusCode((int)(serviceResponse.IsValid ? HttpStatusCode.OK : HttpStatusCode.BadRequest), serviceResponse);
+
+
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = ex.Message });
             }
 
         }
@@ -184,7 +236,7 @@ namespace open_source_pos.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("ForgerPassword")]
+        [HttpPost("ForgetPassword")]
         public async Task<IActionResult> ForgerPassword([FromBody]UserCred userParam)
         {
             try
@@ -207,7 +259,7 @@ namespace open_source_pos.Controllers
                     LinkOrCode += "<p>Or paste the following link in your browser address bar </p> ";
                     LinkOrCode += "<p>" + loginURL + " </p> ";
                     await _emailSender.SendEmailAsync(userParam.UserEmail, subject, LinkOrCode);
-                    //this statement is very important if removes user password from response
+                    //this statement is very important it removes user password from response
                     serviceResponse.Data = null;
                 }
 
@@ -308,7 +360,7 @@ namespace open_source_pos.Controllers
             string loginURL = "";
             if (hostString.Host == "localhost")
             {
-                loginURL = @"http://localhost:4200/#/home/login";
+                loginURL = @"http://localhost:4200/#/login";
             }
             else if (hostString.Host == "adminapi.chowchoice.com")
             {

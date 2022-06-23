@@ -21,10 +21,8 @@ namespace Services
         /// <param name="userParam">Parameter contaning user email to change password</param>
         /// <returns></returns>
         Task<ServiceResponse> ForgerPassword(UserCred userParam);
-        /// <summary>
-        /// Returns validation messages for login screen
-        /// </summary>
-        /// <returns></returns>
+        Task<ServiceResponse> IsUserLogedInAndRemembered(UserCred userParam, int userID);
+        Task<ServiceResponse> LogOut(UserCred userParam, int userID);
 
     }
 }

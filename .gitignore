@@ -6,3 +6,4 @@ node_modules
 .github
 obj
 /open-source-pos/appsettings.json
+/accounts.txt

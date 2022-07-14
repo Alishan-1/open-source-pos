@@ -1,0 +1,25 @@
+﻿CREATE TABLE [dbo].[InvoiceDetailItems] (
+    [InvoiceNo]       INT             NOT NULL,
+    [SrNo]            INT             NOT NULL,
+    [ItemCode]        VARCHAR (50)    NULL,
+    [ItemDescription] VARCHAR (200)   NULL,
+    [Quantity]        DECIMAL (10, 3) NULL,
+    [Unit]            VARCHAR (5)     NULL,
+    [InvoiceRate]     DECIMAL (10, 2) NULL,
+    [TaxPercent]      DECIMAL (18, 2) NULL,
+    [TaxAmount]       DECIMAL (18, 2) NULL,
+    [DiscountPercent] DECIMAL (6, 2)  NULL,
+    [DiscountAmount]  DECIMAL (25, 2) NULL,
+    [InvoiceValue]    DECIMAL (10, 2) NULL,
+    [CreateUser]      INT             NULL,
+    [CreateDate]      DATETIME        NULL,
+    [UpdateUser]      INT             NULL,
+    [UpdateDate]      DATETIME        NULL,
+    [CompanyID]       INT             NULL,
+    [BranchID]        INT             NULL,
+    [ModuleID]        VARCHAR (3)     NULL,
+    [FiscalYearID]    INT             NULL,
+    [InvoiceType]     VARCHAR (3)     NULL,
+    CONSTRAINT [PK_InvoiceDetailItems] PRIMARY KEY CLUSTERED ([InvoiceNo] ASC, [SrNo] ASC)
+);
+

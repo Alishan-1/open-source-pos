@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="19e84d5e-13c4-49bb-9e83-64c23179cf34" ChangeDateTime="07/02/2022 10:19:54">
+    <Property Name="ElementName" Value="[dbo].[FiscalYearST].[FISCALID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[FiscalYearST]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="FiscalYearID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="b634590b-4a59-4865-9afc-3b4121fd2cbc" ChangeDateTime="07/02/2022 10:20:16">
+    <Property Name="ElementName" Value="[dbo].[FiscalYearST].[FISCAL_YEAR_TO]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[FiscalYearST]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="FiscalYearTO" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="88c5059c-63eb-498e-b739-176dbf07b43e" ChangeDateTime="07/02/2022 10:20:25">
+    <Property Name="ElementName" Value="[dbo].[FiscalYearST].[FISCAL_YEAR_FROM]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[FiscalYearST]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="FiscalYearFrom" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="5b3faf73-d5f1-419a-bd1d-638ff10c5619" ChangeDateTime="07/02/2022 10:20:31">
+    <Property Name="ElementName" Value="[dbo].[FiscalYearST].[FiscalYearTO]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[FiscalYearST]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="FiscalYearTo" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="28aa5fdb-feae-45e9-b9be-83f4c4e78d8c" ChangeDateTime="07/02/2022 10:21:06">
+    <Property Name="ElementName" Value="[dbo].[FiscalYearST].[CURRENT_YEAR]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[FiscalYearST]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="IsCurrentYear" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="1870e8a4-f011-488e-aef4-89225d63419c" ChangeDateTime="07/02/2022 10:21:18">
+    <Property Name="ElementName" Value="[dbo].[FiscalYearST].[CREATE_USER]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[FiscalYearST]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CreateUser" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="dc01392a-0cfa-4da2-81b8-8fb678fdfeb6" ChangeDateTime="07/02/2022 10:21:30">
+    <Property Name="ElementName" Value="[dbo].[FiscalYearST].[CREATE_DATE]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[FiscalYearST]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CreateDate" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="fe9205d7-3243-4e43-959b-03d252aa651e" ChangeDateTime="07/02/2022 10:21:39">
+    <Property Name="ElementName" Value="[dbo].[FiscalYearST].[UPDATE_USER]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[FiscalYearST]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="UpdateUser" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="da012674-c2e8-4c13-9588-12faa51aa975" ChangeDateTime="07/02/2022 10:21:50">
+    <Property Name="ElementName" Value="[dbo].[FiscalYearST].[UPDATE_DATE]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[FiscalYearST]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="UpdateDate" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="cc772792-0cb8-488d-a2ea-8be81fdcf494" ChangeDateTime="07/02/2022 10:22:13">
+    <Property Name="ElementName" Value="[dbo].[FiscalYearST].[COMPANY_ID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[FiscalYearST]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CompanyID" />
+  </Operation>
+</Operations>

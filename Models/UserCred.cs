@@ -72,6 +72,11 @@ namespace Models
         /// </summary>
         public DateTimeOffset SessionDate { get; set; }
 
+        public int CompanyID { get; set; }
+        public int BranchID { get; set; }
+        public int FiscalYearID { get; set; }
+
+
 
     }
 

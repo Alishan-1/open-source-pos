@@ -273,6 +273,38 @@ namespace Repositories
             }
         }
 
+        public async Task<FiscalYearST> GetCurrentFiscalYear(int CompanyID)
+        {
 
+            try
+            {
+                return await _repo.WithConnection(async c =>
+                {
+                    string sql = @"
+                    SELECT FiscalYearID,	FiscalYearFrom,	FiscalYearTo,	IsCurrentYear,	CreateUser,	CreateDate,	UpdateUser,	UpdateDate,	CompanyID
+                    FROM FiscalYearST
+                    WHERE GETDATE() BETWEEN FiscalYearFrom and FiscalYearTo
+                    and IsCurrentYear = 'Y' AND CompanyID = @CompanyID
+                        ; ";
+
+                    var res = await c.QueryAsync<FiscalYearST>(sql,
+                        new
+                        {
+                            CompanyID
+                        });
+                    return res.FirstOrDefault();
+                    
+                });
+
+            }
+            catch (Exception ex)
+            {
+                _logIt.ExceptionLogFunc(ex);
+                return Task.FromException<FiscalYearST>(ex).Result;
+            }
+
+
+            
+        }
     }
 }

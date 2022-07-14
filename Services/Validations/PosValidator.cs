@@ -15,34 +15,30 @@ namespace Services.Validations
         }
     }
 
-    class FNN_INV_MST_TRValidator : AbstractValidator<FNN_INV_MST_TR>
+    class InvoiceMasterValidator : AbstractValidator<InvoiceMaster>
     {
-        public FNN_INV_MST_TRValidator()
+        public InvoiceMasterValidator()
         {
-            RuleFor(x => x.INV_DATE).NotEmpty();
-            RuleFor(x => x.COMPANY_ID).NotEmpty().GreaterThan(0);
-            RuleFor(x => x.SUB_COMPANY_ID).NotEmpty().GreaterThan(0);
-            RuleFor(x => x.fiscal_year_id).NotEmpty().GreaterThan(0);
-            RuleFor(x => x.INV_TYPE).NotEmpty();
-            RuleFor(x => x.SALE_TYPE).NotEmpty();
+            RuleFor(x => x.InvoiceDate).NotEmpty();
+            RuleFor(x => x.CompanyID).NotEmpty().GreaterThan(0);
+            RuleFor(x => x.FiscalYearID).NotEmpty().GreaterThan(0);
+            RuleFor(x => x.InvoiceType).NotEmpty();
         }
     }
 
-    class FNN_INV_DTL_ITEM_TRValidator : AbstractValidator<FNN_INV_DTL_ITEM_TR>
+    class InvoiceDetailItemsValidator : AbstractValidator<InvoiceDetailItems>
     {
-        public FNN_INV_DTL_ITEM_TRValidator()
+        public InvoiceDetailItemsValidator()
         {
-            RuleFor(x => x.INV_NO).NotEmpty();
-            RuleFor(x => x.ARTICLE_NO).NotEmpty();
-            RuleFor(x => x.SCH_CODE).NotEmpty();
-            RuleFor(x => x.QTY).NotEmpty().GreaterThan(0);
-            RuleFor(x => x.INV_RATE).NotEmpty().GreaterThan(0); 
-            RuleFor(x => x.INV_AMOUNT).NotEmpty().GreaterThan(0);
-            RuleFor(x => x.COMPANY_ID).NotEmpty().GreaterThan(0);
-            RuleFor(x => x.SUB_COMPANY_ID).NotEmpty().GreaterThan(0);
-            RuleFor(x => x.fiscal_year_id).NotEmpty().GreaterThan(0);
-            RuleFor(x => x.INV_TYPE).NotEmpty();
-            RuleFor(x => x.SALE_TYPE).NotEmpty();
+            RuleFor(x => x.InvoiceNo).NotEmpty();
+            RuleFor(x => x.ItemDescription).NotEmpty();
+            RuleFor(x => x.ItemCode).NotEmpty();
+            RuleFor(x => x.Quantity).NotEmpty().GreaterThan(0);
+            RuleFor(x => x.InvoiceRate).NotEmpty().GreaterThan(0); 
+            RuleFor(x => x.InvoiceValue).NotEmpty().GreaterThan(0);
+            RuleFor(x => x.CompanyID).NotEmpty().GreaterThan(0);
+            RuleFor(x => x.FiscalYearID).NotEmpty().GreaterThan(0);
+            RuleFor(x => x.InvoiceType).NotEmpty();
         }
     }
 }

@@ -6,10 +6,10 @@ namespace Models
 {
     public class POS
     {
-        public FNN_INV_MST_TR objFNN_INV_MST_TR { get; set; }
-        public FNN_INV_DTL_ITEM_TR objFNN_INV_DTL_ITEM_TR { get; set; }
+        public InvoiceMaster objInvoiceMaster { get; set; }
+        public InvoiceDetailItems objInvoiceDetailItems { get; set; }
 
-        public List<FNN_INV_DTL_ITEM_TR> listFNN_INV_DTL_ITEM_TR { get; set; }
+        public List<InvoiceDetailItems> listInvoiceDetailItems { get; set; }
 
         public string Task { get; set; }
 
@@ -17,74 +17,45 @@ namespace Models
     /// <summary>
     /// USED FOR SAVING MASTER FIELDS OF POS
     /// </summary>
-    public class FNN_INV_MST_TR
+    public class InvoiceMaster
     {
-        public int INV_NO { get; set; }
+        public int InvoiceNo { get; set; }
 
-        public DateTime INV_DATE { get; set; }
+        public DateTime InvoiceDate { get; set; }
 
-        public int? BUYER_ID { get; set; }
+        public int? CustomerID { get; set; }
 
-        public int? CREATE_USER { get; set; }
+        public int? CreateUser { get; set; }
 
-        public DateTime? CREATE_DATE { get; set; }
+        public DateTime? CreateDate { get; set; }
 
-        public int? UPDATE_USER { get; set; }
+        public int? UpdateUser { get; set; }
 
-        public DateTime? UPDATE_DATE { get; set; }
+        public DateTime? UpdateDate { get; set; }
 
-        public int COMPANY_ID { get; set; }
+        public int CompanyID { get; set; }
+        public string ModuleID { get; set; }
+        public decimal? TotalAmount { get; set; }
 
-        public int SUB_COMPANY_ID { get; set; }
+        public decimal? DiscountPercent { get; set; }
 
-        public string RT_ID { get; set; }
+        public decimal? DiscountAmount { get; set; }
 
-        public string REMARKS { get; set; }
+        public decimal? SaleTaxPercent { get; set; }
 
-        public decimal? INV_AMT { get; set; }
+        public decimal? SaleTaxAmount { get; set; }
 
-        public decimal? DISCOUNT_PER { get; set; }
+        public decimal? NetAmount { get; set; }
 
-        public decimal? DISCOUNT_AMT { get; set; }
+        public decimal? ReceivedAmount { get; set; }
 
-        public decimal? STAX_PER { get; set; }
+        public decimal? BalanceAmount { get; set; }
+        public string InvoiceType { get; set; }
 
-        public decimal? STAX_AMT { get; set; }
+        public int? FiscalYearID { get; set; }
 
-        public decimal? TOTAL_AMT { get; set; }
-
-        public decimal? FREIGHT { get; set; }
-
-        public decimal? OTHER_CHGS { get; set; }
-
-        public decimal? NET_AMOUNT { get; set; }
-
-        public string SIZE_DESC { get; set; }
-
-        public string SIZE_UNIT { get; set; }
-
-        public string THICKNESS { get; set; }
-
-        public string INV_TYPE { get; set; }
-
-        public int? fiscal_year_id { get; set; }
-
-        public decimal? TOT_AMT { get; set; }
-
-        public string linked { get; set; }
-
-        public string SALE_TYPE { get; set; }
-
-        public string CALC_STYLE { get; set; }
-
-        public decimal? OTHER_TAX_PER { get; set; }
-
-        public decimal? OTHER_TAX_AMT { get; set; }
-
-        public int? INV_DUE_DAYS { get; set; }
-
-        public int? Shipto_ID { get; set; }
-
+        public decimal? OtherTaxPercent { get; set; }
+        public decimal? OtherTaxAmount { get; set; }
         public decimal? CreditLimit { get; set; }
 
         public decimal? ConsumedCredit { get; set; }
@@ -93,130 +64,53 @@ namespace Models
 
         public string Status { get; set; }
 
-        public int? BRANCH_ID { get; set; }
+        public int? BranchID { get; set; }
 
-        public string Opt { get; set; }
-
-        public int? VHR_ENTRY_ID { get; set; }
-
-        public string VOUCHER_NO { get; set; }
-
-        public string VOUCHER_TYPE { get; set; }
-
-        public DateTime? VOUCHER_DATE { get; set; }
-
-        public int? REVZDOC_NO { get; set; }
-
-        public int? ISPOST { get; set; }
-
-        public decimal? BAL_AMOUNT { get; set; }
-
-        public decimal? TAXWH { get; set; }
-
-        public int? SAL_ACC { get; set; }
-
-        public int? TAX_ACC { get; set; }
-
-        public int? DISC_ACC { get; set; }
-
-        public int? TAXEXT_ACC { get; set; }
+        public string Remarks { get; set; }
 
     }
     /// <summary>
     /// USED FOR SAVING DETAIL FIELDS OF POS
     /// </summary>
-    public class FNN_INV_DTL_ITEM_TR
+    public class InvoiceDetailItems
     {
-        public int INV_NO { get; set; }
+        public int InvoiceNo { get; set; }
 
-        public int? S_NO { get; set; }
+        public int? SrNo { get; set; }
+        public string ItemCode { get; set; }
 
-        public string ARTICLE_NO { get; set; }
+        public string ItemDescription { get; set; }
 
-        public string GRADE { get; set; }
+        public decimal? Quantity { get; set; }
 
-        public int? PCS { get; set; }
+        public string Unit { get; set; }
+        public decimal? InvoiceRate { get; set; }
 
-        public decimal? QTY { get; set; }
+        public decimal? TaxPercent { get; set; }
 
-        public string UNIT { get; set; }
+        public decimal? TaxAmount { get; set; }
+        public decimal? DiscountPercent { get; set; }
 
-        public decimal? DC_RATE { get; set; }
+        public decimal? DiscountAmount { get; set; }
+        public decimal? InvoiceValue { get; set; }
 
-        public decimal? INV_RATE { get; set; }
+        public int? CreateUser { get; set; }
 
-        public decimal? INV_AMOUNT { get; set; }
+        public DateTime? CreateDate { get; set; }
 
-        public int? CREATE_USER { get; set; }
+        public int? UpdateUser { get; set; }
 
-        public DateTime? CREATE_DATE { get; set; }
+        public DateTime? UpdateDate { get; set; }
 
-        public int? UPDATE_USER { get; set; }
+        public int? CompanyID { get; set; }
 
-        public DateTime? UPDATE_DATE { get; set; }
+        public int? BranchID { get; set; }
 
-        public int? COMPANY_ID { get; set; }
+        public string ModuleID { get; set; }
 
-        public int? SUB_COMPANY_ID { get; set; }
+        public int? FiscalYearID { get; set; }
 
-        public string RT_ID { get; set; }
-
-        public int? INV_DTL_ITM_SNO { get; set; }
-
-        public string CARTON_NO { get; set; }
-
-        public string COLOUR_DESC { get; set; }
-
-        public string DC_NO { get; set; }
-
-        public string CONTRACT_NO { get; set; }
-
-        public int? fiscal_year_id { get; set; }
-
-        public decimal? RET_PCS { get; set; }
-
-        public decimal? RET_QTY { get; set; }
-
-        public decimal? RET_RATE { get; set; }
-
-        public decimal? RET_AMOUNT { get; set; }
-
-        public decimal? SIDES { get; set; }
-
-        public string RET_INV_NO { get; set; }
-
-        public string INV_TYPE { get; set; }
-
-        public string SALE_TYPE { get; set; }
-
-        public decimal? DISCOUNT_PER { get; set; }
-
-        public decimal? DISCOUNT_AMT { get; set; }
-
-        public string SCH_CODE { get; set; }
-
-        public string PO_NUMBER { get; set; }
-
-        public int? BRANCH_ID { get; set; }
-
-        public string Opt { get; set; }
-
-        public string SALE_ACCOUNT_ID { get; set; }
-
-        public string EMPLOYEE_ID { get; set; }
-
-        public decimal? TAX_PER { get; set; }
-
-        public decimal? TAX_AMT { get; set; }
-
-        public string EMPLOYEE { get; set; }
-
-        public string SALE_ACCOUNT { get; set; }
-
-        public decimal? DISC_PER { get; set; }
-
-        public decimal? DISC_AMT { get; set; }
-
+        public string InvoiceType { get; set; }
     }
 
     public class FNN_ITEM_ST

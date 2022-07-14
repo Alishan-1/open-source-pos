@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using System.Security.Claims;
 
 namespace ChowChoice.Api.Controllers.BSS_ERP
 {
@@ -78,6 +79,26 @@ namespace ChowChoice.Api.Controllers.BSS_ERP
         [HttpPost]
         public async Task<IActionResult> Post([FromBody]POS pos)
         {
+            var userIdClaim = HttpContext.User.Claims.Where(c => c.Type == ClaimTypes.Name).First();
+            var userID = int.Parse(userIdClaim.Value);
+
+            if (pos.objInvoiceMaster != null)
+            {
+                pos.objInvoiceMaster.CreateUser = userID;
+            }
+            if (pos.objInvoiceDetailItems != null)
+            {
+                pos.objInvoiceDetailItems.CreateUser = userID;
+            }
+            if (pos.listInvoiceDetailItems != null && pos.listInvoiceDetailItems.Count > 0)
+            {
+                for (int i = 0; i < pos.listInvoiceDetailItems.Count; i++)
+                {
+                    pos.listInvoiceDetailItems[i].CreateUser = userID;
+                }                
+            }
+
+
             ServiceResponse response = await _POSService.AddDataAsync(pos);
             return StatusCode((int)(response.IsValid ? HttpStatusCode.OK : HttpStatusCode.BadRequest), response);
         }

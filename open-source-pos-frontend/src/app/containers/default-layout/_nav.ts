@@ -1,5 +1,118 @@
 import { INavData } from '@coreui/angular';
 
+export const POSNavItems: INavData[] = [
+  {
+    name: 'Dashboard',
+    url: '/dashboard',
+    iconComponent: { name: 'cil-speedometer' },
+    // badge: {
+    //   color: 'info',
+    //   text: 'NEW'
+    // }
+  },
+  {
+    title: true,
+    name: 'SYSTEM'
+  },
+  {
+    name: 'Users',
+    url: '/users',
+    iconComponent: { name: 'cil-drop' },
+    children:[
+      {
+        name: 'Add Company User',
+        url: '/users/add'
+      },
+      {
+        name: 'Company Users List',
+        url: '/users/list'
+      },
+    ],
+  },
+  {
+    name: 'User Profile',
+    url: '/users/profile',
+    
+    iconComponent: { name: 'cil-pencil' },
+    children:[
+      {
+        name: 'Change Password',
+        url: '/users/change-password'
+      },
+      {
+        name: 'Log Out',
+        url: '/users/log-out'
+      },
+    ],
+  },
+  {
+    name: 'Point Of Sale',
+    title: true
+  },
+  {
+    name: 'POS Screen',
+    url: '/pos',
+    iconComponent: { name: 'cil-puzzle' },
+    children: [
+      {
+        name: 'Create New',
+        url: '/pos'
+      },
+      {
+        name: 'Invoices list',
+        url: '/pos/Invoices-list'
+      },
+    ]
+  },
+  {
+    name: 'Products Master',
+    url: '/products-master',
+    iconComponent: { name: 'cil-puzzle' },
+    children: [
+      {
+        name: 'Create New',
+        url: '/products-master/new'
+      },
+      {
+        name: 'Products list',
+        url: '/products-master/list'
+      },
+    ]
+  },
+  {
+    name: 'Customers Master',
+    url: '/customers-master',
+    iconComponent: { name: 'cil-puzzle' },
+    children: [
+      {
+        name: 'Create New',
+        url: '/customers-master/new'
+      },
+      {
+        name: 'Customers list',
+        url: '/customers-master/list'
+      },
+    ]
+  },
+  {
+    name: 'REPORTS',
+    title: true
+  },
+  {
+    name: 'Sale Report',
+    url: '/reports/sale-report',
+    iconComponent: { name: 'cil-puzzle' },
+    
+  },
+  {
+    name: 'Products report',
+    url: '/reports/products-report',
+    iconComponent: { name: 'cil-puzzle' },
+    
+  },
+];
+
+
 export const navItems: INavData[] = [
   {
     name: 'Dashboard',

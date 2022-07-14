@@ -11,10 +11,10 @@ namespace Repositories
     public interface IPOSRepository 
     {
         Task<int> AddDataAsync(POS model);
-        Task<int> SaveInvMaster(IDbConnection c, FNN_INV_MST_TR mst);
-        Task<int> SaveInvDetail(IDbConnection c, FNN_INV_DTL_ITEM_TR dtl);
+        Task<int> SaveInvMaster(IDbConnection c, InvoiceMaster mst);
+        Task<int> SaveInvDetail(IDbConnection c, InvoiceDetailItems dtl);
         Task<int> UpdDataAsync(POS model);
-        Task<int> UpdateInvDetail(IDbConnection c, FNN_INV_DTL_ITEM_TR dtl);        
+        Task<int> UpdateInvDetail(IDbConnection c, InvoiceDetailItems dtl);        
         Task<List<FNN_ITEM_ST>> GetSearchItemsAsync(string query, int companyId);
     }
 }

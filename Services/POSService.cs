@@ -79,7 +79,7 @@ namespace Services
                 {
                     if (model.Task == "SAVE_MASTER")
                     {
-                        var mstSr = ServiceValidation.Validate(model.objFNN_INV_MST_TR, new FNN_INV_MST_TRValidator());
+                        var mstSr = ServiceValidation.Validate(model.objInvoiceMaster, new InvoiceMasterValidator());
                         if (!mstSr.IsValid)
                         {
                             mstSr.Title = ServiceMessages.TitleFailure;
@@ -90,7 +90,7 @@ namespace Services
                     }
                     if (model.Task == "SAVE_DETAIL")
                     {
-                        var dtlSr = ServiceValidation.Validate(model.objFNN_INV_DTL_ITEM_TR, new FNN_INV_DTL_ITEM_TRValidator());
+                        var dtlSr = ServiceValidation.Validate(model.objInvoiceDetailItems, new InvoiceDetailItemsValidator());
                         if (!dtlSr.IsValid)
                         {
                             dtlSr.Title = ServiceMessages.TitleFailure;
@@ -101,7 +101,7 @@ namespace Services
                     }
                     if (model.Task == "SAVE_MASSTER_WITH_DETAIL")
                     {
-                        var mstSr = ServiceValidation.Validate(model.objFNN_INV_MST_TR, new FNN_INV_MST_TRValidator());
+                        var mstSr = ServiceValidation.Validate(model.objInvoiceMaster, new InvoiceMasterValidator());
                         if (!mstSr.IsValid)
                         {
                             mstSr.Title = ServiceMessages.TitleFailure;
@@ -109,7 +109,7 @@ namespace Services
                             mstSr.Flag = false;
                             return mstSr;
                         }
-                        var dtlSr = ServiceValidation.Validate(model.objFNN_INV_DTL_ITEM_TR, new FNN_INV_DTL_ITEM_TRValidator());
+                        var dtlSr = ServiceValidation.Validate(model.objInvoiceDetailItems, new InvoiceDetailItemsValidator());
                         if (!dtlSr.IsValid)
                         {
                             dtlSr.Title = ServiceMessages.TitleFailure;
@@ -167,13 +167,24 @@ namespace Services
                 {
                     if (model.Task == "UPDATE_DETAIL")
                     {
-                        var dtlSr = ServiceValidation.Validate(model.objFNN_INV_DTL_ITEM_TR, new FNN_INV_DTL_ITEM_TRValidator());
+                        var dtlSr = ServiceValidation.Validate(model.objInvoiceDetailItems, new InvoiceDetailItemsValidator());
                         if (!dtlSr.IsValid)
                         {
                             dtlSr.Title = ServiceMessages.TitleFailure;
                             dtlSr.Message = ServiceErrorsMessages.DataInvalid;
                             dtlSr.Flag = false;
                             return dtlSr;
+                        }
+                    }
+                    if (model.Task == "UPDATE_MASTER")
+                    {
+                        var mstSr = ServiceValidation.Validate(model.objInvoiceMaster, new InvoiceMasterValidator());
+                        if (!mstSr.IsValid)
+                        {
+                            mstSr.Title = ServiceMessages.TitleFailure;
+                            mstSr.Message = ServiceErrorsMessages.DataInvalid;
+                            mstSr.Flag = false;
+                            return mstSr;
                         }
                     }
                     result = await _repo.UpdDataAsync(model);

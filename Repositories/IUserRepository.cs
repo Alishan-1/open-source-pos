@@ -21,5 +21,11 @@ namespace Repositories
 
         Task<int> LogOutUserAsync(UserCred userParam);
         Task<UserSessionLog> GetUserLogBySessionTokenAsync(UserCred userParam);
+        /// <summary>
+        /// Get fiscal year of company based on current db server date
+        /// </summary>
+        /// <param name="CompanyID"></param>
+        /// <returns></returns>
+        Task<FiscalYearST> GetCurrentFiscalYear(int CompanyID);
     }
 }

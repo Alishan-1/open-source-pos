@@ -5,26 +5,28 @@
   id="sidebar"
   visible
 >
+
   <c-sidebar-brand
     [brandFull]="{
-      src: 'assets/img/brand/coreui-pro-angular-white.svg',
+      src: 'assets/img/brand/open-source-pos.png',
       width: 190,
       height: 35,
-      alt: 'CoreUI Logo'
+      alt: 'open source point of sale Logo'
     }"
     [brandNarrow]="{
-      src: 'assets/img/brand/coreui-signet-white.svg',
+      src: 'assets/img/brand/ospos-white-small.png',
       width: 46,
       height: 46,
-      alt: 'CoreUI Logo'
+      alt: 'open source point of sale Logo'
     }"
     routerLink="./"
   >
   </c-sidebar-brand>
     <perfect-scrollbar [config]="perfectScrollbarConfig">
   <!--  [perfectScrollbar]="perfectScrollbarConfig"-->
+  <!-- old data =  navItems -->
   <c-sidebar-nav
-    [navItems]="navItems"
+    [navItems]="POSNavItems"
   >
   </c-sidebar-nav>
     </perfect-scrollbar>

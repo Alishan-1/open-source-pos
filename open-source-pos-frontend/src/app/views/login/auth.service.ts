@@ -47,6 +47,15 @@ export class AuthService {
         catchError(this.error)
       )
   }
+  /**
+   * Get the Current user object
+   * @returns Currently loged in user object
+   */
+  GetlocalStorageUser(): any {
+    debugger;
+    let currentUser = JSON.parse(localStorage.getItem('currentUser') || "{}");
+    return currentUser;
+  }
 
   GetHttpHeaders(): HttpHeaders {
     let headrs = new HttpHeaders().set('Content-Type', 'application/json');

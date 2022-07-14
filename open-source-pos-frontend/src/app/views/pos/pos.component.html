@@ -12,6 +12,7 @@
               <div class="card">
                 <div class="card-header">
                   Point of Sale
+                  <button (click)="onCloseClick($event)"  cButton color="danger" style="float: right;">X</button>
                 </div>
                 
                 <div class="card-body">
@@ -47,7 +48,7 @@
                   <hr #hrBeforeDtl />  
                   <p-table  [value]="posItemRows!" >
                     <ng-template pTemplate="header">
-                        <tr>
+                        <tr style="padding: 0.2rem 1rem;">
                             <th>Sr#</th>
                             <th>Custom Code</th>
                             <th>Description</th>
@@ -57,11 +58,11 @@
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
-                        <tr>
-                            <td >    
+                        <tr style="padding: 0.2rem 1rem;">
+                            <td style="padding: 0.2rem 1rem;">    
                               {{rowData.SrNo}}
                             </td>
-                            <td pEditableColumn>
+                            <td pEditableColumn style="padding: 0.2rem 1rem;">
                                 <p-cellEditor>
                                     <ng-template pTemplate="input">
                                         <input pInputText type="text" [(ngModel)]="rowData.customCode"
@@ -72,10 +73,10 @@
                                     </ng-template>
                                 </p-cellEditor>
                             </td>
-                            <td >
+                            <td style="padding: 0.2rem 1rem;">
                               {{rowData.Description}}
                             </td>
-                            <td pEditableColumn>
+                            <td pEditableColumn style="padding: 0.2rem 1rem;">
                                 <p-cellEditor>
                                     <ng-template pTemplate="input">
                                         <input pInputText type="number" [(ngModel)]="rowData.Quantity" 
@@ -87,7 +88,7 @@
                                     </ng-template>
                                 </p-cellEditor>
                             </td>
-                            <td pEditableColumn>
+                            <td pEditableColumn style="padding: 0.2rem 1rem;">
                                 <p-cellEditor>
                                     <ng-template pTemplate="input">
                                         <input pInputText type="text" [(ngModel)]="rowData.SalePrice" [disabled]="disabled"
@@ -98,7 +99,7 @@
                                     </ng-template>
                                 </p-cellEditor>
                             </td>
-                            <td>
+                            <td style="padding: 0.2rem 1rem;">
                               {{rowData.Amount}}
                             </td>
                             <!-- <td pEditableColumn>
@@ -221,9 +222,10 @@
     <div style="height: 250px">
       <!-- items table -->
       <p-table [value]="posItemSearch!" selectionMode="single" [(selection)]="selectedItemFromSearch" dataKey="id"
-      (onRowSelect)="onPosItemRowSelect($event)" [scrollable]="true" scrollHeight="200px" >
+      (onRowSelect)="onPosItemRowSelect($event)" [scrollable]="true"  >
+      <!-- scrollHeight="200px" -->
           <ng-template pTemplate="header">
-              <tr>
+              <tr style="padding: 0.2rem 1rem;">
                   <th>Custom Code</th>
                   <th>Item Description</th>
                   <th>Rate</th>
@@ -231,14 +233,18 @@
               </tr>
           </ng-template>
           <ng-template pTemplate="body" let-Item>
-              <tr [pSelectableRow]="Item">
-                  <td>{{Item.customCode}}</td>
-                  <td>{{Item.Description}}</td>
-                  <td>{{Item.SalePrice}}</td>
+              <tr [pSelectableRow]="Item" >
+                  <td style="padding: 0.2rem 1rem;">{{Item.customCode}}</td>
+                  <td style="padding: 0.2rem 1rem;">{{Item.Description}}</td>
+                  <td style="padding: 0.2rem 1rem;">{{Item.SalePrice}}</td>
               </tr>
           </ng-template>
       </p-table>
+      <div *ngIf="NoItemsFound" style="text-align: center; padding: 1rem;" >
+        No items found. <a routerLink="/item-master">   Click here </a> to create new
+      </div>
     </div>
+    
         <!-- <p-footer>
             <button type="button" pButton icon="pi pi-check" (click)="displayItemSearchModal=false" label="Yes"></button>
             <button type="button" pButton icon="pi pi-times" (click)="displayItemSearchModal=false" label="No" class="ui-button-secondary"></button>
@@ -295,7 +301,7 @@
     </div>
      
         <p-footer>
-            <button type="button" pButton icon="pi pi-check" (click)="displayInvoiceTotalModal=false" label="Yes"></button>
-            <button type="button" pButton icon="pi pi-times" (click)="displayInvoiceTotalModal=false" label="No" class="ui-button-secondary"></button>
+            <button type="button" pButton icon="pi pi-check" (click)="onSaleComplete($event)" label="Done"></button>
+            <button type="button" pButton icon="pi pi-times" (click)="displayInvoiceTotalModal=false" label="C" class="ui-button-secondary"></button>
         </p-footer>
 </p-dialog>

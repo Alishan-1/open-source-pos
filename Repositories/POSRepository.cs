@@ -28,8 +28,8 @@ namespace Repositories
             {
                 return await _repo.WithFNNConnection(async c =>
                 {
-                    var mst = model.objFNN_INV_MST_TR;
-                    var dtl = model.objFNN_INV_DTL_ITEM_TR;
+                    var mst = model.objInvoiceMaster;
+                    var dtl = model.objInvoiceDetailItems;
                     int invNo = 0, dtlID = 0;
                     switch (model.Task)
                     {
@@ -41,7 +41,7 @@ namespace Repositories
                             return dtlID;
                         case "SAVE_MASSTER_WITH_DETAIL":
                             invNo = await SaveInvMaster(c, mst);
-                            dtl.INV_NO = invNo;
+                            dtl.InvoiceNo = invNo;
                             dtlID = await SaveInvDetail(c, dtl);
                             return invNo;
                         default:
@@ -58,106 +58,193 @@ namespace Repositories
             }
         }
 
-        public async Task<int> SaveInvMaster(IDbConnection c, FNN_INV_MST_TR mst)
+        public async Task<int> SaveInvMaster(IDbConnection c, InvoiceMaster mst)
         {
+
+            // TODO: Check why the number generation does not work within five hours of entering into new fiscal year.
             string sqlInsrtInvMst = @"
-                        DECLARE @MMAX_ID INT
-                        DECLARE @INV_NO VARCHAR(20)                                      
+                        DECLARE @MMAX_ID INT                                      
 
                         SET @MMAX_ID = ISNULL(
-                        (SELECT max( CAST( SUBSTRING((CONVERT(VARCHAR, INV_NO)),5,5) as int)) FROM FNN_INV_MST_TR 
-                        WHERE COMPANY_ID= @COMPANY_ID AND SUB_COMPANY_ID= @SUB_COMPANY_ID and fiscal_year_id = @fiscal_year_id AND SALE_TYPE = @SALE_TYPE) ,0)     
+                        (SELECT max( CAST( SUBSTRING((CONVERT(VARCHAR, InvoiceNo)),5,5) as int)) FROM InvoiceMaster 
+                        WHERE CompanyID = @CompanyID AND FiscalYearID = @FiscalYearID AND InvoiceType = @InvoiceType) ,0)     
 
+                        
                         SET @MMAX_ID = @MMAX_ID + 1                                  
-                        SET @INV_NO = dbo.GetINVNo(@MMAX_ID, @INV_DATE,@COMPANY_ID)
+                        SET @InvoiceNo = dbo.GetINVNo(@MMAX_ID, @InvoiceDate, @CompanyID)
+                        
 
-
-                        insert into FNN_INV_MST_TR
-                        (INV_NO,	INV_DATE,	BUYER_ID,	CREATE_USER,	CREATE_DATE,	COMPANY_ID,		SUB_COMPANY_ID,		RT_ID,	INV_AMT,	DISCOUNT_AMT,	STAX_PER,	STAX_AMT,	TOTAL_AMT,	NET_AMOUNT,		INV_TYPE,	fiscal_year_id,		TOT_AMT,	linked,		SALE_TYPE,	CALC_STYLE,		OTHER_TAX_PER,	OTHER_TAX_AMT,	INV_DUE_DAYS,	Shipto_ID,	BRANCH_ID,	SAL_ACC,	DISC_ACC) VALUES
-                        (@INV_NO,	@INV_DATE,	@BUYER_ID,	@CREATE_USER,	@CREATE_DATE,	@COMPANY_ID,	@SUB_COMPANY_ID,	@RT_ID,	@INV_AMT,	@DISCOUNT_AMT,	@STAX_PER,	@STAX_AMT,	@TOTAL_AMT,	@NET_AMOUNT,	@INV_TYPE,	@fiscal_year_id,	@TOT_AMT,	@linked,	@SALE_TYPE,	@CALC_STYLE,	@OTHER_TAX_PER,	@OTHER_TAX_AMT,	@INV_DUE_DAYS,	@Shipto_ID,	@BRANCH_ID,	@SAL_ACC,	@DISC_ACC)
-                        SELECT @INV_NO
+                        INSERT INTO InvoiceMaster(
+                        InvoiceNo,
+                        InvoiceDate,
+                        CustomerID,
+                        CreateUser,
+                        CreateDate,
+                        UpdateUser,
+                        UpdateDate,
+                        CompanyID,
+                        ModuleID,
+                        TotalAmount,
+                        DiscountPercent,
+                        DiscountAmount,
+                        SaleTaxPercent,
+                        SaleTaxAmount,
+                        NetAmount,
+                        ReceivedAmount,
+                        BalanceAmount,
+                        InvoiceType,
+                        FiscalYearID,
+                        OtherTaxPercent,
+                        OtherTaxAmount,
+                        CreditLimit,
+                        ConsumedCredit,
+                        BalanceCredit,
+                        Status,
+                        BranchID,
+                        Remarks)
+                        VALUES (
+                        @InvoiceNo,
+                        @InvoiceDate,
+                        @CustomerID,
+                        @CreateUser,
+                        @CreateDate,
+                        @UpdateUser,
+                        @UpdateDate,
+                        @CompanyID,
+                        @ModuleID,
+                        @TotalAmount,
+                        @DiscountPercent,
+                        @DiscountAmount,
+                        @SaleTaxPercent,
+                        @SaleTaxAmount,
+                        @NetAmount,
+                        @ReceivedAmount,
+                        @BalanceAmount,
+                        @InvoiceType,
+                        @FiscalYearID,
+                        @OtherTaxPercent,
+                        @OtherTaxAmount,
+                        @CreditLimit,
+                        @ConsumedCredit,
+                        @BalanceCredit,
+                        @Status,
+                        @BranchID,
+                        @Remarks)
+                        SELECT @InvoiceNo
                         ; ";
 
             var res = await c.QueryAsync<int>(sqlInsrtInvMst,
                 new
                 {
                     
-                    INV_DATE = mst.INV_DATE,
-                    mst.BUYER_ID,
-                    mst.CREATE_USER,
-                    mst.CREATE_DATE,
-                    mst.COMPANY_ID,
-                    mst.SUB_COMPANY_ID,
-                    mst.RT_ID,
-                    mst.INV_AMT,
-                    mst.DISCOUNT_AMT,
-                    mst.STAX_PER,
-                    mst.STAX_AMT,
-                    mst.TOTAL_AMT,
-                    mst.NET_AMOUNT,
-                    mst.INV_TYPE,
-                    mst.fiscal_year_id,
-                    mst.TOT_AMT,
-                    mst.linked,
-                    mst.SALE_TYPE,
-                    mst.CALC_STYLE,
-                    mst.OTHER_TAX_PER,
-                    mst.OTHER_TAX_AMT,
-                    mst.INV_DUE_DAYS,
-                    mst.Shipto_ID,
-                    mst.BRANCH_ID,
-                    mst.SAL_ACC,
-                    mst.DISC_ACC
+                    mst.InvoiceNo,
+                    mst.InvoiceDate,
+                    mst.CustomerID,
+                    mst.CreateUser,
+                    mst.CreateDate,
+                    mst.UpdateUser,
+                    mst.UpdateDate,
+                    mst.CompanyID,
+                    mst.ModuleID,
+                    mst.TotalAmount,
+                    mst.DiscountPercent,
+                    mst.DiscountAmount,
+                    mst.SaleTaxPercent,
+                    mst.SaleTaxAmount,
+                    mst.NetAmount,
+                    mst.ReceivedAmount,
+                    mst.BalanceAmount,
+                    mst.InvoiceType,
+                    mst.FiscalYearID,
+                    mst.OtherTaxPercent,
+                    mst.OtherTaxAmount,
+                    mst.CreditLimit,
+                    mst.ConsumedCredit,
+                    mst.BalanceCredit,
+                    mst.Status,
+                    mst.BranchID,
+                    mst.Remarks
                 });
             return res.FirstOrDefault();
         }
-        public async Task<int> SaveInvDetail(IDbConnection c, FNN_INV_DTL_ITEM_TR dtl)
+        public async Task<int> SaveInvDetail(IDbConnection c, InvoiceDetailItems dtl)
         {
             string sqlInsrtInvDtl = @"
-                DECLARE @S_NO INT;
-                SET @S_NO = (SELECT ISNULL(MAX(S_NO),0)+1 FROM FNN_INV_DTL_ITEM_TR WHERE COMPANY_ID=@COMPANY_ID AND SUB_COMPANY_ID=@SUB_COMPANY_ID AND INV_NO=@INV_NO AND SALE_TYPE = @SALE_TYPE AND fiscal_year_id=@fiscal_year_id)
-                IF @S_NO IS NULL
-	                SET @S_NO = 1
-                INSERT INTO FNN_INV_DTL_ITEM_TR
-                (INV_NO,	S_NO,	ARTICLE_NO,		GRADE,	PCS,	QTY,	UNIT,	DC_RATE,	INV_RATE,	INV_AMOUNT,		CREATE_USER,	CREATE_DATE,	COMPANY_ID,		SUB_COMPANY_ID,		RT_ID,	CARTON_NO,	COLOUR_DESC,	DC_NO,	CONTRACT_NO,	fiscal_year_id,		SIDES,	INV_TYPE,	SALE_TYPE,	DISCOUNT_PER,	DISCOUNT_AMT,	SCH_CODE,	BRANCH_ID,	EMPLOYEE_ID,	TAX_PER,	TAX_AMT,	EMPLOYEE) VALUES
-                (@INV_NO,	@S_NO,	@ARTICLE_NO,	@GRADE,	@PCS,	@QTY,	@UNIT,	@DC_RATE,	@INV_RATE,	@INV_AMOUNT,	@CREATE_USER,	@CREATE_DATE,	@COMPANY_ID,	@SUB_COMPANY_ID,	@RT_ID,	@CARTON_NO,	@COLOUR_DESC,	@DC_NO,	@CONTRACT_NO,	@fiscal_year_id,	@SIDES,	@INV_TYPE,	@SALE_TYPE,	@DISCOUNT_PER,	@DISCOUNT_AMT,	@SCH_CODE,	@BRANCH_ID,	@EMPLOYEE_ID,	@TAX_PER,	@TAX_AMT,	@EMPLOYEE) 
+                DECLARE @SrNo INT;
+                SET @SrNo = (SELECT ISNULL(MAX(SrNo),0)+1 FROM InvoiceDetailItems WHERE CompanyID=@CompanyID AND InvoiceNo=@InvoiceNo AND InvoiceType = @InvoiceType AND FiscalYearID=@FiscalYearID)
+                IF @SrNo IS NULL
+	                SET @SrNo = 1
+                insert into InvoiceDetailItems(
+                    InvoiceNo,
+                    SrNo,
+                    ItemCode,
+                    ItemDescription,
+                    Quantity,
+                    Unit,
+                    InvoiceRate,
+                    TaxPercent,
+                    TaxAmount,
+                    DiscountPercent,
+                    DiscountAmount,
+                    InvoiceValue,
+                    CreateUser,
+                    CreateDate,
+                    UpdateUser,
+                    UpdateDate,
+                    CompanyID,
+                    BranchID,
+                    ModuleID,
+                    FiscalYearID,
+                    InvoiceType)
+                    VALUES(
+                    @InvoiceNo,
+                    @SrNo,
+                    @ItemCode,
+                    @ItemDescription,
+                    @Quantity,
+                    @Unit,
+                    @InvoiceRate,
+                    @TaxPercent,
+                    @TaxAmount,
+                    @DiscountPercent,
+                    @DiscountAmount,
+                    @InvoiceValue,
+                    @CreateUser,
+                    @CreateDate,
+                    @UpdateUser,
+                    @UpdateDate,
+                    @CompanyID,
+                    @BranchID,
+                    @ModuleID,
+                    @FiscalYearID,
+                    @InvoiceType) 
 
-                SELECT @S_NO
+                SELECT @SrNo
                         ; ";
 
             var res = await c.QueryAsync<int>(sqlInsrtInvDtl,
                 new
                 {
-                    dtl.INV_NO,
-                    dtl.ARTICLE_NO,
-                    dtl.GRADE,
-                    dtl.PCS,
-                    dtl.QTY,
-                    dtl.UNIT,
-                    dtl.DC_RATE,
-                    dtl.INV_RATE,
-                    dtl.INV_AMOUNT,
-                    dtl.CREATE_USER,
-                    dtl.CREATE_DATE,
-                    dtl.COMPANY_ID,
-                    dtl.SUB_COMPANY_ID,
-                    dtl.RT_ID,
-                    dtl.CARTON_NO,
-                    dtl.COLOUR_DESC,
-                    dtl.DC_NO,
-                    dtl.CONTRACT_NO,
-                    dtl.fiscal_year_id,
-                    dtl.SIDES,
-                    dtl.INV_TYPE,
-                    dtl.SALE_TYPE,
-                    dtl.DISCOUNT_PER,
-                    dtl.DISCOUNT_AMT,
-                    dtl.SCH_CODE,
-                    dtl.BRANCH_ID,
-                    dtl.EMPLOYEE_ID,
-                    dtl.TAX_PER,
-                    dtl.TAX_AMT,
-                    dtl.EMPLOYEE
+                    dtl.InvoiceNo,                    
+                    dtl.ItemCode,
+                    dtl.ItemDescription,
+                    dtl.Quantity,
+                    dtl.Unit,
+                    dtl.InvoiceRate,
+                    dtl.TaxPercent,
+                    dtl.TaxAmount,
+                    dtl.DiscountPercent,
+                    dtl.DiscountAmount,
+                    dtl.InvoiceValue,
+                    dtl.CreateUser,
+                    dtl.CreateDate,
+                    dtl.UpdateUser,
+                    dtl.UpdateDate,
+                    dtl.CompanyID,
+                    dtl.BranchID,
+                    dtl.ModuleID,
+                    dtl.FiscalYearID,
+                    dtl.InvoiceType
                 });
             return res.FirstOrDefault();
         }
@@ -169,12 +256,12 @@ namespace Repositories
                 return await _repo.WithFNNConnection(async c =>
                 {
                     //var mst = model.objFNN_INV_MST_TR;
-                    var dtl = model.objFNN_INV_DTL_ITEM_TR;
+                    var dtl = model.objInvoiceDetailItems;
                     //int invNo = 0, rows = 0;
                     switch (model.Task)
                     {
                         case "UPDATE_MASTER":
-                            throw new NotImplementedException();
+                            return await UpdateInvMaster(c, model.objInvoiceMaster);
                         case "UPDATE_DETAIL":
                             return await UpdateInvDetail(c, dtl);                            
                         case "UPDATE_MASSTER_WITH_DETAIL":
@@ -194,50 +281,115 @@ namespace Repositories
 
         }
 
-        public async Task<int> UpdateInvDetail(IDbConnection c, FNN_INV_DTL_ITEM_TR dtl)
+        public async Task<int> UpdateInvMaster(IDbConnection c, InvoiceMaster mst)
         {
             string sqlUpdateInvDtl = @"
-                UPDATE FNN_INV_DTL_ITEM_TR               
+                UPDATE InvoiceMaster               
                 SET                
-                ARTICLE_NO = @ARTICLE_NO,		QTY = @QTY,						UNIT = @UNIT,	
-                DC_RATE = @DC_RATE,				INV_RATE = @INV_RATE,			INV_AMOUNT = @INV_AMOUNT,
-                DISCOUNT_PER = @DISCOUNT_PER,	DISCOUNT_AMT = @DISCOUNT_AMT,	SCH_CODE = @SCH_CODE,	
-                EMPLOYEE_ID = @EMPLOYEE_ID,		TAX_PER = @TAX_PER,				TAX_AMT = @TAX_AMT,	
-                EMPLOYEE = @EMPLOYEE
+                
+                InvoiceDate = ISNULL(@InvoiceDate , InvoiceDate),
+                CustomerID = ISNULL(@CustomerID ,CustomerID ),
+                CreateUser = ISNULL(@CreateUser , CreateUser),
+                CreateDate = ISNULL(@CreateDate , CreateDate),
+                UpdateUser = ISNULL(@UpdateUser , UpdateUser),
+                UpdateDate = ISNULL(@UpdateDate , UpdateDate),
+                ModuleID = ISNULL(@ModuleID , ModuleID),
+                TotalAmount = ISNULL(@TotalAmount , TotalAmount),
+                DiscountPercent = ISNULL(@DiscountPercent , DiscountPercent),
+                DiscountAmount = ISNULL(@DiscountAmount , DiscountAmount),
+                SaleTaxPercent = ISNULL(@SaleTaxPercent , SaleTaxPercent),
+                SaleTaxAmount = ISNULL(@SaleTaxAmount , SaleTaxAmount),
+                NetAmount = ISNULL(@NetAmount , NetAmount),
+                ReceivedAmount = ISNULL(@ReceivedAmount , ReceivedAmount),
+                BalanceAmount = ISNULL(@BalanceAmount , BalanceAmount),
+                OtherTaxPercent = ISNULL(@OtherTaxPercent , OtherTaxPercent),
+                OtherTaxAmount = ISNULL(@OtherTaxAmount , OtherTaxAmount),
+                CreditLimit = ISNULL(@CreditLimit , CreditLimit),
+                ConsumedCredit = ISNULL(@ConsumedCredit , ConsumedCredit),
+                BalanceCredit = ISNULL(@BalanceCredit , BalanceCredit),
+                Status = ISNULL(@Status , Status),
+                BranchID = ISNULL(@BranchID , BranchID),
+                Remarks = ISNULL(@Remarks , Remarks)
                 WHERE                 
-                INV_NO = @INV_NO            
-                AND S_NO = @S_NO                
-                AND COMPANY_ID = @COMPANY_ID                
-                AND SUB_COMPANY_ID = @SUB_COMPANY_ID                
-                AND fiscal_year_id = @fiscal_year_id  
-                AND INV_TYPE = @INV_TYPE       
-                AND SALE_TYPE = @SALE_TYPE
+                InvoiceNo = @InvoiceNo
+                AND FiscalYearID = @FiscalYearID
+                AND InvoiceType = @InvoiceType
+                AND CompanyID = @CompanyID
+
                 SELECT @@ROWCOUNT
                         ; ";
 
             var res = await c.QueryAsync<int>(sqlUpdateInvDtl,
                 new
                 {
-                    dtl.ARTICLE_NO,
-                    dtl.QTY,
-                    dtl.UNIT,
-                    dtl.DC_RATE,
-                    dtl.INV_RATE,
-                    dtl.INV_AMOUNT,
-                    dtl.DISCOUNT_PER,
-                    dtl.DISCOUNT_AMT,
-                    dtl.SCH_CODE,
-                    dtl.EMPLOYEE_ID,
-                    dtl.TAX_PER,
-                    dtl.TAX_AMT,
-                    dtl.EMPLOYEE,
-                    dtl.INV_NO,
-                    dtl.S_NO,
-                    dtl.COMPANY_ID,
-                    dtl.SUB_COMPANY_ID,
-                    dtl.fiscal_year_id,
-                    dtl.INV_TYPE,
-                    dtl.SALE_TYPE
+                    mst.InvoiceNo,
+                    mst.InvoiceDate,
+                    mst.CustomerID,
+                    mst.CreateUser,
+                    mst.CreateDate,
+                    mst.UpdateUser,
+                    mst.UpdateDate,
+                    mst.CompanyID,
+                    mst.ModuleID,
+                    mst.TotalAmount,
+                    mst.DiscountPercent,
+                    mst.DiscountAmount,
+                    mst.SaleTaxPercent,
+                    mst.SaleTaxAmount,
+                    mst.NetAmount,
+                    mst.ReceivedAmount,
+                    mst.BalanceAmount,
+                    mst.InvoiceType,
+                    mst.FiscalYearID,
+                    mst.OtherTaxPercent,
+                    mst.OtherTaxAmount,
+                    mst.CreditLimit,
+                    mst.ConsumedCredit,
+                    mst.BalanceCredit,
+                    mst.Status,
+                    mst.BranchID,
+                    mst.Remarks
+                });
+            return res.FirstOrDefault();
+        }
+
+        public async Task<int> UpdateInvDetail(IDbConnection c, InvoiceDetailItems dtl)
+        {
+            string sqlUpdateInvDtl = @"
+                UPDATE InvoiceDetailItems               
+                SET                
+                ItemCode = @ItemCode, ItemDescription = @ItemDescription,		Quantity = @Quantity,   Unit = @Unit,	
+                InvoiceRate = @InvoiceRate,			InvoiceValue = @InvoiceValue,
+                DiscountPercent = @DiscountPercent,	DiscountAmount = @DiscountAmount,		
+                TaxPercent = @TaxPercent,   TaxAmount = @TaxAmount
+                WHERE                 
+                InvoiceNo = @InvoiceNo            
+                AND SrNo = @SrNo                
+                AND CompanyID = @CompanyID                
+                AND FiscalYearID = @FiscalYearID  
+                AND InvoiceType = @InvoiceType
+
+                SELECT @@ROWCOUNT
+                        ; ";
+
+            var res = await c.QueryAsync<int>(sqlUpdateInvDtl,
+                new
+                {
+                    dtl.ItemCode,
+                    dtl.ItemDescription,
+                    dtl.Quantity,
+                    dtl.Unit,
+                    dtl.InvoiceRate,
+                    dtl.InvoiceValue,
+                    dtl.DiscountPercent,
+                    dtl.DiscountAmount,
+                    dtl.TaxPercent,
+                    dtl.TaxAmount,
+                    dtl.SrNo,
+                    dtl.InvoiceNo,
+                    dtl.CompanyID,
+                    dtl.FiscalYearID,
+                    dtl.InvoiceType,
                 });
             return res.FirstOrDefault();
         }

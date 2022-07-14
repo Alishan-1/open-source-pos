@@ -103,6 +103,10 @@ namespace Services
             user.PasswordHash = null;
             user.PasswordSalt = null;
             user.UserPassword = null;
+            user.PreviousPassword = null;
+            // add fiscal year id
+            var year =  await _repo.GetCurrentFiscalYear(user.CompanyID);
+            user.FiscalYearID = year.FiscalYearID;
 
             return user;
         }

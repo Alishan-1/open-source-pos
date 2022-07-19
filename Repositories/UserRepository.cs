@@ -292,8 +292,10 @@ namespace Repositories
                         {
                             CompanyID
                         });
-                    return res.FirstOrDefault();
-                    
+                    var result = res.FirstOrDefault();
+                    return result;
+
+
                 });
 
             }
@@ -305,6 +307,37 @@ namespace Repositories
 
 
             
+        }
+
+        public async Task<int> CreateCurrentFiscalYear(int companyID)
+        {
+            try
+            {
+                return await _repo.WithConnection(async cmd =>
+                {
+                    string sql = @"
+                    SELECT FiscalYearID,	FiscalYearFrom,	FiscalYearTo,	IsCurrentYear,	CreateUser,	CreateDate,	UpdateUser,	UpdateDate,	CompanyID
+                    FROM FiscalYearST
+                    WHERE GETDATE() BETWEEN FiscalYearFrom and FiscalYearTo
+                    and IsCurrentYear = 'Y' AND CompanyID = @CompanyID
+                        ; ";
+
+                    var res = await cmd.QueryAsync<int>(sql,
+                        new
+                        {
+                            companyID
+                        });
+                    var result = res.FirstOrDefault();
+                    return result;
+
+                });
+
+            }
+            catch (Exception ex)
+            {
+                _logIt.ExceptionLogFunc(ex);
+                return Task.FromException<int>(ex).Result;
+            }
         }
     }
 }

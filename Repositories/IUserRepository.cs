@@ -27,5 +27,6 @@ namespace Repositories
         /// <param name="CompanyID"></param>
         /// <returns></returns>
         Task<FiscalYearST> GetCurrentFiscalYear(int CompanyID);
+        Task<int> CreateCurrentFiscalYear(int companyID);
     }
 }

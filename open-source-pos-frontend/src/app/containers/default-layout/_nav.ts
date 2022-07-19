@@ -60,7 +60,7 @@ export const POSNavItems: INavData[] = [
       },
       {
         name: 'Invoices list',
-        url: '/pos/Invoices-list'
+        url: '/pos/invoices-list'
       },
     ]
   },

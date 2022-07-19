@@ -36,7 +36,13 @@ import {TableModule} from 'primeng/table';
 import {InputTextModule} from 'primeng/inputtext';
 import {ButtonModule as pButtonModule } from 'primeng/button';
 import {DialogModule} from 'primeng/dialog';
+import {ToastModule} from 'primeng/toast';
 
+import {ToolbarModule} from 'primeng/toolbar';
+import {FileUploadModule} from 'primeng/fileupload';
+import {RatingModule} from 'primeng/rating';
+import {DropdownModule as pDropdownModule} from 'primeng/dropdown';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 
 import {
@@ -65,6 +71,9 @@ import { IconModule, IconSetService } from '@coreui/icons-angular';
 import { WINDOW_PROVIDERS } from './window.provider';
 import { Configuration } from './app.constants';
 import { UtilService } from './services/util.service';
+import { InvoicesListComponent } from './views/pos/invoices-list/invoices-list.component';
+// temp service for testing p table crud component
+import { ProductService } from './views/pos/invoices-list/temp/productservice';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -82,7 +91,8 @@ const APP_CONTAINERS = [
     ...APP_CONTAINERS,
     
     RegisterComponent,
-    PosComponent],
+    PosComponent,
+    InvoicesListComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -120,6 +130,12 @@ const APP_CONTAINERS = [
     InputTextModule,
     // ButtonModule,
     DialogModule,
+    ToastModule,
+    ToolbarModule,
+    FileUploadModule,
+    RatingModule,
+    pDropdownModule,
+    ConfirmDialogModule,
 
     HttpClientModule,
   ],
@@ -139,6 +155,7 @@ const APP_CONTAINERS = [
     Configuration,
     UtilService,
     AuthGuard,
+    ProductService
   ],
   bootstrap: [AppComponent],
 })

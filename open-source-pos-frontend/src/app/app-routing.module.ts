@@ -10,6 +10,7 @@ import { ConfirmationComponent } from './views/pages/confirmation/confirmation.c
 import { NewPasswordComponent } from './views/pages/new-password/new-password.component'
 
 import { PosComponent } from './views/pos/pos.component';
+import { InvoicesListComponent } from './views/pos/invoices-list/invoices-list.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
@@ -82,6 +83,15 @@ const routes: Routes = [
         path: 'pages',
         loadChildren: () =>
           import('./views/pages/pages.module').then((m) => m.PagesModule)
+      },
+// new paths for pos app
+      {
+        path: 'pos/invoices-list',
+        component: InvoicesListComponent,
+        data: {
+          title: 'Invoices List'
+        },
+        canActivate: [AuthGuard]
       },
     ]
   },

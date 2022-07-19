@@ -106,6 +106,13 @@ namespace Services
             user.PreviousPassword = null;
             // add fiscal year id
             var year =  await _repo.GetCurrentFiscalYear(user.CompanyID);
+
+            if (year == null)
+            {
+                await _repo.CreateCurrentFiscalYear(user.CompanyID);
+                year = await _repo.GetCurrentFiscalYear(user.CompanyID);
+            }
+
             user.FiscalYearID = year.FiscalYearID;
 
             return user;

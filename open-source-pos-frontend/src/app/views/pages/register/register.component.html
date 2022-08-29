@@ -43,7 +43,7 @@
               
               <div class="d-grid">
                 <button [attr.disabled] = "isRequestProcessing || !posRegisterForm.valid ? '' : null"
-                  cButton color="primary">
+                  cButton color="primary" (click)="registerUser()">
                   Create Account <img *ngIf="isRequestProcessing"  class="form-submit-loader" src="assets/img/785.gif" />
                 </button>
               </div>

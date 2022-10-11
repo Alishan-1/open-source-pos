@@ -52,8 +52,6 @@ namespace Services
 
                     }
                     response.Data = posItems;
-
-
                     response.IsValid = true;
                 }
 

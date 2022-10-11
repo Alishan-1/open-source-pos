@@ -316,10 +316,26 @@ namespace Repositories
                 return await _repo.WithConnection(async cmd =>
                 {
                     string sql = @"
-                    SELECT FiscalYearID,	FiscalYearFrom,	FiscalYearTo,	IsCurrentYear,	CreateUser,	CreateDate,	UpdateUser,	UpdateDate,	CompanyID
-                    FROM FiscalYearST
-                    WHERE GETDATE() BETWEEN FiscalYearFrom and FiscalYearTo
-                    and IsCurrentYear = 'Y' AND CompanyID = @CompanyID
+                    DECLARE @StartYear     INT
+                    DECLARE @EndYear     INT
+                    DECLARE @FiscalYearID INT
+                    DECLARE @StartDate  varchar(50)
+                    DECLARE @EndDate  varchar(50)
+
+                    IF ( MONTH(getdate()) < 7 )
+                        SET @StartYear = YEAR(getdate()) -1
+                    ELSE
+                        SET @StartYear = YEAR(getdate()) 
+
+                    SET @EndYear = @StartYear+1;
+
+                    SET @StartDate =  ''+ CONVERT(VARCHAR, @StartYear)+'-07-01';
+                    SET @EndDate =  ''+CONVERT(VARCHAR, @EndYear)+'-06-30';
+
+                    SET @FiscalYearID = ISNULL( (SELECT MAX( ISNULL( FiscalYearID,0)) +1 FROM FiscalYearST),1)
+
+                    INSERT INTO FiscalYearST(FiscalYearID,	FiscalYearFrom,	FiscalYearTo,	IsCurrentYear,	CreateUser,	CreateDate, CompanyID)
+                    VALUES(@FiscalYearID,	@StartDate, @EndDate,	'Y',	'1',	GETDATE(), @companyID)
                         ; ";
 
                     var res = await cmd.QueryAsync<int>(sql,

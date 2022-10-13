@@ -26,12 +26,15 @@ export interface posItemRow {
 
 export interface  posItem {
     
-    id: string;
-    customCode:string;
+    Id: string;
+    CustomCode:string;
+    /**main primary kay of item */
     ItemId?:string;
     Description:string;
-    SalePrice:number;
-    
+    SalePrice?:number;
+    CompanyID?:number;
+    CreateUser?:number;
+    UpdateUser?:number;
     
 }
 

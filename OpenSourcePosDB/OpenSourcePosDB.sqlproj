@@ -16,7 +16,7 @@
     <ModelCollation>1033,CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <TargetLanguage>CS</TargetLanguage>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <SqlServerVerification>False</SqlServerVerification>
@@ -24,6 +24,7 @@
     <TargetDatabaseSet>True</TargetDatabaseSet>
     <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
     <DefaultFilegroup>PRIMARY</DefaultFilegroup>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -68,7 +69,7 @@
     <Build Include="dbo\Tables\ITP_USERS_ST.sql" />
     <Build Include="dbo\Tables\UserLog.sql" />
     <Build Include="dbo\Tables\LookUp.sql" />
-    <Build Include="dbo\Tables\FNN_ITEM_ST.sql" />
+    <Build Include="dbo\Tables\PosItem.sql" />
     <Build Include="dbo\Tables\FiscalYearST.sql" />
     <Build Include="dbo\Tables\InvoiceMaster.sql" />
     <Build Include="dbo\Tables\InvoiceDetailItems.sql" />
@@ -88,5 +89,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="OpenSourcePosDB.publish.xml" />
+    <None Include="OpenSourcePosDB_1.publish.xml" />
   </ItemGroup>
 </Project>

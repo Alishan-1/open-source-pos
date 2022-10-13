@@ -74,6 +74,7 @@ import { UtilService } from './services/util.service';
 import { InvoicesListComponent } from './views/pos/invoices-list/invoices-list.component';
 // temp service for testing p table crud component
 import { ProductService } from './views/pos/invoices-list/temp/productservice';
+import { ItemComponent } from './views/item/item.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -92,7 +93,8 @@ const APP_CONTAINERS = [
     
     RegisterComponent,
     PosComponent,
-    InvoicesListComponent],
+    InvoicesListComponent,
+    ItemComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

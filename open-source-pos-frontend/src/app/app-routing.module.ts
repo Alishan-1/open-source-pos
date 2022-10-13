@@ -11,6 +11,9 @@ import { NewPasswordComponent } from './views/pages/new-password/new-password.co
 
 import { PosComponent } from './views/pos/pos.component';
 import { InvoicesListComponent } from './views/pos/invoices-list/invoices-list.component';
+import { ItemComponent } from './views/item/item.component';
+
+
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
@@ -90,6 +93,22 @@ const routes: Routes = [
         component: InvoicesListComponent,
         data: {
           title: 'Invoices List'
+        },
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'items',
+        component: ItemComponent,
+        data: {
+          title: '"Items/Products" List'
+        },
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'items/new',
+        component: ItemComponent,
+        data: {
+          title: '"Items/Products" List'
         },
         canActivate: [AuthGuard]
       },

@@ -90,6 +90,9 @@ namespace open_source_pos
             services.AddScoped<IPOSService, POSService>();
             services.AddScoped<IPOSRepository, POSRepository>();
 
+            services.AddScoped<IItemService, ItemService>();
+            services.AddScoped<IItemRepository, ItemRepository>();
+
             // Read email settings
             services.Configure<EmailConfig>(Configuration.GetSection("Email"));
             services.Configure<SMSoptions>(Configuration.GetSection("SMSTwilio"));

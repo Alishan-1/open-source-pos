@@ -41,4 +41,16 @@ namespace Services.Validations
             RuleFor(x => x.InvoiceType).NotEmpty();
         }
     }
+
+    class PosItemValidator : AbstractValidator<PosItem>
+    {
+        public PosItemValidator()
+        {
+            RuleFor(x => x.SalePrice).NotEmpty().GreaterThan(0);
+            RuleFor(x => x.CompanyID).NotEmpty().GreaterThan(0);
+            RuleFor(x => x.CreateUser).NotEmpty().GreaterThan(0);
+            RuleFor(x => x.Description).NotEmpty().MinimumLength(4);
+            RuleFor(x => x.CustomCode).NotEmpty().MinimumLength(4);
+        }
+    }
 }

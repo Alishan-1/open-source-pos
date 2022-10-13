@@ -336,7 +336,6 @@ namespace Repositories.Log
         public string Appname = "FoodAppLogIt";
         public string ErrorLogPath = "ErrorLog";
         private readonly IHostingEnvironment _hostingEnvironment;
-        private readonly ILLogRepository _repo;
 
         public FLogIt(IHostingEnvironment hostingEnvironment)
         {

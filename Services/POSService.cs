@@ -43,11 +43,11 @@ namespace Services
                 {
                     var items = await _repo.GetSearchItemsAsync(query, companyId);
 
-                    var posItems = new List<posItem>();
+                    var posItems = new List<PosItem>();
 
                     foreach (var item in items)
                     {
-                        var posItem = new posItem { customCode =item.CustomCode, ItemId = item.ITEM_ID, Description = item.ITEM_DESC, id = item.ITEM_ID, SalePrice=item.SaleCost };
+                        var posItem = new PosItem { CustomCode =item.CustomCode, ItemId = item.ItemId, Description = item.Description, Id = item.ItemId, SalePrice=item.SalePrice };
                         posItems.Add(posItem);
 
                     }

@@ -32,8 +32,8 @@ export class PosComponent  implements OnInit  {
   displayInvoiceTotalModal:boolean = false;  
   posItemSearch:posItem[] = [];  
   selectedItemFromSearch:posItem = {
-    id: "",
-    customCode: "",
+    Id: "",
+    CustomCode: "",
     ItemId: "",
     Description: "",
     SalePrice: 0
@@ -164,7 +164,7 @@ export class PosComponent  implements OnInit  {
       this.posItemRows![this.SelectedIndexOfDtl!] = {
         id:oldItem.id,
         SrNo:oldItem.SrNo,
-        customCode: selItem?.customCode || "",
+        customCode: selItem?.CustomCode || "",
         Description: selItem?.Description || "",
         SalePrice: selItem?.SalePrice || 0,
         Quantity: 1,
@@ -316,7 +316,7 @@ export class PosComponent  implements OnInit  {
    * @param mst 
    * @param dtl 
    */
-    SaveFirstRow(mst:posTrans, dtl:posItemRow){      
+    SaveFirstRow(mst:posTrans, dtl:posItemRow){
       let pos:POS = {};
       pos.Task = "SAVE_MASSTER_WITH_DETAIL";
       

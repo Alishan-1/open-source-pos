@@ -1,0 +1,160 @@
+<p-toast></p-toast>
+
+<div class="card">
+    <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+            <!-- [label]="Delete" -->
+            <button pButton pRipple  icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedItems()" [disabled]="!selectedItems || !selectedItems.length"></button>
+            
+        </ng-template>
+
+        <!-- <ng-template pTemplate="right">
+            <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
+            <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
+        </ng-template> -->
+    </p-toolbar>
+
+    <p-table #dt [value]="items" [rows]="10" [paginator]="true" [globalFilterFields]="['Description','SalePrice','CustomCode','ItemId']" responsiveLayout="scroll"
+        [(selection)]="selectedItems" [rowHover]="true" dataKey="ItemId"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+            <div >
+                <h5 >Manage Items/Products</h5>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt.filterGlobal( $event.target.value, 'contains')" placeholder="Search..."  />                    
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th pSortableColumn="ItemId">Item Id <p-sortIcon field="ItemId"></p-sortIcon></th>
+                <th pSortableColumn="Description">Description <p-sortIcon field="Description"></p-sortIcon></th>
+                <th pSortableColumn="CustomCode">Custom Code <p-sortIcon field="CustomCode"></p-sortIcon></th>
+                <th pSortableColumn="SalePrice">Sale Price <p-sortIcon field="SalePrice"></p-sortIcon></th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="item"></p-tableCheckbox>
+                </td>
+                <td>{{item.ItemId}}</td>
+                <td>{{item.Description}}</td>
+                <td>{{item.CustomCode}}</td>
+                <td>{{item.SalePrice | currency:'USD'}}</td>                
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editProduct(item)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteProduct(item)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                In total there are {{items ? items.length : 0 }} products.
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="productDialog" [style]="{width: '450px'}" header="Item/Product Details" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <form cForm 
+                novalidate
+                #posItemForm="ngForm"
+                
+                [validated]="itemFormValidated"
+                class="needs-validation">
+                
+                <p class="text-medium-emphasis"> 
+                    <span *ngIf="isEditing; else create" >Update</span>
+                    <ng-template #create >Create</ng-template>
+                    an Item/Product
+                </p>
+                <c-input-group class="mb-3">
+                  <span cInputGroupText>
+                    <svg cIcon name="cilDescription"></svg>
+                  </span>
+                  <input 
+                    name="Description" 
+                    [(ngModel)]="item.Description" 
+                    autoComplete="Description" 
+                    cFormControl 
+                    placeholder="Description" 
+                    required
+                    type="text"
+                    />
+                    <c-form-feedback [valid]="false">Please provide a valid Description.</c-form-feedback>
+                </c-input-group>
+
+                <c-input-group class="mb-3">
+                    <span cInputGroupText>
+                      <svg cIcon name="cilQrCode"></svg>
+                      <!-- cil-barcode -->
+                    </span>
+                    <input 
+                      name="CustomCode" 
+                      [(ngModel)]="item.CustomCode" 
+                      autoComplete="CustomCode" 
+                      cFormControl 
+                      placeholder="Custom Code" 
+                      required
+                      type="text"
+                      />
+                      <c-form-feedback [valid]="false">Please provide a valid Custom Code.</c-form-feedback>
+                  </c-input-group>
+
+                <c-input-group class="mb-4">
+                  <span cInputGroupText>
+                    <svg cIcon name="cilDollar"></svg>
+                  </span>
+                  <input
+                    name="SalePrice"
+                    [(ngModel)]="item.SalePrice"    
+                    autoComplete="SalePrice"
+                    cFormControl
+                    placeholder="Sale Price"
+                    type="number"
+                    required
+                  />
+                  <c-form-feedback [valid]="false">Please provide a Price grater than zero.</c-form-feedback>
+                </c-input-group>                
+                <c-row>
+                    <c-col xs="6">
+                      <button [attr.disabled] = "isRequestProcessing || !posItemForm.valid ? '' : null"  
+                      cButton class="px-4" color="primary" 
+                      type="submit" (click)="SaveItem()">
+                        Save <img *ngIf="isRequestProcessing"  class="form-submit-loader" src="assets/img/785.gif" />
+                      </button>        
+        
+                    </c-col>
+        
+                    <c-col xs="6">
+                        <button [attr.disabled] = "isRequestProcessing ? '' : null"  
+                        cButton class="px-4" color="primary" 
+                        type="button" (click)="hideDialog()">
+                        Cancel 
+                        </button>        
+          
+                    </c-col>
+                    
+                </c-row>
+                
+              </form>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        
+        
+        
+        
+        
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

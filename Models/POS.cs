@@ -115,13 +115,13 @@ namespace Models
 
     public class FNN_ITEM_ST
     {
-        public string COMPANY_ID { get; set; }
+        public string CompanyID { get; set; }
 
-        public string ITEM_ID { get; set; }
+        public string ItemId { get; set; }
 
         public string CustomCode { get; set; }
 
-        public string ITEM_DESC { get; set; }
+        public string Description { get; set; }
 
         public string ShortDesc { get; set; }
 
@@ -155,7 +155,7 @@ namespace Models
 
         public decimal PurchaseCost { get; set; }
 
-        public decimal SaleCost { get; set; }
+        public decimal SalePrice { get; set; }
 
         public decimal Sed { get; set; }
 
@@ -211,13 +211,13 @@ namespace Models
 
         public string REMARKS { get; set; }
 
-        public string CREATE_USER { get; set; }
+        public string CreateUser { get; set; }
 
-        public DateTime? CREATE_DATE { get; set; }
+        public DateTime? CreateDate { get; set; }
 
-        public string UPDATE_USER { get; set; }
+        public string UpdateUser { get; set; }
 
-        public DateTime? UPDATE_DATE { get; set; }
+        public DateTime? UpdateDate { get; set; }
 
         public decimal? SUB_COMPANY_ID { get; set; }
 
@@ -231,13 +231,30 @@ namespace Models
 
     }
 
-    public class posItem
+    public class PosItem
     {
-        public string id { get; set; }
-        public string customCode { get; set; }
+        public string Id { get; set; }
+        public string CustomCode { get; set; }
         public string Description { get; set; }
         public decimal SalePrice { get; set; }
         public string ItemId { get; set; }
+        public int CompanyID { get; set; }
+        public int CreateUser { get; set; }
+        public DateTime? CreateDate { get; set; }
+        public int UpdateUser { get; set; }
+        public DateTime? UpdateDate { get; set; }
+
+
+    }
+
+    public class GetPosItemsModel
+    {
+        
+        public int Count { get; set; }
+
+        public List<PosItem> Items { get; set; }
+
+
 
     }
 }

@@ -400,9 +400,9 @@ namespace Repositories
             {
                 return await _repo.WithFNNConnection(async c =>
                 {
-                    string sqlSearchItems = @"SELECT top 100 * FROM FNN_ITEM_ST
-                        WHERE isnull(CustomCode, '') + isnull(ITEM_DESC, '') like '%' + @QUERY + '%'
-                        AND COMPANY_ID = @COMPANY_ID  ORDER BY ITEM_DESC; ";
+                    string sqlSearchItems = @"SELECT top 100 * FROM PosItem
+                        WHERE isnull(CustomCode, '') + isnull(Description, '') like '%' + @QUERY + '%'
+                        AND CompanyID = @COMPANY_ID  ORDER BY Description; ";
 
                     var searchItems = await c.QueryAsync<FNN_ITEM_ST>(sqlSearchItems, new { QUERY = query, COMPANY_ID = companyId });
                     return searchItems.ToList();

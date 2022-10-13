@@ -66,16 +66,16 @@ export const POSNavItems: INavData[] = [
   },
   {
     name: 'Products Master',
-    url: '/products-master',
-    iconComponent: { name: 'cil-puzzle' },
+    url: '/items',
+    iconComponent: { name: 'cil-burger' },
     children: [
       {
         name: 'Create New',
-        url: '/products-master/new'
+        url: '/items/new'
       },
       {
         name: 'Products list',
-        url: '/products-master/list'
+        url: '/items'
       },
     ]
   },

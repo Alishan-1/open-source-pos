@@ -228,5 +228,39 @@ namespace Services
             }
 
         }
+        public async Task<ServiceResponse> GetInvoicesAsync(string query, int companyId, int limit, int offset)
+        {
+            try
+            {
+                ServiceResponse response = new ServiceResponse();
+
+                if (companyId <= 0)
+                {
+                    response.Flag = false;
+                    response.IsValid = false;
+                    response.Title = "Error!";
+                    response.Message = "Invalid Value for company.";
+                }
+                else
+                {
+                    var invoices = await _repo.GetInvoicesAsync(query, companyId, limit, offset);
+
+                    GetInvoicesModel model = new GetInvoicesModel();
+                    model.Items = invoices;
+                    model.Count = invoices.Count;
+
+                    response.Flag = true;
+                    response.Data = model;
+                    response.IsValid = true;
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                _log.ExceptionLogFunc(ex);
+                return Task.FromException<ServiceResponse>(ex).Result;
+            }
+
+        }
     }
 }

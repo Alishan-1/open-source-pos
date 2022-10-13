@@ -12,6 +12,7 @@ namespace Services
         Task<ServiceResponse> GetSearchItemsAsync(string query, int companyId);
         Task<ServiceResponse> AddDataAsync(POS model);
         Task<ServiceResponse> UpdDataAsync(POS model);
-        
+        Task<ServiceResponse> GetInvoicesAsync(string query, int companyId, int limit, int offset);
+
     }
 }

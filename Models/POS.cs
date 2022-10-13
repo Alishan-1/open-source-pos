@@ -248,13 +248,13 @@ namespace Models
     }
 
     public class GetPosItemsModel
-    {
-        
+    {        
         public int Count { get; set; }
-
         public List<PosItem> Items { get; set; }
-
-
-
+    }
+    public class GetInvoicesModel
+    {
+        public int Count { get; set; }
+        public List<InvoiceMaster> Items { get; set; }
     }
 }

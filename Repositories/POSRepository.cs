@@ -414,6 +414,27 @@ namespace Repositories
                 return Task.FromException<List<FNN_ITEM_ST>>(ex).Result;
             }
         }
-        
+
+        public async Task<List<InvoiceMaster>> GetInvoicesAsync(string query, int companyId, int limit, int offset)
+        {
+            try
+            {
+                return await _repo.WithFNNConnection(async c =>
+                {
+                    string sql = @"SELECT InvoiceNo, InvoiceDate, CreateUser, CompanyID, NetAmount, InvoiceType, FiscalYearID, Status, Remarks FROM InvoiceMaster
+                        WHERE CompanyID = @CompanyID ORDER BY InvoiceNo";
+
+                    var searchinvoices = await c.QueryAsync<InvoiceMaster>(sql, new { Query = query, CompanyID = companyId });
+                    return searchinvoices.ToList();
+                });
+            }
+            catch (Exception ex)
+            {
+                _log.ExceptionLogFunc(ex);
+                return Task.FromException<List<InvoiceMaster>>(ex).Result;
+            }
+        }
+
+
     }
 }

@@ -70,4 +70,60 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="CompanyID" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="175fff8f-479e-430c-b070-35a082ad55ce" ChangeDateTime="10/11/2022 10:27:05">
+    <Property Name="ElementName" Value="[dbo].[PosItem].[ITEM_ID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PosItem]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ItemId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="9e7fca52-1386-4a2b-b443-4e39f0dd4ef3" ChangeDateTime="10/11/2022 10:27:19">
+    <Property Name="ElementName" Value="[dbo].[PosItem].[ITEM_DESC]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PosItem]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Description" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="d4f250f7-6c31-4a7a-b34e-c900dfd03e00" ChangeDateTime="10/11/2022 10:27:40">
+    <Property Name="ElementName" Value="[dbo].[PosItem].[COMPANY_ID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PosItem]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CompanyID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="70457843-7007-46af-81aa-96c6bdf1829a" ChangeDateTime="10/11/2022 10:28:30">
+    <Property Name="ElementName" Value="[dbo].[PosItem].[SaleCost]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PosItem]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="SalePrice" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="230eb1cf-ee92-45de-8217-37e2b7c37f01" ChangeDateTime="10/11/2022 10:29:01">
+    <Property Name="ElementName" Value="[dbo].[PosItem].[CREATE_USER]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PosItem]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CreateUser" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="5dd593d2-d7bc-4000-a8e9-7f87f85669e6" ChangeDateTime="10/11/2022 10:29:10">
+    <Property Name="ElementName" Value="[dbo].[PosItem].[CREATE_DATE]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PosItem]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CreateDate" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="32f984f0-2b88-4706-bf0c-fbefc26253e4" ChangeDateTime="10/11/2022 10:29:15">
+    <Property Name="ElementName" Value="[dbo].[PosItem].[UPDATE_USER]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PosItem]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="UpdateUser" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a1c6ba11-ae68-42ec-a719-a0cce7bd16cd" ChangeDateTime="10/11/2022 10:29:24">
+    <Property Name="ElementName" Value="[dbo].[PosItem].[UPDATE_DATE]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[PosItem]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="UpdateDate" />
+  </Operation>
 </Operations>

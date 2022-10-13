@@ -16,5 +16,14 @@ namespace Repositories
         Task<int> UpdDataAsync(POS model);
         Task<int> UpdateInvDetail(IDbConnection c, InvoiceDetailItems dtl);        
         Task<List<FNN_ITEM_ST>> GetSearchItemsAsync(string query, int companyId);
+        /// <summary>
+        /// Returns the Invoice master records for Listing.
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="companyId"></param>
+        /// <param name="limit"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
+        Task<List<InvoiceMaster>> GetInvoicesAsync(string query, int companyId, int limit, int offset);
     }
 }

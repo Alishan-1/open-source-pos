@@ -96,3 +96,71 @@
     }
 
 }
+
+
+.p-badge {
+    border-radius: 2px;
+    padding: 0.25em 0.5rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .3px;
+}
+
+.status-unqualified {
+    background-color: #ffcdd2;
+    color: #c63737;
+}
+.status-proposal {
+    background-color: #ffd8b2;
+    color: #805b36;
+}
+
+.status-qualified {
+    background-color: #c8e6c9;
+    color: #256029;
+}
+
+.status-new {
+    background-color: #b3e5fc;
+    color: #23547b;
+}
+
+.status-renewal {
+    background-color: #eccfff;
+    color: #694382;
+}
+
+
+/**/
+.status-P {
+    background-color: #c8e6c9;
+    color: #256029;
+}
+
+.status-N {
+    background-color: #b3e5fc;
+    color: #23547b;
+}
+
+
+
+/* styles to aligh search box in grid */
+:host ::ng-deep .table-cap-left {
+    display: block;
+    float:left;
+    font-size: 16px;
+}
+:host ::ng-deep .table-search-right {    
+    display: block;
+    float:right;
+    right:20px; 
+}
+:host ::ng-deep .table-cap-container{    
+    position:absolute;
+    width: 100%;
+    height: 40px;    
+}
+:host ::ng-deep .table-cap-container-2{
+    height: 40px;
+}

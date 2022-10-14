@@ -19,13 +19,14 @@
         [(selection)]="selectedItems" [rowHover]="true" dataKey="ItemId"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
-            <div >
-                <h5 >Manage Items/Products</h5>
-                <span class="p-input-icon-left">
+            <div class="table-cap-container">
+                <span class="table-cap-left">Manage Items/Products</span>
+                <span class="p-input-icon-left table-search-right">
                     <i class="pi pi-search"></i>
-                    <input pInputText type="text" (input)="dt.filterGlobal( $event.target.value, 'contains')" placeholder="Search..."  />                    
+                    <input pInputText type="text" (input)="dt.filterGlobal( $event.target.value, 'contains')" class="p-inputtext-sm" placeholder="Search..."  />                    
                 </span>
             </div>
+            <div class="table-cap-container-2"></div>
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
@@ -40,15 +41,15 @@
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-item>
-            <tr>
-                <td>
+            <tr style="padding: 0.2rem 1rem;">
+                <td style="padding: 0.2rem 1rem;">
                     <p-tableCheckbox [value]="item"></p-tableCheckbox>
                 </td>
-                <td>{{item.ItemId}}</td>
-                <td>{{item.Description}}</td>
-                <td>{{item.CustomCode}}</td>
-                <td>{{item.SalePrice | currency:'USD'}}</td>                
-                <td>
+                <td style="padding: 0.2rem 1rem;">{{item.ItemId}}</td>
+                <td style="padding: 0.2rem 1rem;">{{item.Description}}</td>
+                <td style="padding: 0.2rem 1rem;">{{item.CustomCode}}</td>
+                <td style="padding: 0.2rem 1rem;">{{item.SalePrice | currency:'USD'}}</td>                
+                <td style="padding: 0.2rem 1rem;">
                     <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editProduct(item)"></button>
                     <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteProduct(item)"></button>
                 </td>

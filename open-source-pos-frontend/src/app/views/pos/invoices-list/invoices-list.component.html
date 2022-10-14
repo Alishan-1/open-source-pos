@@ -10,58 +10,63 @@
         </ng-template>
 
         <ng-template pTemplate="right">
-            <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
             <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
         </ng-template>
     </p-toolbar>
 
-    <p-table #dt [value]="products" [rows]="10" [paginator]="true" [globalFilterFields]="['name','country.name','representative.name','status']" responsiveLayout="scroll"
-        [(selection)]="selectedProducts" [rowHover]="true" dataKey="id"
+    <p-table #dt [value]="invoices" [rows]="10" [paginator]="true" [globalFilterFields]="['InvoiceNo','InvoiceDate','UserName','Status']" responsiveLayout="scroll"
+        [(selection)]="selectedInvoice" [rowHover]="true" dataKey="InvoiceNo"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
-            <div class="flex align-items-center justify-content-between">
-                <h5 class="m-0">Manage Products</h5>
-                <span class="p-input-icon-left">
+            <div class="table-cap-container">
+                <span class="m-0 table-cap-left">Invoices List</span>
+                <span class="p-input-icon-left table-search-right">
                     <i class="pi pi-search"></i>
-                    <input pInputText type="text" (input)="dt.filterGlobal( $event.target, 'contains')" placeholder="Search..." />
+                    <input pInputText type="text" (input)="dt.filterGlobal( $event.target.value, 'contains')" placeholder="Search..." />
                     <!-- !.value -->
-                </span>
+                </span>                
             </div>
+            <div class="table-cap-container-2"></div>
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
                 <th style="width: 3rem">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </th>
-                <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
-                <th>Image</th>
-                <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
-                <th pSortableColumn="category">Category <p-sortIcon field="category"></p-sortIcon></th>
-                <th pSortableColumn="rating">Reviews <p-sortIcon field="rating"></p-sortIcon></th>
+                <th pSortableColumn="name">Invoice No <p-sortIcon field="name"></p-sortIcon></th>
+                <th>Invoice Date</th>
+                <th pSortableColumn="price">No of Items <p-sortIcon field="price"></p-sortIcon></th>
+                <th pSortableColumn="category">Total Amount <p-sortIcon field="category"></p-sortIcon></th>
+                <th pSortableColumn="rating">User Name <p-sortIcon field="rating"></p-sortIcon></th>
                 <th pSortableColumn="inventoryStatus">Status <p-sortIcon field="inventoryStatus"></p-sortIcon></th>
+                <th pSortableColumn="inventoryStatus">Remarks <p-sortIcon field="inventoryStatus"></p-sortIcon></th>
                 <th></th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-product>
+        <ng-template pTemplate="body" let-invoice>
             <tr>
                 <td>
-                    <p-tableCheckbox [value]="product"></p-tableCheckbox>
+                    <p-tableCheckbox [value]="invoice"></p-tableCheckbox>
                 </td>
-                <td>{{product.name}}</td>
-                <td><img [src]="'assets/showcase/images/demo/product/' + product.image" [alt]="product.name" width="100" class="shadow-4" /></td>
-                <td>{{product.price | currency:'USD'}}</td>
-                <td>{{product.category}}</td>
-                <td><p-rating [ngModel]="product.rating" [readonly]="true" [cancel]="false"></p-rating></td>
-                <td><span [class]="'product-badge status-' + (product.inventoryStatus ? product.inventoryStatus.toLowerCase() : '')">{{product.inventoryStatus}}</span></td>
+                <td>{{invoice.InvoiceNo}}</td>
+                
+                <td>{{invoice.InvoiceDate | date:'dd-MM-yyyy'}}</td>
+                <td>{{invoice.NoOfItems}}</td>
+                <td>{{invoice.NetAmount | currency:'USD'}}</td>
+                <td>{{invoice.UserName}}</td>
+                <td><span [class]="'p-badge status-' + (invoice.Status ? invoice.Status : '')">{{ statuses[invoice.Status]}}</span></td>
+                <td>{{invoice.Remarks}}</td>
+                
+                
                 <td>
-                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editProduct(product)"></button>
-                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteProduct(product)"></button>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editProduct(invoice)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteProduct(invoice)"></button>
                 </td>
             </tr>
         </ng-template>
         <ng-template pTemplate="summary">
             <div class="flex align-items-center justify-content-between">
-                In total there are {{products ? products.length : 0 }} products.
+                In total there are {{invoices ? invoices.length : 0 }} invoices.
             </div>
         </ng-template>
     </p-table>

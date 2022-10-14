@@ -136,7 +136,12 @@ export class ItemComponent implements OnInit {
 
           this.messageService.add({severity:'success', summary: 'Successful', detail: 'Product Updated', life: 3000});
           this.productDialog = false;
-            
+          this.item = {
+            CustomCode:"",
+            Description:"",
+            Id:"0",                
+          };
+          this.items = [...this.items];
         },
         error:(error) =>{
           debugger;
@@ -158,7 +163,12 @@ export class ItemComponent implements OnInit {
           this.items.push(this.item);
           this.messageService.add({severity:'success', summary: 'Successful', detail: 'Product Created', life: 3000});
           this.productDialog = false;
-            
+          this.item = {
+            CustomCode:"",
+            Description:"",
+            Id:"0",                
+          };
+          this.items = [...this.items];
         },
         error:(error) =>{
           debugger;
@@ -167,13 +177,9 @@ export class ItemComponent implements OnInit {
           this.messageService.add({severity:'error', summary: 'error', detail: error, life: 3000});
         }});
     }
-    this.items = [...this.items];
     
-    this.item = {
-      CustomCode:"",
-      Description:"",
-      Id:"0",                
-    };
+    
+    
 }  
 
   findIndexById(id: string): number {

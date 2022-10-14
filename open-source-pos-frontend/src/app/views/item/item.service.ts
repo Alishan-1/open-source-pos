@@ -36,7 +36,7 @@ export class ItemService {
     let API_URL = `${this.apiUrl}/getitems`;
     return this.http.post(API_URL, data, { headers: this._authService.GetHttpHeaders() })
       .pipe(
-        catchError(this.error)
+        catchError(this.error) //this._utilService.handleError
       )
   }
 
@@ -44,7 +44,7 @@ export class ItemService {
     debugger;
     return this.http.post(this.apiUrl, data, { headers: this._authService.GetHttpHeaders() })
       .pipe(
-        catchError(this.error)
+        catchError(this.error)  //this._utilService.handleError
       )
   }
   
@@ -57,7 +57,7 @@ export class ItemService {
     deleteTask(id: any): Observable<any> {
       var API_URL = `${this.apiUrl}/delete-task/${id}`;
       return this.http.delete(API_URL).pipe(
-        catchError(this.error)
+        catchError(this.error) //this._utilService.handleError
       )
     }
   
@@ -70,7 +70,7 @@ export class ItemService {
           
           console.log(`${property}: ${error.error.Errors[property]}`);
           error.error.Errors[property].forEach(function(err: any){
-            errorMessage += property+': '+err+' \n ';
+            errorMessage += err+' \n ';
           })
 
         }

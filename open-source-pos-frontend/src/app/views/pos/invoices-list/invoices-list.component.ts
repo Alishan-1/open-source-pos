@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from './temp/product';
 import { ProductService } from './temp/productservice';
+import { PosService } from '../pos.service';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
-
+import { AuthService } from '../../login/auth.service';
 
 @Component({
   selector: 'app-invoices-list',
@@ -30,18 +31,54 @@ export class InvoicesListComponent implements OnInit {
 
   submitted!: boolean;
 
-  statuses!: any[];
+  statuses!: any;
 
-  constructor(private productService: ProductService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
+  invoices!: any[];
+  totalInvoices!: number;  
+
+  invoice!: any;
+  selectedInvoice!: any[];  
+  currentUser:any;
+
+  constructor(private productService: ProductService, private messageService: MessageService, 
+    private posService: PosService, private confirmationService: ConfirmationService, private authService: AuthService) { 
+        this.currentUser = this.authService.GetlocalStorageUser();
+    }
 
   ngOnInit() {
-      this.productService.getProducts().then((data: Product[]) => this.products = data);
+    debugger;
+      
+      let params = {
+        query: '',
+        companyId: this.currentUser.CompanyID,
+        limit:0,
+        offset:0
+      };
+      this.posService.GetInvoicesList(params).subscribe({
+        next: (sr) => {
+          debugger;
+            
+          this.invoices = sr.Data.Invoices;
+          this.totalInvoices = sr.Data.Count;          
+            
+        },
+        error:(error) =>{
+          debugger;          
+          console.error(error);
+          this.messageService.add({severity:'error', summary: 'Error Loading Invoices!', detail: error, life: 3000});
+        }});
 
-      this.statuses = [
-          {label: 'INSTOCK', value: 'instock'},
-          {label: 'LOWSTOCK', value: 'lowstock'},
-          {label: 'OUTOFSTOCK', value: 'outofstock'}
-      ];
+      
+      
+    
+        this.productService.getProducts().then((data: Product[]) => this.products = data);
+
+      this.statuses = {
+        N:'New',
+        P:'Posted'
+      }
+
+
   }
 
   openNew() {

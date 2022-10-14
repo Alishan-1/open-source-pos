@@ -113,5 +113,35 @@ namespace ChowChoice.Api.Controllers.BSS_ERP
             ServiceResponse response = await _POSService.UpdDataAsync(pos);
             return StatusCode((int)(response.IsValid ? HttpStatusCode.OK : HttpStatusCode.BadRequest), response);
         }
+
+
+        /// <summary>
+        /// used to get invoices master for invoices list view.
+        /// </summary>
+        /// <param name="jSearchItems"></param>
+        /// <returns></returns>
+        [Route("getinvoices")]
+        [HttpPost]
+        public async Task<IActionResult> GetInvoices([FromBody] JObject jSearchItems)
+        {
+            try
+            {
+                dynamic SearchItems = jSearchItems;
+                string query = SearchItems.query;
+                int companyId = SearchItems.companyId;
+                int limit = SearchItems.limit;
+                int offset = SearchItems.offset;
+
+                ServiceResponse response = await _POSService.GetInvoicesAsync(query, companyId, limit, offset);
+
+
+                return StatusCode((int)(response.IsValid ? HttpStatusCode.OK : HttpStatusCode.BadRequest), response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
     }
 }

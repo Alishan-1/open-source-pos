@@ -243,8 +243,6 @@ namespace Models
         public DateTime? CreateDate { get; set; }
         public int UpdateUser { get; set; }
         public DateTime? UpdateDate { get; set; }
-
-
     }
 
     public class GetPosItemsModel
@@ -252,9 +250,16 @@ namespace Models
         public int Count { get; set; }
         public List<PosItem> Items { get; set; }
     }
+
+    public class InvoiceMasterListing : InvoiceMaster
+    {
+        public string UserName { get; set; }
+        public int NoOfItems { get; set; }
+    }
+
     public class GetInvoicesModel
     {
         public int Count { get; set; }
-        public List<InvoiceMaster> Items { get; set; }
+        public List<InvoiceMasterListing> Invoices { get; set; }
     }
 }

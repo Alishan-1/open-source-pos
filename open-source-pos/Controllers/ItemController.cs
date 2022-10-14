@@ -35,7 +35,7 @@ namespace Api.Controllers
         /// <returns></returns>
         [Route("getitems")]
         [HttpPost]
-        public async Task<IActionResult> GetSearchItems([FromBody] JObject jSearchItems)
+        public async Task<IActionResult> GetItems([FromBody] JObject jSearchItems)
         {
             try
             {

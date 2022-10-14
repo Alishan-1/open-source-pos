@@ -24,6 +24,6 @@ namespace Repositories
         /// <param name="limit"></param>
         /// <param name="offset"></param>
         /// <returns></returns>
-        Task<List<InvoiceMaster>> GetInvoicesAsync(string query, int companyId, int limit, int offset);
+        Task<List<InvoiceMasterListing>> GetInvoicesAsync(string query, int companyId, int limit, int offset);
     }
 }

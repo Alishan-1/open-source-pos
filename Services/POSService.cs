@@ -246,7 +246,7 @@ namespace Services
                     var invoices = await _repo.GetInvoicesAsync(query, companyId, limit, offset);
 
                     GetInvoicesModel model = new GetInvoicesModel();
-                    model.Items = invoices;
+                    model.Invoices = invoices;
                     model.Count = invoices.Count;
 
                     response.Flag = true;

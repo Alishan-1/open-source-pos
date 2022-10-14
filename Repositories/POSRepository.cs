@@ -415,23 +415,28 @@ namespace Repositories
             }
         }
 
-        public async Task<List<InvoiceMaster>> GetInvoicesAsync(string query, int companyId, int limit, int offset)
+        public async Task<List<InvoiceMasterListing>> GetInvoicesAsync(string query, int companyId, int limit, int offset)
         {
             try
             {
                 return await _repo.WithFNNConnection(async c =>
                 {
-                    string sql = @"SELECT InvoiceNo, InvoiceDate, CreateUser, CompanyID, NetAmount, InvoiceType, FiscalYearID, Status, Remarks FROM InvoiceMaster
-                        WHERE CompanyID = @CompanyID ORDER BY InvoiceNo";
+                    string sql = @"SELECT INV.InvoiceNo, INV.InvoiceDate, INV.CreateUser, USR.FirstName+' '+USR.LastName AS UserName, INV.CompanyID, INV.NetAmount, INV.InvoiceType, INV.FiscalYearID, INV.Status, INV.Remarks, COUNT(ITEM.InvoiceNo) AS NoOfItems
+                        FROM InvoiceMaster INV
+                        LEFT JOIN ITP_USERS_ST USR ON INV.CreateUser = USR.UserID
+                        LEFT JOIN InvoiceDetailItems ITEM ON ITEM.InvoiceNo = INV.InvoiceNo AND ITEM.CompanyID = INV.CompanyID AND ITEM.FiscalYearID = INV.FiscalYearID AND ITEM.InvoiceType = INV.InvoiceType
+                        WHERE INV.CompanyID = @CompanyID
+                        GROUP BY ITEM.InvoiceNo, INV.InvoiceNo, INV.InvoiceDate, INV.CreateUser, USR.FirstName+' '+USR.LastName, INV.CompanyID, INV.NetAmount, INV.InvoiceType, INV.FiscalYearID, INV.Status, INV.Remarks
+                        ORDER BY INV.InvoiceNo";
 
-                    var searchinvoices = await c.QueryAsync<InvoiceMaster>(sql, new { Query = query, CompanyID = companyId });
+                    var searchinvoices = await c.QueryAsync<InvoiceMasterListing>(sql, new { Query = query, CompanyID = companyId });
                     return searchinvoices.ToList();
                 });
             }
             catch (Exception ex)
             {
                 _log.ExceptionLogFunc(ex);
-                return Task.FromException<List<InvoiceMaster>>(ex).Result;
+                return Task.FromException<List<InvoiceMasterListing>>(ex).Result;
             }
         }
 

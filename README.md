@@ -22,8 +22,9 @@ Download and install sql server express 2012 or above (2019 is recommended). Als
 install node.js from “https://nodejs.org/en/download/”. Although it should work on the latest version but v16.14.0 is recommended “https://nodejs.org/dist/v16.14.0/node-v16.14.0-x64.msi” 
 
 install angular cli by opening the command prompt and executing the following command
+```
 npm install -g @angular/cli@13.2.5
-
+```
 Fork and then Clone or Download the repo
 https://github.com/Alishan-1/open-source-pos.git
 

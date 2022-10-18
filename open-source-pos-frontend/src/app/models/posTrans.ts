@@ -98,3 +98,13 @@ export interface InvoiceDetailItems {
     FiscalYearID?: string;
     InvoiceType?: string;
 }
+
+
+export interface InvoiceMasterListing  extends InvoiceMaster{
+    UserName?: string;
+    NoOfItems?: number;
+}
+
+export interface InvoiceDetailItemEditModel  extends InvoiceDetailItems{
+    CustomCode?: string;
+}

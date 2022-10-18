@@ -13,7 +13,7 @@ import { ServiceResponse } from '../../models/service-response.model';
 // import { ChowChoiceRequestOptions } from '../../../app.request-options';
 
 import { UtilService } from '../../services/util.service';
-import { POS } from '../../models/posTrans';
+import { POS, InvoiceMasterListing } from '../../models/posTrans';
 
 @Injectable({
   providedIn: 'root'
@@ -63,6 +63,17 @@ export class PosService {
         catchError(this._utilService.handleError)
       )      
     }
+    
+    GetInvoiceDetails(data: InvoiceMasterListing): Observable<any> {
+      let API_URL = `${this.apiUrl}/POS/getinvoicedetails`;
+      return this.http.post(API_URL, data, { headers: this._authService.GetHttpHeaders() })
+        .pipe(
+          catchError(this._utilService.handleError)
+        )
+    }
+
+
+
     // Create
     createTask(data: any): Observable<any> {
       let API_URL = `${this.apiUrl}/create-task`;

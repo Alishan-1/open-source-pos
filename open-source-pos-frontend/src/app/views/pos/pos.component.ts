@@ -1,15 +1,16 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-
-//import { Car } from '../../models/car';
-import { posTrans, posItemRow, posItem, POS, InvoiceMaster, InvoiceDetailItems } from '../../models/posTrans';
+import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { posTrans, posItemRow, posItem, POS, InvoiceMaster, InvoiceDetailItems, InvoiceMasterListing, InvoiceDetailItemEditModel } from '../../models/posTrans';
 import { PosService } from './pos.service';
 import { Configuration } from '../../app.constants';
-// import { MessageService } from 'primeng/api/messageservice';
 import { AuthService } from '../login/auth.service';
 import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
+
+
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-pos',
   templateUrl: 'pos.component.html',
+  providers: [MessageService]
 })
 export class PosComponent  implements OnInit  {
   disabled:any = true;
@@ -50,18 +51,61 @@ export class PosComponent  implements OnInit  {
   txtSearch: string = "";  
   DateTimeFormate:string = "";
   currentUser:any;  
-  constructor(private authService: AuthService,private posService: PosService, private router: Router, private _configuration: Configuration /*private messageService: MessageService*/) { 
+
+    /**Is the item is being updated or created */
+  @Input()  isEditing:boolean = false;
+  @Input()  showInv!: InvoiceMasterListing;
+  constructor(private authService: AuthService,private posService: PosService, private router: Router, private _configuration: Configuration,  private messageService: MessageService) { 
     this.DateTimeFormate = Configuration.DateTimeFormate;
     this.currentUser = this.authService.GetlocalStorageUser();
   }
 
-    ngOnInit() {
-      this.RefreshForm();    
+    ngOnInit() {      
+      if(this.isEditing){
+        debugger;
+        this.form = {
+          InvoiceNo: this.showInv?.InvoiceNo,
+          InvoiceDate: this.showInv?.InvoiceDate,
+          Cashier: this.showInv?.UserName!,
+          POSCode: "02",
+          ModuleID: 'POS',
+          CompanyID: this.showInv?.CompanyID!,
+          InvoiceType: this.showInv?.InvoiceType,
+          FiscalYearID: this.showInv?.FiscalYearID,
+          BranchID: 1
+        };
+        this.displayItemSearchModal = false;
+        this.receiveAmount = 0;
+        this.discountPercnt = 0;
+        this.posItemSearchKeyUptime = new Date().getTime();
+        this.posItemSearchKeyUpPrevTime = 0;
+        this.txtTotalAmount = 0;
+        this.posService.GetInvoiceDetails(this.showInv).subscribe({
+          next: (sr) => {
+            debugger;                          
+            this.posItemRows = [];
+            sr.Data.forEach((element: InvoiceDetailItems) => {
+              this.txtTotalAmount += element.InvoiceValue!;
+              this.posItemRows.push(this.RevMapInvoiceDetailItems(element));
+            });  
+            this.AddNewRowToDetail();
+          },
+          error:(error) =>{
+            debugger;          
+            console.error(error);
+            this.messageService.add({severity:'error', summary: 'Error Loading Invoice Details!', detail: error, life: 3000});
+          }});
+
+
+      }
+      else{
+        this.RefreshForm();
+      }
+      
     }
     
-    RefreshForm(){
-      let dt = new Date();
-     
+    RefreshForm(){      
+      let dt = new Date();     
       this.form = {
         InvoiceNo: 10000,
         InvoiceDate: dt,
@@ -72,7 +116,7 @@ export class PosComponent  implements OnInit  {
         InvoiceType: 'INV',
         FiscalYearID: this.currentUser.FiscalYearID,
         BranchID: 1
-      }
+      };
       this.posItemRows= [
         {
           SrNo:1,
@@ -84,15 +128,13 @@ export class PosComponent  implements OnInit  {
           customCode:""
         },
         
-      ]
-  
-         
-        this.displayItemSearchModal = false;
-        this.receiveAmount = 0;
-        this.discountPercnt = 0;
-        this.posItemSearchKeyUptime = new Date().getTime();
-        this.posItemSearchKeyUpPrevTime = 0;
-        this.txtTotalAmount = 0;
+      ];         
+      this.displayItemSearchModal = false;
+      this.receiveAmount = 0;
+      this.discountPercnt = 0;
+      this.posItemSearchKeyUptime = new Date().getTime();
+      this.posItemSearchKeyUpPrevTime = 0;
+      this.txtTotalAmount = 0;    
     }
   
     
@@ -426,6 +468,21 @@ export class PosComponent  implements OnInit  {
       dbDtl.TaxAmount = 0;
       return dbDtl;
     }
+
+    RevMapInvoiceDetailItems( dbDtl:InvoiceDetailItemEditModel):posItemRow{
+      let dtl:posItemRow = {
+        SrNo: dbDtl.SrNo!,
+        id: '',
+        customCode: dbDtl.CustomCode!,
+        Description: dbDtl.ItemDescription!,
+        Quantity: dbDtl.Quantity!,
+        SalePrice: dbDtl.InvoiceRate!,
+        Amount: dbDtl.InvoiceValue!,
+        ItemId: dbDtl.ItemCode
+      }
+      return dtl;
+    }
+
     onCloseClick(event:any){
       this.router.navigate([`/`]);
     }

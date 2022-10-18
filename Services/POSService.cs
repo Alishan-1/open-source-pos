@@ -262,5 +262,34 @@ namespace Services
             }
 
         }
+
+        public async Task<ServiceResponse> GetInvoiceDetailsAsync(string InvoiceNo, string InvoiceType, int FiscalYearID, int CompanyID)
+        {
+            try
+            {
+                ServiceResponse response = new ServiceResponse();
+
+                if ( string.IsNullOrWhiteSpace( InvoiceNo) || string.IsNullOrWhiteSpace(InvoiceType) || CompanyID <= 0 || FiscalYearID <= 0)
+                {
+                    response.Flag = false;
+                    response.IsValid = false;
+                    response.Title = "Error!";
+                    response.Message = "Invalid Parameters.";
+                }
+                else
+                {
+                    response.Data = await _repo.GetInvoiceDetailsAsync(InvoiceNo, InvoiceType, FiscalYearID, CompanyID);
+                    response.Flag = true;                    
+                    response.IsValid = true;
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                _log.ExceptionLogFunc(ex);
+                return Task.FromException<ServiceResponse>(ex).Result;
+            }
+
+        }
     }
 }

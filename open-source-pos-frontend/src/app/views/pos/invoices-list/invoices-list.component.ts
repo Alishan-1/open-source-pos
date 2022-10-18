@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from './temp/product';
+import { InvoiceMasterListing } from '../../../models/posTrans';
 import { ProductService } from './temp/productservice';
 import { PosService } from '../pos.service';
 import { ConfirmationService } from 'primeng/api';
@@ -22,6 +23,7 @@ import { AuthService } from '../../login/auth.service';
 export class InvoicesListComponent implements OnInit {
 
   productDialog!: boolean;
+  posDialog!: boolean;
 
   products!: Product[];
 
@@ -33,10 +35,10 @@ export class InvoicesListComponent implements OnInit {
 
   statuses!: any;
 
-  invoices!: any[];
+  invoices!: InvoiceMasterListing[];
   totalInvoices!: number;  
 
-  invoice!: any;
+  invoice!: InvoiceMasterListing;
   selectedInvoice!: any[];  
   currentUser:any;
 
@@ -67,12 +69,6 @@ export class InvoicesListComponent implements OnInit {
           console.error(error);
           this.messageService.add({severity:'error', summary: 'Error Loading Invoices!', detail: error, life: 3000});
         }});
-
-      
-      
-    
-        this.productService.getProducts().then((data: Product[]) => this.products = data);
-
       this.statuses = {
         N:'New',
         P:'Posted'
@@ -100,9 +96,10 @@ export class InvoicesListComponent implements OnInit {
       });
   }
 
-  editProduct(product: Product) {
-      this.product = {...product};
-      this.productDialog = true;
+  editInvoice(invoice: any) {
+      this.invoice = invoice;
+      
+      this.posDialog = true;
   }
 
   deleteProduct(product: Product) {

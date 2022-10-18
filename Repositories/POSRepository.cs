@@ -440,6 +440,31 @@ namespace Repositories
             }
         }
 
+        public async Task<List<InvoiceDetailItemEditModel>> GetInvoiceDetailsAsync(string InvoiceNo, string InvoiceType , int FiscalYearID, int CompanyID)
+        {
+            try
+            {
+                return await _repo.WithFNNConnection(async c =>
+                {
+                    string sql = @"SELECT InvoiceNo,	SrNo,	ItemCode, itm.Description as	ItemDescription, itm.CustomCode,	Quantity,	Unit,	InvoiceRate,	TaxPercent,	TaxAmount,	DiscountPercent,
+                        DiscountAmount,	InvoiceValue,	dtl.CreateUser,	dtl.CreateDate,	dtl.UpdateUser, dtl.UpdateDate,	dtl.CompanyID,	BranchID,	ModuleID,	FiscalYearID,	InvoiceType FROM InvoiceDetailItems dtl
+                        left join PosItem itm on dtl.ItemCode = itm.ItemId and dtl.CompanyID = itm.CompanyID
+                        WHERE InvoiceNo = @InvoiceNo
+                        AND InvoiceType = @InvoiceType
+                        AND FiscalYearID = @FiscalYearID
+                        AND dtl.CompanyID = @CompanyID
+                        ORDER BY SrNo";
+
+                    var searchinvoices = await c.QueryAsync<InvoiceDetailItemEditModel>(sql, new { InvoiceNo, InvoiceType, FiscalYearID, CompanyID });
+                    return searchinvoices.ToList();
+                });
+            }
+            catch (Exception ex)
+            {
+                _log.ExceptionLogFunc(ex);
+                return Task.FromException<List<InvoiceDetailItemEditModel>>(ex).Result;
+            }
+        }
 
     }
 }

@@ -262,4 +262,11 @@ namespace Models
         public int Count { get; set; }
         public List<InvoiceMasterListing> Invoices { get; set; }
     }
+
+
+
+    public class InvoiceDetailItemEditModel : InvoiceDetailItems
+    {
+        public string CustomCode { get; set; }
+    }
 }

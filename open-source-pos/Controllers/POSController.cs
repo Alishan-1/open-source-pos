@@ -143,5 +143,30 @@ namespace ChowChoice.Api.Controllers.BSS_ERP
             }
 
         }
+
+        /// <summary>
+        /// used to get details (items) of an invoice 
+        /// </summary>
+        /// <param name="invDetail"></param>
+        /// <returns></returns>
+        [Route("getinvoicedetails")]
+        [HttpPost]
+        public async Task<IActionResult> GetInvoiceDetails([FromBody] InvoiceMasterListing invDetail)
+        {
+            try
+            {
+                
+
+                ServiceResponse response = await _POSService.GetInvoiceDetailsAsync(invDetail.InvoiceNo.ToString(), invDetail.InvoiceType, (int)invDetail.FiscalYearID, invDetail.CompanyID);
+
+
+                return StatusCode((int)(response.IsValid ? HttpStatusCode.OK : HttpStatusCode.BadRequest), response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
     }
 }

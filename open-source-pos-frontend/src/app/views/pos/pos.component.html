@@ -12,7 +12,7 @@
               <div class="card">
                 <div class="card-header">
                   Point of Sale
-                  <button (click)="onCloseClick($event)"  cButton color="danger" style="float: right;">X</button>
+                  <button *ngIf="!isEditing" (click)="onCloseClick($event)"  cButton color="danger" style="float: right;">X</button>
                 </div>
                 
                 <div class="card-body">
@@ -20,7 +20,7 @@
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label for="InvoiceNo">Invoice No</label>  
-                            <input pInputText class="form-control" type="text" id="InvoiceNo" [(ngModel)]="form.InvoiceNo!">
+                            <input pInputText class="form-control" type="text" id="InvoiceNo" [(ngModel)]="form.InvoiceNo!" [disabled]="disabled">
                         </div>
                       </div>
                       <div class="col-sm-3">
@@ -28,19 +28,19 @@
                             <label for="InvoiceDate">Invoice Date</label>  
                             <!-- <input pInputText class="form-control" type="text"  id="InvoiceDate" [(ngModel)]="form.InvoiceDate"> -->
                             <input pInputText class="form-control" type="text"  id="InvoiceDate" 
-                              [ngModel]="form.InvoiceDate! | date:DateTimeFormate" (ngModelChange)="form.InvoiceDate!=$event">
+                              [ngModel]="form.InvoiceDate! | date:DateTimeFormate" (ngModelChange)="form.InvoiceDate!=$event" [disabled]="disabled">
                         </div>
                       </div>
                       <div class="col-sm-3">
                           <div class="form-group">
                               <label for="Cashier">Cashier</label>  
-                            <input pInputText class="form-control" type="text"  id="Cashier" [(ngModel)]="form.Cashier!">
+                            <input pInputText class="form-control" type="text"  id="Cashier" [(ngModel)]="form.Cashier!" [disabled]="disabled">
                           </div>
                         </div>
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label for="POSCode">POS</label>  
-                              <input pInputText class="form-control" type="text"  id="POSCode" [(ngModel)]="form.POSCode!">
+                              <input pInputText class="form-control" type="text"  id="POSCode" [(ngModel)]="form.POSCode!" [disabled]="disabled"> 
                             </div>
                           </div>
                   </div>

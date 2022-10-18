@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[PosItem] (    
-    [ItemId]           CHAR (6)        NOT NULL,
+    [ItemId]           INT        NOT NULL,
     [CustomCode]        VARCHAR (255)   NOT NULL,
     [Description]         VARCHAR (250)   NULL,
     [ShortDesc]         VARCHAR (50)    NULL,
@@ -55,6 +55,7 @@
     [RT_ID]             NCHAR (3)       NULL,
     [type]              NCHAR (10)      NULL,
     [CatCode]           NCHAR (10)      NULL,
-    [Branch_ID]         INT             NULL
+    [Branch_ID]         INT             NULL, 
+    CONSTRAINT [PK_PosItem] PRIMARY KEY ([ItemId])
 );
 

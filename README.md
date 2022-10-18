@@ -30,37 +30,39 @@ https://github.com/Alishan-1/open-source-pos.git
 
 
 Open the solution file “open-source-pos.sln” in visual studio. You will see the five projects in solution explorer
-Models 
-Open-source-pos ===>> Web Api project
-OpenSourcePosDB ===>> Database Project
-Repositories
-Services
+- Models 
+- Open-source-pos ===>> Web Api project
+- OpenSourcePosDB ===>> Database Project
+- Repositories
+- Services
 
 Right click on the “OpenSourcePosDB” project and click publish as shown in the following image. 
 
 Publish database dialogue will be shown.
-Enter/select the connection string for your server and write “OpenSourcePosDB” in the database name field and click the publish button. As shown in the following image.
+Enter/select the connection string for your server and write `“OpenSourcePosDB”` in the database name field and click the publish button. As shown in the following image.
 
 The database named OpenSourcePosDB will be created on the server.
 
-Now create a copy the of this file "Open-source-pos\open-source-pos\appsettings.default.json" in the same folder and rename the copy file to appsettings.json
+Now create a copy the of this file ` "Open-source-pos\open-source-pos\appsettings.default.json"` in the same folder and rename the copy file to appsettings.json
 
 And update the following connection strings in appsettings.json file with the newly created databases (if you need to)
-ConnectionString
-FNNConnectionString
+- ConnectionString
+- FNNConnectionString
 
-Update the email configuration in appsettings.json file under the property named “Email”
+Update the email configuration in `appsettings.json` file under the property named `“Email”`
 
 Now launch the project by pressing F5 or Play button. The output of the default Api should now be seen in the browser as shown in the image below.
 
 Now to run the frontend project open "open-source-pos\open-source-pos-frontend" folder in command prompt and Run the command 
-“npm install” 
+```npm install ```
 in the command prompt.
 
-if your web api url is different than https://localhost:44333/api
-you will need to change it in “src\app\app.constants.ts” file line no 46
+if your web api url is different than `https://localhost:44333/api`
+you will need to change it in `src\app\app.constants.ts` file line no `46`
 
 than run the following command
+```
 ng serve –open
+```
 
 Project should open in the browser automatically. Register a new user and login with it to explore the application.

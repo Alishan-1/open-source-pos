@@ -54,7 +54,9 @@ Update the email configuration in `appsettings.json` file under the property nam
 Now launch the project by pressing F5 or Play button. The output of the default Api should now be seen in the browser as shown in the image below.
 
 Now to run the frontend project open "open-source-pos\open-source-pos-frontend" folder in command prompt and Run the command 
-```npm install ```
+```
+npm install
+```
 in the command prompt.
 
 if your web api url is different than `https://localhost:44333/api`

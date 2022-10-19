@@ -5,7 +5,7 @@ import { Configuration } from '../../app.constants';
 import { AuthService } from '../login/auth.service';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-
+import {MessageModule} from 'primeng/message';
 
 @Component({
   selector: 'app-pos',
@@ -55,6 +55,9 @@ export class PosComponent  implements OnInit  {
     /**Is the item is being updated or created */
   @Input()  isEditing:boolean = false;
   @Input()  showInv!: InvoiceMasterListing;
+
+  /** Whether the invoice is posted or not */
+  isPosted = false;
   constructor(private authService: AuthService,private posService: PosService, private router: Router, private _configuration: Configuration,  private messageService: MessageService) { 
     this.DateTimeFormate = Configuration.DateTimeFormate;
     this.currentUser = this.authService.GetlocalStorageUser();
@@ -62,6 +65,9 @@ export class PosComponent  implements OnInit  {
 
     ngOnInit() {      
       if(this.isEditing){
+        
+        this.isPosted = this.showInv?.Status! === "P"
+        
         debugger;
         this.form = {
           InvoiceNo: this.showInv?.InvoiceNo,
@@ -86,14 +92,16 @@ export class PosComponent  implements OnInit  {
             this.posItemRows = [];
             sr.Data.forEach((element: InvoiceDetailItems) => {
               this.txtTotalAmount += element.InvoiceValue!;
-              this.posItemRows.push(this.RevMapInvoiceDetailItems(element));
+              let row = this.RevMapInvoiceDetailItems(element);
+              row.IsInserted = true;
+              this.posItemRows.push(row);              
             });  
             this.AddNewRowToDetail();
           },
           error:(error) =>{
             debugger;          
             console.error(error);
-            this.messageService.add({severity:'error', summary: 'Error Loading Invoice Details!', detail: error, life: 3000});
+            this.messageService.add({severity:'error', summary: error.Title, detail: error.Message, life: 3000});
           }});
 
 
@@ -125,7 +133,8 @@ export class PosComponent  implements OnInit  {
           Amount:0,
           Quantity:1,
           SalePrice:0,
-          customCode:""
+          customCode:"",
+          IsInserted: false
         },
         
       ];         
@@ -136,32 +145,11 @@ export class PosComponent  implements OnInit  {
       this.posItemSearchKeyUpPrevTime = 0;
       this.txtTotalAmount = 0;    
     }
-  
-    
-    onRowEditInit(car: any) {
-        //this.clonedCars[car.vin] = {...car};
-    }
-
-    onRowEditSave(car: any) {
-        if (car.year > 0) {
-            //delete this.clonedCars[car.vin];
-            //this.messageService.add({severity:'success', summary: 'Success', detail:'Car is updated'});
-        }
-        else {
-            //this.messageService.add({severity:'error', summary: 'Error', detail:'Year is required'});
-        }
-    }
-
-    // onRowEditCancel(car: Car, index: number) {
-    //     this.cars2[index] = this.clonedCars[car.vin];
-    //     delete this.clonedCars[car.vin];
-    // }
-
-
     /**
      *  on enter key press in custom code field
      *  */
     onKeydown($event: any, rowData: posItemRow, rowIndex:number){
+    debugger;
       // console.log($event);
       // console.log(rowData);
       // console.log(rowIndex);
@@ -199,32 +187,49 @@ export class PosComponent  implements OnInit  {
       this.displayInvoiceTotalModal = true;
     }
     onPosItemRowSelect($event: any){
+      debugger;
       // console.log(this.selectedItemFromSearch);
       // this.SelectedIndexOfDtl
+      
       let oldItem = this.posItemRows![this.SelectedIndexOfDtl!];
       let selItem = this.selectedItemFromSearch;
+      
+      
       this.posItemRows![this.SelectedIndexOfDtl!] = {
-        id:oldItem.id,
-        SrNo:oldItem.SrNo,
-        customCode: selItem?.CustomCode || "",
+        id: oldItem.id,
+        SrNo: oldItem.SrNo,
+        customCode: selItem?.CustomCode || "",  //because of this custome code we cannot update item in pos
         Description: selItem?.Description || "",
         SalePrice: selItem?.SalePrice || 0,
-        Quantity: 1,
-        Amount: selItem?.SalePrice || 0,
-        ItemId:selItem?.ItemId,
+        Quantity: oldItem.Quantity,
+        Amount: selItem?.SalePrice! * oldItem.Quantity,
+        ItemId: selItem?.ItemId,
+        IsInserted: oldItem.IsInserted
       }
+      
+
+  
+
       this.displayItemSearchModal = false;
       debugger;
-      //save data to db. 
-      if(this.posItemRows!.length <= 1){
-        //save master and detail
-        this.SaveFirstRow(this.form!, this.posItemRows![this.SelectedIndexOfDtl!]);
-      }  
-      else{
-        // save detail only
-        this.SaveDetailRow( this.form!.InvoiceNo, this.posItemRows![this.SelectedIndexOfDtl!]);
+      //save data to db.       
+      if( this.posItemRows![this.SelectedIndexOfDtl!].IsInserted){
+        // update data in db
+        this.UpdateDetailRow(this.form?.InvoiceNo || 0, this.posItemRows![this.SelectedIndexOfDtl!])
       }
-      this.AddNewRowToDetail();
+      else
+      {
+        if(this.posItemRows!.length <= 1){
+          //save master and detail
+          this.SaveFirstRow(this.form!, this.posItemRows![this.SelectedIndexOfDtl!]);
+        }  
+        else{
+          // save detail only
+          this.SaveDetailRow( this.form!.InvoiceNo, this.posItemRows![this.SelectedIndexOfDtl!]);
+        }
+        this.AddNewRowToDetail();
+      }
+      
     }
   
     
@@ -248,9 +253,10 @@ export class PosComponent  implements OnInit  {
         id:(lastItem.SrNo + 1).toString(),
         Description: "",
         Amount:0,
-        Quantity:0,
+        Quantity:1,
         SalePrice:0,
-        customCode:""
+        customCode:"",
+        IsInserted:false
       }
       this.posItemRows?.push(newItemRow);
       setTimeout(()=>{ // this will make the execution after the above boolean has changed
@@ -328,6 +334,7 @@ export class PosComponent  implements OnInit  {
         error:error =>{
         
           console.error(error);
+          this.messageService.add({severity:'error', summary: error.Title, detail: error.Message, life: 3000});
         
         }});
     }
@@ -387,15 +394,18 @@ export class PosComponent  implements OnInit  {
 
       pos.objInvoiceDetailItems = dbDtl;
       // this.showLoader = true;
+      let IndexToBeSaved = this.SelectedIndexOfDtl!;
       this.posService.SavePosTrans(pos).subscribe({
         next: (sr) => {
           debugger;
           // this.showLoader = false;
           this.form!.InvoiceNo = sr.Data;
+          this.posItemRows![IndexToBeSaved].IsInserted = true;
             
         },
         error:(error) =>{
           console.error(error);
+          this.messageService.add({severity:'error', summary: error.Title, detail: error.Message, life: 3000});
         }});
     }
     /**
@@ -412,16 +422,18 @@ export class PosComponent  implements OnInit  {
       let dbDtl:InvoiceDetailItems = this.MapInvoiceDetailItems(dtl, InvoiceNo);
 
       pos.objInvoiceDetailItems = dbDtl;
-      // this.showLoader = true;
+      let IndexToBeSaved = this.SelectedIndexOfDtl!;
       this.posService.SavePosTrans(pos).subscribe(
         sr => {
           debugger;
           // this.showLoader = false;
           dtl.SrNo = sr.Data;
+          this.posItemRows![IndexToBeSaved].IsInserted = true;
             
         },
         error =>{
           console.error(error);
+          this.messageService.add({severity:'error', summary: error.Title, detail: error.Message, life: 3000});
         },);
     }
     
@@ -435,16 +447,20 @@ export class PosComponent  implements OnInit  {
 
       pos.objInvoiceDetailItems = dbDtl;
       // this.showLoader = true;
-      this.posService.UpdatePosTrans(pos).subscribe(
-        sr => {
+      this.posService.UpdatePosTrans(pos).subscribe({
+        next: (sr) => {
           debugger;
+          // dtl.SrNo = sr.Data;
           // this.showLoader = false;
-          console.log( sr.Data);
+          // console.log( sr.Data);
             
         },
-        error =>{
+        error:(error) =>{
           console.error(error);
-        },);
+          this.messageService.add({severity:'error', summary: error.Title, detail: error.Message, life: 3000});
+        }
+      }
+        );
     }
     MapInvoiceDetailItems( dtl:posItemRow, invNo:number):InvoiceDetailItems{
       let dbDtl:InvoiceDetailItems ={InvoiceNo :invNo};
@@ -470,6 +486,7 @@ export class PosComponent  implements OnInit  {
     }
 
     RevMapInvoiceDetailItems( dbDtl:InvoiceDetailItemEditModel):posItemRow{
+      debugger;
       let dtl:posItemRow = {
         SrNo: dbDtl.SrNo!,
         id: '',
@@ -478,12 +495,13 @@ export class PosComponent  implements OnInit  {
         Quantity: dbDtl.Quantity!,
         SalePrice: dbDtl.InvoiceRate!,
         Amount: dbDtl.InvoiceValue!,
-        ItemId: dbDtl.ItemCode
+        ItemId: dbDtl.ItemCode,
+        IsInserted: false
       }
       return dtl;
     }
 
     onCloseClick(event:any){
-      this.router.navigate([`/`]);
+      this.router.navigate([`/pos/invoices-list`]);
     }
  }

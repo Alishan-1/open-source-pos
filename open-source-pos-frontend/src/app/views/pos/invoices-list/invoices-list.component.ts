@@ -6,6 +6,7 @@ import { PosService } from '../pos.service';
 import { ConfirmationService } from 'primeng/api';
 import { MessageService } from 'primeng/api';
 import { AuthService } from '../../login/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-invoices-list',
@@ -42,7 +43,7 @@ export class InvoicesListComponent implements OnInit {
   selectedInvoice!: any[];  
   currentUser:any;
 
-  constructor(private productService: ProductService, private messageService: MessageService, 
+  constructor(private productService: ProductService, private messageService: MessageService, private router: Router, 
     private posService: PosService, private confirmationService: ConfirmationService, private authService: AuthService) { 
         this.currentUser = this.authService.GetlocalStorageUser();
     }
@@ -78,9 +79,7 @@ export class InvoicesListComponent implements OnInit {
   }
 
   openNew() {
-      this.product = {};
-      this.submitted = false;
-      this.productDialog = true;
+      this.router.navigate([`/pos`]);
   }
 
   deleteSelectedProducts() {

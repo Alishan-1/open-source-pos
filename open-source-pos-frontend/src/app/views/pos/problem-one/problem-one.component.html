@@ -1,0 +1,81 @@
+
+<div class="app-body">
+    <main class="main d-flex"> <!-- align-items-center -->
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 mx-auto">
+            <div class="card-group">            
+                <div class="card">
+                  <div class="card-body">
+                    <!-- there should be nothing between the hr and the p-table otherwise focus will not work correctly -->
+                    <hr #hrBeforeDtl />  
+                    <p-table  [value]="posItemRows!"  dataKey="SrNo" responsiveLayout="scroll">
+                      <ng-template pTemplate="header">
+                          <tr style="padding: 0.2rem 1rem;">
+                              <th>Sr#</th>
+                              <th>Custom Code</th>
+                              <!-- <th></th> -->
+                              <th>Description</th>
+                          </tr>
+                      </ng-template>
+                      <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+                          <tr style="padding: 0.2rem 1rem;">
+                              <td style="padding: 0.2rem 1rem;">    
+                                {{rowData.SrNo}}
+                              </td>
+                              <td pEditableColumn style="padding: 0.2rem 1rem;">
+                                  <p-cellEditor>
+                                      <ng-template pTemplate="input">
+                                          <input pInputText type="text" [(ngModel)]="rowData.customCode"
+                                          (keydown.enter)="onKeydown( rowData, rowIndex)" required>
+                                      </ng-template>
+                                      <ng-template pTemplate="output">
+                                          {{rowData.customCode}} 
+                                      </ng-template>
+                                  </p-cellEditor>
+                              </td>
+                              <!-- <td><button (click)="onSearchClick( rowData, rowIndex)">Search</button></td> -->
+                              <td style="padding: 0.2rem 1rem;">
+                                {{rowData.Description}}
+                              </td>
+                          </tr>
+                      </ng-template>
+                    </p-table>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <!-- ItemSearchModal -->
+  <p-dialog header="Search Items" [(visible)]="displayItemSearchModal" [modal]="true" [style]="{width: '50vw'}" [maximizable]="true" [baseZIndex]="10000"
+      [draggable]="true" [resizable]="false">
+      
+      
+      
+      <div style="height: 250px">
+        <!-- items table -->
+        <p-table [value]="posItemSearch!" selectionMode="single" [(selection)]="selectedItemFromSearch" dataKey="id"
+        (onRowSelect)="onPosItemRowSelect()" [scrollable]="true"  >
+        <!-- scrollHeight="200px" -->
+            <ng-template pTemplate="header">
+                <tr style="padding: 0.2rem 1rem;">
+                    <th>Custom Code</th>
+                    <th>Item Description</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-Item>
+                <tr [pSelectableRow]="Item" >
+                    <td style="padding: 0.2rem 1rem;">{{Item.CustomCode}}</td>
+                    <td style="padding: 0.2rem 1rem;">{{Item.Description}}</td>                  
+                </tr>
+            </ng-template>
+        </p-table>
+      </div>
+  </p-dialog>
+  
+  
+  

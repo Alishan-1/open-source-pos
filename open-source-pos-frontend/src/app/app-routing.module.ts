@@ -10,6 +10,7 @@ import { ConfirmationComponent } from './views/pages/confirmation/confirmation.c
 import { NewPasswordComponent } from './views/pages/new-password/new-password.component'
 
 import { PosComponent } from './views/pos/pos.component';
+import { ProblemOneComponent } from './views/pos/problem-one/problem-one.component';
 import { InvoicesListComponent } from './views/pos/invoices-list/invoices-list.component';
 import { ItemComponent } from './views/item/item.component';
 
@@ -20,6 +21,14 @@ const routes: Routes = [
   {
     path: 'pos',
     component: PosComponent,
+    data: {
+      title: 'Point of Sale'
+    },
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'posp01',
+    component: ProblemOneComponent,
     data: {
       title: 'Point of Sale'
     },

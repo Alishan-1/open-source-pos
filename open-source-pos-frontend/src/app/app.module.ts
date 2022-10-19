@@ -32,6 +32,7 @@ import { AuthGuard } from './guards/auth.guard';
 
 // Import prime ng components
 import {TableModule} from 'primeng/table';
+import {MessageModule} from 'primeng/message';
 // import {DropdownModule} from 'primeng/dropdown';
 import {InputTextModule} from 'primeng/inputtext';
 import {ButtonModule as pButtonModule } from 'primeng/button';
@@ -75,6 +76,7 @@ import { InvoicesListComponent } from './views/pos/invoices-list/invoices-list.c
 // temp service for testing p table crud component
 import { ProductService } from './views/pos/invoices-list/temp/productservice';
 import { ItemComponent } from './views/item/item.component';
+import { ProblemOneComponent } from './views/pos/problem-one/problem-one.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -94,7 +96,8 @@ const APP_CONTAINERS = [
     RegisterComponent,
     PosComponent,
     InvoicesListComponent,
-    ItemComponent],
+    ItemComponent,
+    ProblemOneComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -128,6 +131,7 @@ const APP_CONTAINERS = [
     CardModule,
 
     TableModule,
+    MessageModule,
     // DropdownModule,
     InputTextModule,
     // ButtonModule,

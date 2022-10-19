@@ -1,3 +1,4 @@
+<p-toast></p-toast>
 <div class="app-body">
   <main class="main d-flex"> <!-- align-items-center -->
     <div class="container">
@@ -16,7 +17,12 @@
                 </div>
                 
                 <div class="card-body">
-                  <div class="row">
+                  <div *ngIf="isPosted" class="row" >
+                    <div class="col-sm-12">
+                        <p-message class="pull-right" severity="warn" text="This Invoice is posted, so it cannot be edited." styleClass="mr-2"></p-message>  
+                    </div>                        
+                  </div>
+                    <div class="row">
                     <div class="col-sm-3">
                         <div class="form-group">
                             <label for="InvoiceNo">Invoice No</label>  
@@ -46,7 +52,7 @@
                   </div>
                   <!-- there should be nothing between the hr and the p-table otherwise focus will not work correctly -->
                   <hr #hrBeforeDtl />  
-                  <p-table  [value]="posItemRows!" >
+                  <p-table  [value]="posItemRows!"  dataKey="SrNo" responsiveLayout="scroll" >
                     <ng-template pTemplate="header">
                         <tr style="padding: 0.2rem 1rem;">
                             <th>Sr#</th>
@@ -121,17 +127,16 @@
                       <div class="col-sm-3">
                           <div class="form-group">
                               <label for="txtTotalAmount">Total Amount</label>  
-                            <input pInputText class="form-control" type="text" id="txtTotalAmount" [(ngModel)]="txtTotalAmount">
+                            <input pInputText class="form-control" type="text" id="txtTotalAmount" [(ngModel)]="txtTotalAmount" [disabled]="disabled">
                           </div>
-                      </div>
-                      
+                      </div>                      
                   </div>
                 </div>
 
                 <div class="card-footer">
                   <!-- receive amount -->
                   <p-button icon="pi pi-check" iconPos="right" label="receive amount"
-                    (onClick)="BtnReceiveAmountClick($event)"></p-button>
+                    (onClick)="BtnReceiveAmountClick($event)" [disabled]="isPosted"></p-button>
 
                   
                   </div>
@@ -241,7 +246,7 @@
           </ng-template>
       </p-table>
       <div *ngIf="NoItemsFound" style="text-align: center; padding: 1rem;" >
-        No items found. <a routerLink="/item-master">   Click here </a> to create new
+        No items found. <a routerLink="/items/new">   Click here </a> to create new
       </div>
     </div>
     

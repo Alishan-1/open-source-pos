@@ -21,7 +21,10 @@ export interface posItemRow {
     Quantity:number;
     SalePrice:number;
     Amount:number;
-    
+    /**
+     * is the row has already been inserted in the database
+     */
+    IsInserted:boolean;
 }
 
 export interface  posItem {

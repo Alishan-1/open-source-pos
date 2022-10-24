@@ -101,15 +101,30 @@ export class InvoicesListComponent implements OnInit {
       this.posDialog = true;
   }
 
-  deleteProduct(product: Product) {
-      this.confirmationService.confirm({
-          message: 'Are you sure you want to delete ' + product.name + '?',
+  deleteInvoice(invoice: InvoiceMasterListing) {
+    
+    let isPosted = invoice.Status! === "P1";
+    if(isPosted){
+        
+        this.messageService.add({severity:'warn', summary: 'warning', detail: 'Posted invoice cannot be deleted', life: 3000});
+        return;
+    }
+    
+    this.confirmationService.confirm({
+          message: 'Are you sure you want to delete Invoice No: ' + invoice.InvoiceNo + '?',
           header: 'Confirm',
           icon: 'pi pi-exclamation-triangle',
           accept: () => {
-              this.products = this.products.filter(val => val.id !== product.id);
-              this.product = {};
-              this.messageService.add({severity:'success', summary: 'Successful', detail: 'Product Deleted', life: 3000});
+              this.invoices = this.invoices.filter(val => val.InvoiceNo !== invoice.InvoiceNo);
+              this.posService.DeleteInvoice(invoice).subscribe({
+                next: (sr) => {
+                    this.messageService.add({severity:'success', summary: 'Successful', detail: 'Invoice Deleted', life: 3000});
+                },
+                error:(error) =>{
+                  console.error(error);
+                  this.messageService.add({severity:'error', summary: error.Title, detail: error.Message, life: 3000});
+                }});
+              
           }
       });
   }

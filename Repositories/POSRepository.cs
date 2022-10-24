@@ -466,5 +466,101 @@ namespace Repositories
             }
         }
 
+        public async Task<int> DeleteInvDetail(InvoiceDetailItems dtl)
+        {
+
+            try
+            {
+                return await _repo.WithFNNConnection(async c =>
+                {
+                    string sqlDeleteInvDtl = @"
+                        DELETE FROM InvoiceDetailItems               
+                        WHERE                 
+                        InvoiceNo = @InvoiceNo            
+                        AND SrNo = @SrNo                
+                        AND CompanyID = @CompanyID                
+                        AND FiscalYearID = @FiscalYearID  
+                        AND InvoiceType = @InvoiceType
+
+                        SELECT @@ROWCOUNT
+                        ; ";
+
+                    var res = await c.QueryAsync<int>(sqlDeleteInvDtl,
+                        new
+                        {
+                            dtl.SrNo,
+                            dtl.InvoiceNo,
+                            dtl.CompanyID,
+                            dtl.FiscalYearID,
+                            dtl.InvoiceType,
+                        });
+                    return res.FirstOrDefault();
+                });
+            }
+            catch (Exception ex)
+            {
+                _log.ExceptionLogFunc(ex);
+                return Task.FromException<int>(ex).Result;
+            }
+
+            
+        }
+
+        public async Task<int> DeleteInvoice(InvoiceMaster mst)
+        {
+            try
+            {
+                return await _repo.WithFNNConnection(async c =>
+                {
+                    string sqlDeleteInvDtl = @"
+                       BEGIN
+	                        DECLARE @STATUS VARCHAR(10) = '';
+	                        SELECT @STATUS = Status FROM InvoiceMaster 
+	                        WHERE                 
+		                        InvoiceNo = @InvoiceNo            	
+		                        AND CompanyID = @CompanyID                
+		                        AND FiscalYearID = @FiscalYearID  
+		                        AND InvoiceType = @InvoiceType	
+	
+	                        IF @STATUS != 'P'
+	                        BEGIN
+		                        DELETE FROM InvoiceDetailItems               
+		                        WHERE                 
+		                        InvoiceNo = @InvoiceNo            
+		                        AND CompanyID = @CompanyID                
+		                        AND FiscalYearID = @FiscalYearID  
+		                        AND InvoiceType = @InvoiceType
+
+		                        DELETE FROM InvoiceMaster
+		                        WHERE                 
+		                        InvoiceNo = @InvoiceNo            		
+		                        AND CompanyID = @CompanyID                
+		                        AND FiscalYearID = @FiscalYearID  
+		                        AND InvoiceType = @InvoiceType
+
+		                        SELECT @@ROWCOUNT
+	                        END
+	                        ELSE	
+		                        THROW 51000, 'This record is posted. It cannot be deleted', 1;
+                        END
+                        ; ";
+
+                    var res = await c.QueryAsync<int>(sqlDeleteInvDtl,
+                        new
+                        {
+                            mst.InvoiceNo,
+                            mst.CompanyID,
+                            mst.FiscalYearID,
+                            mst.InvoiceType,
+                        });
+                    return res.FirstOrDefault();
+                });
+            }
+            catch (Exception ex)
+            {
+                _log.ExceptionLogFunc(ex);
+                return Task.FromException<int>(ex).Result;
+            }
+        }
     }
 }

@@ -119,6 +119,16 @@ export class UtilService {
                 serResponse.Data = error.error.data;
             return throwError( serResponse );
         }
+        if  (error && error.error){
+            // control comes here this means that server returned an Exception
+            serResponse.Title = "Your request was not successful";
+            if(error.error.Title) serResponse.Title =  error.error.Title;
+            serResponse.Message = error.error;
+            
+            if(error.error.data)
+                serResponse.Data = error.error.data;
+            return throwError( serResponse );
+        }
         // check whather the connection to the server was successful or not?
         if (error.ok != undefined) {
             if (!error.ok && error.status == 0 && error.statusText == "" && error.type == 3) {

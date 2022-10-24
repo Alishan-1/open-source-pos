@@ -11,10 +11,8 @@ namespace Repositories
     public interface IPOSRepository 
     {
         Task<int> AddDataAsync(POS model);
-        Task<int> SaveInvMaster(IDbConnection c, InvoiceMaster mst);
-        Task<int> SaveInvDetail(IDbConnection c, InvoiceDetailItems dtl);
-        Task<int> UpdDataAsync(POS model);
-        Task<int> UpdateInvDetail(IDbConnection c, InvoiceDetailItems dtl);        
+        
+        Task<int> UpdDataAsync(POS model);        
         Task<List<FNN_ITEM_ST>> GetSearchItemsAsync(string query, int companyId);
         /// <summary>
         /// Returns the Invoice master records for Listing.
@@ -34,5 +32,17 @@ namespace Repositories
         /// <param name="CompanyID"></param>
         /// <returns></returns>
         Task<List<InvoiceDetailItemEditModel>> GetInvoiceDetailsAsync(string InvoiceNo, string InvoiceType, int FiscalYearID, int CompanyID);
+        /// <summary>
+        /// Deletes a single, particular item row from the details of invoice.
+        /// </summary>
+        /// <param name="dtl"></param>
+        /// <returns></returns>
+        Task<int> DeleteInvDetail(InvoiceDetailItems dtl);
+        /// <summary>
+        /// Delete whole invoice including all details if it is not posted.
+        /// </summary>
+        /// <param name="mst"></param>
+        /// <returns>number of invoices deleted</returns>
+        Task<int> DeleteInvoice(InvoiceMaster mst);
     }
 }

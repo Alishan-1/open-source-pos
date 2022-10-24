@@ -13,7 +13,7 @@ import { ServiceResponse } from '../../models/service-response.model';
 // import { ChowChoiceRequestOptions } from '../../../app.request-options';
 
 import { UtilService } from '../../services/util.service';
-import { POS, InvoiceMasterListing } from '../../models/posTrans';
+import { POS, InvoiceMasterListing, InvoiceDetailItems, InvoiceMaster } from '../../models/posTrans';
 
 @Injectable({
   providedIn: 'root'
@@ -60,6 +60,25 @@ export class PosService {
     UpdatePosTrans(data:POS): Observable<any> {
       let API_URL = `${this.apiUrl}/POS`;
       return this.http.put(API_URL, data, { headers: this._authService.GetHttpHeaders() }).pipe(
+        catchError(this._utilService.handleError)
+      )      
+    }
+    
+    DeleteInvDetail(data:InvoiceDetailItems): Observable<any> {
+      let API_URL = `${this.apiUrl}/POS/DeleteInvDetail`;
+      return this.http.post(API_URL, data, { headers: this._authService.GetHttpHeaders() }).pipe(
+        catchError(this._utilService.handleError)
+      )      
+    }
+
+    /**
+     * Delete whole invoice including all details if it is not posted.
+     * @param data Invoice to delete
+     * @returns any
+     */
+    DeleteInvoice(data:InvoiceMaster): Observable<any> {
+      let API_URL = `${this.apiUrl}/POS`;
+      return this.http.delete(API_URL, { headers: this._authService.GetHttpHeaders(), body: data }).pipe(
         catchError(this._utilService.handleError)
       )      
     }

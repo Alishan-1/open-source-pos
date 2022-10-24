@@ -114,6 +114,25 @@ namespace ChowChoice.Api.Controllers.BSS_ERP
             return StatusCode((int)(response.IsValid ? HttpStatusCode.OK : HttpStatusCode.BadRequest), response);
         }
 
+        /// <summary>
+        /// Delete whole invoice including all details if it is not posted.
+        /// </summary>
+        /// <param name="pos"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        public async Task<IActionResult> Delete([FromBody] InvoiceMaster pos)
+        {
+            try
+            {
+                ServiceResponse response = await _POSService.DeleteInvoice(pos);
+                return StatusCode((int)(response.IsValid ? HttpStatusCode.OK : HttpStatusCode.BadRequest), response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+            
+        }
 
         /// <summary>
         /// used to get invoices master for invoices list view.
@@ -159,6 +178,30 @@ namespace ChowChoice.Api.Controllers.BSS_ERP
 
                 ServiceResponse response = await _POSService.GetInvoiceDetailsAsync(invDetail.InvoiceNo.ToString(), invDetail.InvoiceType, (int)invDetail.FiscalYearID, invDetail.CompanyID);
 
+
+                return StatusCode((int)(response.IsValid ? HttpStatusCode.OK : HttpStatusCode.BadRequest), response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
+        /// <summary>
+        /// Deletes a single, particular item row from the details of invoice.
+        /// </summary>
+        /// <param name="invDetail"></param>
+        /// <returns></returns>
+        [Route("DeleteInvDetail")]
+        [HttpPost]
+        public async Task<IActionResult> DeleteInvDetail([FromBody] InvoiceDetailItems invDetail)
+        {
+            try
+            {
+
+
+                ServiceResponse response = await _POSService.DeleteInvDetail(invDetail);
 
                 return StatusCode((int)(response.IsValid ? HttpStatusCode.OK : HttpStatusCode.BadRequest), response);
             }

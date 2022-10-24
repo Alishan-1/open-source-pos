@@ -52,7 +52,7 @@
                   </div>
                   <!-- there should be nothing between the hr and the p-table otherwise focus will not work correctly -->
                   <hr #hrBeforeDtl />  
-                  <p-table  [value]="posItemRows!"  dataKey="SrNo" responsiveLayout="scroll" >
+                  <p-table  [value]="posItemRows!"  dataKey="SrNo" responsiveLayout="scroll" editMode="" >
                     <ng-template pTemplate="header">
                         <tr style="padding: 0.2rem 1rem;">
                             <th>Sr#</th>
@@ -61,6 +61,7 @@
                             <th>Qty</th>
                             <th>Rate</th>
                             <th>Amount</th>
+                            <th>Del</th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
@@ -72,7 +73,8 @@
                                 <p-cellEditor>
                                     <ng-template pTemplate="input">
                                         <input pInputText type="text" [(ngModel)]="rowData.customCode"
-                                        (keydown.enter)="onKeydown($event, rowData, rowIndex)" required>
+                                        (keydown.enter)="onKeydown($event, rowData, rowIndex)" required
+                                        [disabled]="isPosted">
                                     </ng-template>
                                     <ng-template pTemplate="output">
                                         {{rowData.customCode}}
@@ -87,7 +89,7 @@
                                     <ng-template pTemplate="input">
                                         <input pInputText type="number" [(ngModel)]="rowData.Quantity" 
                                           (keyup)="onKeyupQty($event, rowData, rowIndex)"
-                                          (blur)="onBlurQtyAndRate($event, rowData, rowIndex)">
+                                          (blur)="onBlurQtyAndRate($event, rowData, rowIndex)" [disabled]="isPosted">
                                     </ng-template>
                                     <ng-template pTemplate="output">
                                         {{rowData.Quantity}}
@@ -108,19 +110,15 @@
                             <td style="padding: 0.2rem 1rem;">
                               {{rowData.Amount}}
                             </td>
-                            <!-- <td pEditableColumn>
-                                <p-cellEditor>
-                                    <ng-template pTemplate="input">
-                                        <input pInputText type="text" [(ngModel)]="rowData.Amount">
-                                    </ng-template>
-                                    <ng-template pTemplate="output">
-                                        {{rowData.Amount}}
-                                    </ng-template>
-                                </p-cellEditor>
-                            </td> -->
+                            <td style="padding: 0.2rem 1rem;">
+                              <button pButton pRipple type="button" icon="pi pi-trash" 
+                              (click)="onDeleteRowClick(rowData, rowIndex)" class="p-button-rounded p-button-text" [disabled]="isPosted"></button>
+                            </td>
+                            
                         </tr>
                     </ng-template>
                   </p-table>
+                  <p *ngIf="!isPosted">*Press enter in blank Custom Code field to show items list.</p>
                   <hr/>
                    <!-- Invoice Total -->
                   <div class="row">

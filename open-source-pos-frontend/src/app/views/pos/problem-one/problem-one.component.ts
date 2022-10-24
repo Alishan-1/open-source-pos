@@ -87,15 +87,22 @@ export class ProblemOneComponent implements OnInit {
       }
     onPosItemRowSelect(){
       debugger;
-      let oldItem = this.posItemRows![this.SelectedIndexOfDtl!];
+      // let oldItem = this.posItemRows![this.SelectedIndexOfDtl!];
       let selItem = this.selectedItemFromSearch;
-      this.posItemRows![this.SelectedIndexOfDtl!] = {
-        id: oldItem.id,
-        SrNo: oldItem.SrNo,
-        customCode: selItem?.CustomCode || "",
-        Description: selItem?.Description || "",
-        ItemId: selItem?.ItemId,
-      }
+      // this.posItemRows![this.SelectedIndexOfDtl!] = {
+      //   id: oldItem.id,
+      //   SrNo: oldItem.SrNo,
+      //   customCode: selItem?.CustomCode || "",
+      //   Description: selItem?.Description || "",
+      //   ItemId: selItem?.ItemId,
+      // }
+
+      // this.posItemRows![this.SelectedIndexOfDtl!].id = oldItem.id;
+      // this.posItemRows![this.SelectedIndexOfDtl!].SrNo = oldItem.SrNo;
+      this.posItemRows![this.SelectedIndexOfDtl!].customCode = selItem?.CustomCode || "";
+      this.posItemRows![this.SelectedIndexOfDtl!].Description = selItem?.Description || "";
+      this.posItemRows![this.SelectedIndexOfDtl!].ItemId = selItem?.ItemId;
+
       this.displayItemSearchModal = false;
     }
  }

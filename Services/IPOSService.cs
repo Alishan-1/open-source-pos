@@ -22,6 +22,18 @@ namespace Services
         /// <param name="CompanyID"></param>
         /// <returns></returns>
         Task<ServiceResponse> GetInvoiceDetailsAsync(string InvoiceNo, string InvoiceType, int FiscalYearID, int CompanyID);
+        /// <summary>
+        /// Deleates a single, particular item row from the details of invoice.
+        /// </summary>
+        /// <param name="dtl"></param>
+        /// <returns></returns>
+        Task<ServiceResponse> DeleteInvDetail(InvoiceDetailItems dtl);
+        /// <summary>
+        /// Delete whole invoice including all details if it is not posted.
+        /// </summary>
+        /// <param name="mst"></param>
+        /// <returns></returns>
+        Task<ServiceResponse> DeleteInvoice(InvoiceMaster mst);
 
     }
 }

@@ -96,7 +96,10 @@ export class PosComponent  implements OnInit  {
               row.IsInserted = true;
               this.posItemRows.push(row);              
             });  
-            this.AddNewRowToDetail();
+            if(!this.isPosted){
+              this.AddNewRowToDetail();
+            }
+            
           },
           error:(error) =>{
             debugger;          
@@ -181,6 +184,33 @@ export class PosComponent  implements OnInit  {
       this.UpdateDetailRow(this.form?.InvoiceNo || 0, rowData)
     }
 
+
+    onDeleteRowClick(rowData: posItemRow, rowIndex: number){
+      let len = this.posItemRows.length - 1;
+      // don't remove the last row.
+      if (len == rowIndex)
+      {
+        return;
+      }
+      console.log( rowData );
+      console.log( rowIndex );
+      
+      this.posItemRows.splice(rowIndex, 1);
+      this.posItemRows = [...this.posItemRows];
+
+      let dbDtl = this.MapInvoiceDetailItems(rowData, this.form.InvoiceNo!);      
+      
+      this.posService.DeleteInvDetail(dbDtl).subscribe({
+        next: (sr) => {
+          console.log(sr.Data);            
+        },
+        error:(error) =>{
+          console.error(error);
+          this.messageService.add({severity:'error', summary: error.Title, detail: error.Message, life: 3000});
+        }});
+
+
+    }
     BtnReceiveAmountClick($event: any){
       this.modelTotalAmount = this.txtTotalAmount;
       this.CalculateReceiveAmountValues(null);
@@ -195,18 +225,23 @@ export class PosComponent  implements OnInit  {
       let selItem = this.selectedItemFromSearch;
       
       
-      this.posItemRows![this.SelectedIndexOfDtl!] = {
-        id: oldItem.id,
-        SrNo: oldItem.SrNo,
-        customCode: selItem?.CustomCode || "",  //because of this custome code we cannot update item in pos
-        Description: selItem?.Description || "",
-        SalePrice: selItem?.SalePrice || 0,
-        Quantity: oldItem.Quantity,
-        Amount: selItem?.SalePrice! * oldItem.Quantity,
-        ItemId: selItem?.ItemId,
-        IsInserted: oldItem.IsInserted
-      }
+      // this.posItemRows![this.SelectedIndexOfDtl!] = {
+      //   id: oldItem.id,
+      //   SrNo: oldItem.SrNo,
+      //   customCode: selItem?.CustomCode || "",  //because of this custome code we cannot update item in pos
+      //   Description: selItem?.Description || "",
+      //   SalePrice: selItem?.SalePrice || 0,
+      //   Quantity: oldItem.Quantity,
+      //   Amount: selItem?.SalePrice! * oldItem.Quantity,
+      //   ItemId: selItem?.ItemId,
+      //   IsInserted: oldItem.IsInserted
+      // }
       
+      this.posItemRows![this.SelectedIndexOfDtl!].customCode = selItem?.CustomCode || "";  //because of this custome code we cannot update item in pos
+      this.posItemRows![this.SelectedIndexOfDtl!].Description = selItem?.Description || "";
+      this.posItemRows![this.SelectedIndexOfDtl!].SalePrice = selItem?.SalePrice || 0;
+      this.posItemRows![this.SelectedIndexOfDtl!].Amount = selItem?.SalePrice! * oldItem.Quantity;
+      this.posItemRows![this.SelectedIndexOfDtl!].ItemId = selItem?.ItemId;
 
   
 

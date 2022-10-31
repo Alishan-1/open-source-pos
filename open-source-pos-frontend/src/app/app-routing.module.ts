@@ -13,7 +13,7 @@ import { PosComponent } from './views/pos/pos.component';
 import { ProblemOneComponent } from './views/pos/problem-one/problem-one.component';
 import { InvoicesListComponent } from './views/pos/invoices-list/invoices-list.component';
 import { ItemComponent } from './views/item/item.component';
-
+import { CompanyUsersComponent } from './views/company-users/company-users.component';
 
 import { AuthGuard } from './guards/auth.guard';
 
@@ -38,6 +38,7 @@ const routes: Routes = [
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full'
+    
   },
   {
     path: '',
@@ -49,7 +50,8 @@ const routes: Routes = [
       {
         path: 'dashboard',
         loadChildren: () =>
-          import('./views/dashboard/dashboard.module').then((m) => m.DashboardModule)
+          import('./views/dashboard/dashboard.module').then((m) => m.DashboardModule),
+          canActivate: [AuthGuard]
       },
       // {
       //   path: 'theme',
@@ -118,6 +120,22 @@ const routes: Routes = [
         component: ItemComponent,
         data: {
           title: '"Items/Products" List'
+        },
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'company-users',
+        component: CompanyUsersComponent,
+        data: {
+          title: 'Company Users'
+        },
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'company-users/new',
+        component: CompanyUsersComponent,
+        data: {
+          title: 'Company Users'
         },
         canActivate: [AuthGuard]
       },

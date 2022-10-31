@@ -34,6 +34,12 @@ namespace Services
         /// <param name="mst"></param>
         /// <returns></returns>
         Task<ServiceResponse> DeleteInvoice(InvoiceMaster mst);
+        /// <summary>
+        /// Deletes a list of whole invoices including all details if it is not posted.
+        /// </summary>
+        /// <param name="invoicesMst">list of invoices to delete</param>
+        /// <returns></returns>
+        Task<ServiceResponse> DeleteInvoicesList(InvoiceMaster[] invoicesMst);
 
     }
 }

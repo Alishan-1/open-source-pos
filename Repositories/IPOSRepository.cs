@@ -44,5 +44,11 @@ namespace Repositories
         /// <param name="mst"></param>
         /// <returns>number of invoices deleted</returns>
         Task<int> DeleteInvoice(InvoiceMaster mst);
+        /// <summary>
+        /// Deletes a list of whole invoices including all details if it is not posted.
+        /// </summary>
+        /// <param name="invoices">list of invoices to delete</param>
+        /// <returns></returns>
+        Task<int> DeleteInvoicesList(InvoiceMaster[] invoices);
     }
 }

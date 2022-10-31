@@ -133,7 +133,26 @@ namespace ChowChoice.Api.Controllers.BSS_ERP
             }
             
         }
+        /// <summary>
+        /// Deletes a list of whole invoices including all details if it is not posted.
+        /// </summary>
+        /// <param name="invoicesMst">list of invoices to delete</param>
+        /// <returns></returns>
+        [Route("DeleteList")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteList([FromBody] InvoiceMaster[] invoicesMst)
+        {
+            try
+            {
+                ServiceResponse response = await _POSService.DeleteInvoicesList(invoicesMst);
+                return StatusCode((int)(response.IsValid ? HttpStatusCode.OK : HttpStatusCode.BadRequest), response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
 
+        }
         /// <summary>
         /// used to get invoices master for invoices list view.
         /// </summary>

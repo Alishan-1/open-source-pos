@@ -5,7 +5,7 @@
         <ng-template pTemplate="left">
             <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
             <!-- [label]="Delete" -->
-            <button pButton pRipple  icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button>
+            <button pButton pRipple  icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedInvoices()" [disabled]="!selectedInvoices || !selectedInvoices.length"></button>
             
         </ng-template>
 
@@ -15,7 +15,7 @@
     </p-toolbar>
 
     <p-table #dt [value]="invoices" [rows]="10" [paginator]="true" [globalFilterFields]="['InvoiceNo','InvoiceDate','UserName','Status']" responsiveLayout="scroll"
-        [(selection)]="selectedInvoice" [rowHover]="true" dataKey="InvoiceNo"
+        [(selection)]="selectedInvoices" [rowHover]="true" dataKey="InvoiceNo"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
             <div class="table-cap-container">

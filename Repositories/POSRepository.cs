@@ -562,5 +562,67 @@ namespace Repositories
                 return Task.FromException<int>(ex).Result;
             }
         }
+        public async Task<int> DeleteInvoicesList(InvoiceMaster[] invoices)
+        {
+            try
+            {
+                return await _repo.WithFNNConnection(async c =>
+                {
+                    string sqlDeleteInvDtl = @"
+                       BEGIN
+	                        DECLARE @STATUS VARCHAR(10) = '';
+	                        SELECT @STATUS = Status FROM InvoiceMaster 
+	                        WHERE                 
+		                        InvoiceNo = @InvoiceNo            	
+		                        AND CompanyID = @CompanyID                
+		                        AND FiscalYearID = @FiscalYearID  
+		                        AND InvoiceType = @InvoiceType	
+	
+	                        IF @STATUS != 'P'
+	                        BEGIN
+		                        DELETE FROM InvoiceDetailItems               
+		                        WHERE                 
+		                        InvoiceNo = @InvoiceNo            
+		                        AND CompanyID = @CompanyID                
+		                        AND FiscalYearID = @FiscalYearID  
+		                        AND InvoiceType = @InvoiceType
+
+		                        DELETE FROM InvoiceMaster
+		                        WHERE                 
+		                        InvoiceNo = @InvoiceNo            		
+		                        AND CompanyID = @CompanyID                
+		                        AND FiscalYearID = @FiscalYearID  
+		                        AND InvoiceType = @InvoiceType
+
+		                        SELECT @@ROWCOUNT
+	                        END
+	                        ELSE	
+		                        THROW 51000, 'This record is posted. It cannot be deleted', 1;
+                        END
+                        ; ";
+
+                    int invDeleted = 0;
+                    foreach (InvoiceMaster inv in invoices)
+                    {
+                        var res = await c.QueryAsync<int>(sqlDeleteInvDtl,
+                        new
+                        {
+                            inv.InvoiceNo,
+                            inv.CompanyID,
+                            inv.FiscalYearID,
+                            inv.InvoiceType,
+                        });
+
+                        invDeleted += res.FirstOrDefault();
+                    }                    
+                    return invDeleted;
+                });
+            }
+            catch (Exception ex)
+            {
+                _log.ExceptionLogFunc(ex);
+                return Task.FromException<int>(ex).Result;
+            }
+        }
     }
 }

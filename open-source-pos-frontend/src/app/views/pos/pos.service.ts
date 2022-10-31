@@ -82,6 +82,17 @@ export class PosService {
         catchError(this._utilService.handleError)
       )      
     }
+    /**
+     * Delete a list of whole invoices including all details if it is not posted.
+     * @param data Invoices to delete
+     * @returns any
+     */
+     DeleteInvoicesList(data:InvoiceMaster[]): Observable<any> {
+      let API_URL = `${this.apiUrl}/POS/DeleteList`;
+      return this.http.delete(API_URL, { headers: this._authService.GetHttpHeaders(), body: data }).pipe(
+        catchError(this._utilService.handleError)
+      )      
+    }
     
     GetInvoiceDetails(data: InvoiceMasterListing): Observable<any> {
       let API_URL = `${this.apiUrl}/POS/getinvoicedetails`;

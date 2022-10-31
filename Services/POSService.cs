@@ -414,5 +414,76 @@ namespace Services
             }
 
         }
+
+
+        public async Task<ServiceResponse> DeleteInvoicesList(InvoiceMaster[] invoicesMst)
+        {
+            try
+            {
+                ServiceResponse vmServiceResponse = new ServiceResponse();
+                vmServiceResponse.IsValid = false;
+
+                foreach (InvoiceMaster mst in invoicesMst)
+                {
+                    if (mst.InvoiceNo > 0 && mst.CompanyID > 0 && mst.FiscalYearID > 0 &&
+                        !string.IsNullOrWhiteSpace(mst.InvoiceType))
+                    {
+                        vmServiceResponse.IsValid = true;
+                    }
+                    else
+                    {
+                        vmServiceResponse.IsValid = false;
+                    }
+                }
+                
+
+
+                int result = 0;
+
+                if (vmServiceResponse.IsValid)
+                {
+                    result = await _repo.DeleteInvoicesList(invoicesMst);
+                    vmServiceResponse.Data = result;
+
+                    if (result <= 0)
+                    {
+                        vmServiceResponse.Title = ServiceMessages.TitleFailure;
+                        vmServiceResponse.Message = ServiceMessages.DataNotFound;
+                        vmServiceResponse.Flag = false;
+                        vmServiceResponse.IsValid = false;
+                    }
+                    else if (result > invoicesMst.Length)
+                    {
+                        vmServiceResponse.Title = ServiceMessages.TitleFailure;
+                        vmServiceResponse.Message = "More Rows Deleted Than Expected.";
+                        vmServiceResponse.Flag = false;
+                        vmServiceResponse.IsValid = false;
+                    }
+                    else
+                    {
+                        vmServiceResponse.Title = ServiceMessages.TitleSuccess;
+                        vmServiceResponse.Message = $"{result} invoice(s) deleted successfully";
+                        vmServiceResponse.Flag = true;
+                        vmServiceResponse.IsValid = true;
+                    }
+                }
+                else
+                {
+                    vmServiceResponse.Title = ServiceErrorsMessages.Title;
+                    vmServiceResponse.Message = ServiceErrorsMessages.DataInvalid;
+                    vmServiceResponse.Flag = false;
+                }
+
+                return vmServiceResponse;
+
+
+            }
+            catch (Exception ex)
+            {
+                _log.ExceptionLogFunc(ex);
+                return Task.FromException<ServiceResponse>(ex).Result;
+            }
+
+        }
     }
 }

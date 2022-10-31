@@ -77,6 +77,7 @@ import { InvoicesListComponent } from './views/pos/invoices-list/invoices-list.c
 import { ProductService } from './views/pos/invoices-list/temp/productservice';
 import { ItemComponent } from './views/item/item.component';
 import { ProblemOneComponent } from './views/pos/problem-one/problem-one.component';
+import { CompanyUsersComponent } from './views/company-users/company-users.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -97,7 +98,8 @@ const APP_CONTAINERS = [
     PosComponent,
     InvoicesListComponent,
     ItemComponent,
-    ProblemOneComponent],
+    ProblemOneComponent,
+    CompanyUsersComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

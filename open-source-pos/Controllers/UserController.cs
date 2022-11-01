@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Cors;
 using Models;
 using Services;
 using System.Net;
+using Newtonsoft.Json.Linq;
 
 namespace open_source_pos.Controllers
 {
@@ -163,7 +164,7 @@ namespace open_source_pos.Controllers
             try
             {
                 var a = Request.Host;
-                // in case of admin flag is not supplied from frontend
+                // The first user will be an Admin user with Users.IsAdmin flag set to true. Further users will not be Admin (Users.IsAdmin flag will be false)
                 if (!userCred.IsAdmin.HasValue)
                 {
                     userCred.IsAdmin = true;
@@ -364,7 +365,7 @@ namespace open_source_pos.Controllers
             }
             else if (hostString.Host == "adminapi.chowchoice.com")
             {
-                loginURL = @"https://admin.chowchoice.com/#/home/login";
+                loginURL = @"";
             }
             else if (hostString.Host == "vss-server")
             {
@@ -418,6 +419,10 @@ namespace open_source_pos.Controllers
             }
         }
 
+        /// <summary>
+        /// Dummy method just for testing
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         [HttpPost]
         [Route("get")]
@@ -427,5 +432,36 @@ namespace open_source_pos.Controllers
             return Ok(users);
         }
 
+        /// <summary>
+        /// Get Users of a particular company for listing
+        /// </summary>
+        /// <param name="jSearchUsers"></param>
+        /// <returns></returns>
+        [Authorize]
+        [Route("getCompanyUsers")]
+        [HttpPost]
+        public async Task<IActionResult> GetCompanyUsers([FromBody] JObject jSearchUsers)
+        {
+            try
+            {
+                dynamic SearchUsers = jSearchUsers;
+                string query = SearchUsers.query;
+                int companyId = SearchUsers.companyId;
+                int limit = SearchUsers.limit;
+                int offset = SearchUsers.offset;
+
+                ServiceResponse response = await _userService.GetUsersAsync(query, companyId, limit, offset);
+
+
+                return StatusCode((int)(response.IsValid ? HttpStatusCode.OK : HttpStatusCode.BadRequest), response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
     }
+    
 }

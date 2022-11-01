@@ -219,4 +219,18 @@ export class RegistrationServic {
     //     console.error(error, errMsg);
     //     return Observable.throw(serResponse);
     // }
+
+    /**
+     * Get Users of a particular company for listing
+     * @param data 
+     * @returns 
+     */
+    GetCompanyUsers(data: any): Observable<any> {
+        debugger;
+        let API_URL = `${this._configuration.WebApi}/User/getCompanyUsers/`;
+        return this._http.post(API_URL, data, { headers: this._authService.GetHttpHeaders() })
+          .pipe(
+            catchError(this._utilService.handleError) //this._utilService.handleError
+          )
+      }
 }

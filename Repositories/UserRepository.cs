@@ -355,5 +355,30 @@ namespace Repositories
                 return Task.FromException<int>(ex).Result;
             }
         }
+
+
+        public async Task<List<UserCred>> GetUsersAsync(string query, int companyId, int limit, int offset)
+        {
+            try
+            {
+                return await _repo.WithFNNConnection(async c =>
+                {
+                    string sqlSearchUsers = @"SELECT  [EMAIL] as UserEmail     ,[CompanyID]      ,[UserID]      ,[AppID]      ,[AppRoleID]      ,[FirstName]      ,[MiddleName]      ,[LastName]      ,[PhoneNumber]      ,[StartDate]      ,[EndDate]      ,[IsActive]
+                          ,[IsSpecialOffer]      ,[IsCustomer]      ,[ModifyDate]      ,[AccessFailedCount]      ,[ConcurrencyStamp]      ,[EmailConfirmed]      ,[LockoutEnabled]      ,[LockoutEnd]      ,'' as [PasswordHash]      ,[PhoneNumberConfirmed]
+                          ,'' as [SecurityStamp]      ,[TwoFactorEnabled]      ,[IsAdmin]      ,[DataEventRecordsRole]      ,[SecuredFilesRole]      ,[IsDeleted]      ,[Primary]      ,[Q1Id]      ,'' as [Q1Answer]      ,[Q2Id]      ,'' as [Q2Answer]
+                          ,[Q3Id]      ,'' as [Q3Answer]      ,'' as [PasswordSalt]      ,[IsTemp]      ,[UserPhoto]      ,'' as [PreviousPassword]      ,[ExpirePassword]      ,[IsForgetPassword]      ,[CreateDate]      ,[CreateUser]      ,[BranchID]
+                      FROM [Users]
+                      WHERE CompanyID = @CompanyID";
+
+                    var searchUsers = await c.QueryAsync<UserCred>(sqlSearchUsers, new { CompanyID = companyId });
+                    return searchUsers.ToList();
+                });
+            }
+            catch (Exception ex)
+            {
+                _logIt.ExceptionLogFunc(ex);
+                return Task.FromException<List<UserCred>>(ex).Result;
+            }
+        }
     }
 }

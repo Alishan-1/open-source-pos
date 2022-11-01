@@ -16,16 +16,16 @@ export const POSNavItems: INavData[] = [
   },
   {
     name: 'Users',
-    url: '/users',
-    iconComponent: { name: 'cil-drop' },
+    url: '/company-users',
+    iconComponent: { name: 'cil-user' },
     children:[
       {
         name: 'Add Company User',
-        url: '/users/add'
+        url: '/company-users/new'
       },
       {
         name: 'Company Users List',
-        url: '/users/list'
+        url: '/company-users'
       },
     ],
   },

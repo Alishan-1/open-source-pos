@@ -23,6 +23,15 @@ namespace Services
         Task<ServiceResponse> ForgerPassword(UserCred userParam);
         Task<ServiceResponse> IsUserLogedInAndRemembered(UserCred userParam, int userID);
         Task<ServiceResponse> LogOut(UserCred userParam, int userID);
+        /// <summary>
+        /// Get Users of a particular company for listing
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="companyId"></param>
+        /// <param name="limit"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
+        Task<ServiceResponse> GetUsersAsync(string query, int companyId, int limit, int offset);
 
     }
 }

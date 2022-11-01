@@ -28,5 +28,14 @@ namespace Repositories
         /// <returns></returns>
         Task<FiscalYearST> GetCurrentFiscalYear(int CompanyID);
         Task<int> CreateCurrentFiscalYear(int companyID);
+        /// <summary>
+        /// Get Users of a particular company for listing
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="companyId"></param>
+        /// <param name="limit"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
+        Task<List<UserCred>> GetUsersAsync(string query, int companyId, int limit, int offset);
     }
 }

@@ -607,6 +607,37 @@ namespace Services
                 return Task.FromException<ServiceResponse>(ex).Result;
             }
         }
+        public async Task<ServiceResponse> GetUsersAsync(string query, int companyId, int limit, int offset)
+        {
+            try
+            {
+                ServiceResponse response = new ServiceResponse();
+
+                if (companyId <= 0)
+                {
+                    response.Flag = false;
+                    response.IsValid = false;
+                    response.Title = "Error!";
+                    response.Message = "Invalid Value for company.";
+                }
+                else
+                {
+                    var users = await _repo.GetUsersAsync(query, companyId, limit, offset);
+
+                    var model = new { Users = users, Count = users.Count };
+                    response.Flag = true;
+                    response.Data = model;
+                    response.IsValid = true;
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                _log.ExceptionLogFunc(ex);
+                return Task.FromException<ServiceResponse>(ex).Result;
+            }
+
+        }
 
     }
 }

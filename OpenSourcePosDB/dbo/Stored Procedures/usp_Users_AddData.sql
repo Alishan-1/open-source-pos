@@ -16,16 +16,16 @@ BEGIN
  SET NOCOUNT ON;  
   
     -- Insert statements for procedure here  
- if exists (select * from ITP_USERS_ST where EMAIL = @UserEmail)  
+ if exists (select * from Users where EMAIL = @UserEmail)  
   BEGIN return -1 END  
   --select top 1 * from users  
-  declare @LOGIN_ID int =  (select ISNULL(MAX( LOGIN_ID),0) +1 from ITP_USERS_ST)
-  declare @COMPANY_ID int = (select ISNULL( MAX(  COMPANY_ID), 0) +1 from ITP_USERS_ST)
+  
+  declare @COMPANY_ID int = (select ISNULL( MAX(  CompanyID), 0) +1 from Users)
 
-  Insert into ITP_USERS_ST (AppID, AppRoleID, EMAIL, FirstName,  MiddleName, LastName, PasswordHash, PasswordSalt, CREATE_DATE, PhoneNumber,ExpirePassword,  
-  IsTemp, IsDeleted, IsAdmin, IsCustomer, EmailConfirmed, LockoutEnabled, AccessFailedCount, IsActive, LOGIN_ID, [USER_NAME], USER_STATUS, COMPANY_ID, BRANCH_ID, PASSWORD, EMP_CODE, DAYLIMIT, FAQ1, ANS1, FAQ2, ANS2, USER_LOGIN_STATUS, CREATE_USER)  
+  Insert into Users (AppID, AppRoleID, Email, FirstName,  MiddleName, LastName, PasswordHash, PasswordSalt, CreateDate, PhoneNumber,ExpirePassword,  
+  IsTemp, IsDeleted, IsAdmin, IsCustomer, EmailConfirmed, LockoutEnabled, AccessFailedCount, IsActive,  CompanyID)  
   VALUES   (@AppID, @AppRoleID, @UserEmail, @FirstName, @MiddleName, @LastName, @PasswordHash, @PasswordSalt, @CreateDate, @PhoneNumber, @ExpirePassword, @IsTemp, @IsDeleted , @IsAdmin,  
-   @IsCustomer ,@EmailConfirmed, @LockoutEnabled, @AccessFailedCount, @IsActive, @LOGIN_ID, @FirstName + CAST(@LOGIN_ID AS VARCHAR(MAX)), 'Y', @COMPANY_ID, 1, 'uui345', 1, 999, 'Who m i?', 'admin', 'Who m i?', 'admin', 'N', 1)  
+   @IsCustomer ,@EmailConfirmed, @LockoutEnabled, @AccessFailedCount, @IsActive, @COMPANY_ID)  
   
   Select @@IDENTITY  
 END

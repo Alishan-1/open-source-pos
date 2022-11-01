@@ -36,7 +36,7 @@ BEGIN
    -- Procedure must start its own transaction.  
    BEGIN TRANSACTION  
     -- Do stuff here  
-     UPDATE [dbo].[ITP_USERS_ST]  
+     UPDATE [dbo].[Users]  
         SET  [AppID] =ISNULL(@AppID, AppID)  
         , [AppRoleID] = ISNULL(@AppRoleID,AppRoleID)  
         , [ModifyDate] = GETDATE()  

@@ -13,14 +13,14 @@ BEGIN
   
       
   select [UserID], [AppID], [AppRoleID], EMAIL AS UserEmail, [FirstName], [MiddleName], [LastName], [PhoneNumber], [StartDate], [EndDate], [IsActive], [IsSpecialOffer],  
-   [IsCustomer], CREATE_USER AS [CreateID], CREATE_DATE AS [CreateDate], [ModifyDate], [AccessFailedCount], [ConcurrencyStamp], [EmailConfirmed], [LockoutEnabled], [LockoutEnd], [PasswordHash],  
+   [IsCustomer], CreateUser AS [CreateID],  CreateDate, [ModifyDate], [AccessFailedCount], [ConcurrencyStamp], [EmailConfirmed], [LockoutEnabled], [LockoutEnd], [PasswordHash],  
     [PhoneNumberConfirmed], [SecurityStamp], [TwoFactorEnabled], [IsAdmin], [DataEventRecordsRole], [SecuredFilesRole], [IsDeleted], [Primary], [Q1Id], [Q1Answer], [Q2Id],  
      [Q2Answer], [Q3Id], [Q3Answer], [PasswordSalt], [IsTemp], [UserPhoto], [PreviousPassword], [ExpirePassword], [IsForgetPassword]   
   -------------------------------------------  
   -------------------------------------------  
-   ,COMPANY_ID AS CompanyID, BRANCH_ID AS BranchID  from ITP_USERS_ST   
+   , CompanyID,  BranchID  from Users   
   -------------------------------------------  
   ---------------------------------------------  
-  where EMAIL =@UserEmail  
+  where Email = @UserEmail  
    
 END

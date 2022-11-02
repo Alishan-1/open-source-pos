@@ -639,5 +639,87 @@ namespace Services
 
         }
 
+        public async Task<ServiceResponse> UpdateUserProfile(UserCred userParam)
+        {
+            try
+            {
+                ServiceResponse vmServiceResponse = ServiceValidation.Validate(userParam, new UpdateUserProfileValidator());
+
+                int result = 0;
+                if (vmServiceResponse.IsValid)
+                {
+                    var user = await _repo.GetUserByEmailAsync(userParam.UserEmail);
+                    if (userParam.UserID != user.UserID)
+                    {
+                        vmServiceResponse.Title = ServiceErrorsMessages.Title;
+                        vmServiceResponse.Message = "Invalid Update Request. Login again and than try";
+                        vmServiceResponse.Flag = false;
+                        vmServiceResponse.IsValid = false;
+                        vmServiceResponse.StatusCode = StatusCodes.Status400BadRequest;
+                        return vmServiceResponse;
+                    }
+
+                    userParam.PreviousPassword = null;
+                    userParam.PasswordHash = null;
+                    userParam.PasswordSalt = null;
+                    userParam.ExpirePassword = null;
+                    userParam.IsTemp = false;
+                    userParam.IsDeleted = null;
+                    userParam.IsActive = null;
+                    userParam.IsAdmin = null;
+                    userParam.IsCustomer = null;
+                    userParam.EmailConfirmed = true;
+                    userParam.LockoutEnabled = false;
+
+                    userParam.AppID = null;
+                    userParam.AppRoleID = null;
+
+                    result = await _repo.UpdUserAsync(userParam);
+                    vmServiceResponse.Data = result;
+
+                    if (result <= 0)
+                    {
+                        vmServiceResponse.Title = ServiceErrorsMessages.Title;
+                        vmServiceResponse.Message = ServiceMessages.DataNotSaved;
+                        vmServiceResponse.Flag = false;
+                        vmServiceResponse.IsValid = false;
+                    }
+                    else if (result == 1)
+                    {
+                        vmServiceResponse.Title = ServiceMessages.Title;
+                        vmServiceResponse.Message = ServiceMessages.DataSaved;
+                        vmServiceResponse.Flag = true;
+                        vmServiceResponse.IsValid = true;
+                    }
+                    else
+                    {
+                        vmServiceResponse.Title = ServiceErrorsMessages.Title;
+                        vmServiceResponse.Message = "One row was expected to be updated but More rows "
+                            + "has been updated against userid " + userParam.UserID + " and user Email " + userParam.UserEmail + " ";
+                        vmServiceResponse.Flag = false;
+                        vmServiceResponse.IsValid = false;
+
+                    }
+                }
+
+                else
+                {
+                    vmServiceResponse.Title = ServiceErrorsMessages.Title;
+                    vmServiceResponse.Message = ServiceErrorsMessages.DataInvalid;
+                    vmServiceResponse.Flag = false;
+                }
+
+                return vmServiceResponse;
+
+            }
+            catch (Exception ex)
+            {
+                _log.ExceptionLogFunc(ex);
+                return Task.FromException<ServiceResponse>(ex).Result;
+            }
+
+
+        }
+
     }
 }

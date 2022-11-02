@@ -1,7 +1,7 @@
 ﻿-- =============================================  
 -- Author:      Ali Shan  
 -- Create date: 2018/06/10  
--- Description: UsersBy Email Update  
+-- Description: Users By Email Update  
 --in usp_Users_UpdDataBy_Email UserEmail and Userid both are requied   
 --all other parameters are optional and the column value will not be changed if the parameter value is null  
 -- =============================================  

@@ -6,13 +6,14 @@ import { RegularExpressions } from '../../../app.reg-validations';
 import { ViewChild} from '@angular/core';
 import { ToasterComponent, ToasterPlacement } from '@coreui/angular';
 import { AppPosToastComponent } from '../../notifications/pos-toasters/toast-simple/toast.component';
-
+import { MessageService } from 'primeng/api';
 
 
 @Component({
   selector: 'app-new-password',
   templateUrl: './new-password.component.html',
-  styleUrls: ['./new-password.component.scss']
+  styleUrls: ['./new-password.component.scss'],
+  providers: [MessageService ]
 })
 export class NewPasswordComponent implements OnInit {
     @ViewChild('ToasterViewChild') ToasterViewChild!:ToasterComponent;
@@ -38,7 +39,8 @@ public StrengthMessage: string = "";
 public ttErrors: any = {};
 public msg: string = "";
 public meter_value: number = 0;
-constructor(private _registerservices: RegistrationServic, private _router: Router, public _regExpressions: RegularExpressions, private _route: ActivatedRoute) {
+constructor(private _registerservices: RegistrationServic, private _router: Router, public _regExpressions: RegularExpressions, 
+    private _route: ActivatedRoute, private messageService: MessageService) {
 
     this.isRequestProcessing = false;
 }
@@ -87,8 +89,8 @@ ngOnInit() {
       this._registerservices.ChangePassword(this.PasswordInfoModel).subscribe(
         (          srSuccess: any) => {
               this.isRequestProcessing = false;
-              this.notificationSuccess(srSuccess);
-              this._router.navigate(['/manager/location/list', currentUser.UserID]);
+              this.messageService.add({severity:'success', summary: 'Successful', detail: 'Password Changed Successfully', life: 3000});
+              this._router.navigate(['/dashboard', currentUser.UserID]);
           },
         (          srError: { Errors: any; }) => {
               this.isRequestProcessing = false;

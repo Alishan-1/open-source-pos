@@ -242,4 +242,12 @@ export class RegistrationServic {
             catchError(this._utilService.handleError) 
             )
     }
+    UpdateUserProfile(data: any): Observable<any> {
+        debugger;
+        let API_URL = `${this._configuration.WebApi}/User/UpdateUserProfile/`;
+        return this._http.post(API_URL, data, { headers: this._authService.GetHttpHeaders() })
+            .pipe(
+            catchError(this._utilService.handleError) 
+            )
+    }
 }

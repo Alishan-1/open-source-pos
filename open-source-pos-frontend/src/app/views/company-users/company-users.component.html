@@ -4,9 +4,6 @@
     <p-toolbar styleClass="mb-4">
         <ng-template pTemplate="left">
             <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
-            <!-- [label]="Delete" -->
-            <button pButton pRipple  icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedItems()" [disabled]="!selectedItems || !selectedItems.length"></button>
-            
         </ng-template>
 
         <!-- <ng-template pTemplate="right">
@@ -16,7 +13,7 @@
     </p-toolbar>
 
     <p-table #dt [value]="users" [rows]="10" [paginator]="true" [globalFilterFields]="['FirstName','LastName','UserEmail','UserID']" responsiveLayout="scroll"
-        [(selection)]="selectedUsers" [rowHover]="true" dataKey="UserID"
+        [rowHover]="true" dataKey="UserID"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
         <ng-template pTemplate="caption">
             <div class="table-cap-container">
@@ -30,9 +27,7 @@
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
-                <th style="width: 3rem">
-                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-                </th>
+                
                 <th pSortableColumn="UserID">User ID <p-sortIcon field="UserID"></p-sortIcon></th>
                 <th pSortableColumn="FirstName">First Name <p-sortIcon field="FirstName"></p-sortIcon></th>
                 <th pSortableColumn="LastName">Last Name <p-sortIcon field="LastName"></p-sortIcon></th>
@@ -44,9 +39,7 @@
         </ng-template>
         <ng-template pTemplate="body" let-usr>
             <tr style="padding: 0.2rem 1rem;">
-                <td style="padding: 0.2rem 1rem;">
-                    <p-tableCheckbox [value]="item"></p-tableCheckbox>
-                </td>
+                
                 <td style="padding: 0.2rem 1rem;">{{usr.UserID}}</td>
                 <td style="padding: 0.2rem 1rem;">{{usr.FirstName}}</td>
                 <td style="padding: 0.2rem 1rem;">{{usr.LastName}}</td>
@@ -54,14 +47,14 @@
                 <td style="padding: 0.2rem 1rem;">{{usr.EmailConfirmed }}</td>                
                 <td style="padding: 0.2rem 1rem;">{{usr.IsAdmin }}</td>                
                 <td style="padding: 0.2rem 1rem;">
-                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editProduct(item)"></button>
-                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteProduct(item)"></button>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editEntity(usr)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteEntity(usr)"></button>
                 </td>
             </tr>
         </ng-template>
         <ng-template pTemplate="summary">
             <div class="flex align-items-center justify-content-between">
-                In total there are {{items ? items.length : 0 }} products.
+                In total there are {{users ? users.length : 0 }} users.
             </div>
         </ng-template>
     </p-table>
@@ -87,6 +80,7 @@
                     <input autoComplete="email" cFormControl name="UserEmail" placeholder="Email"
                     [(ngModel)]="UserInfo.UserEmail"
                     type="email" required
+                    [attr.disabled] = "isEditing ? '' : null"
                      />
                      <c-form-feedback [valid]="false">Please provide a valid email address.</c-form-feedback>
                   </c-input-group>

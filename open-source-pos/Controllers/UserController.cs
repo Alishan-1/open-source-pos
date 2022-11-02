@@ -502,6 +502,25 @@ namespace open_source_pos.Controllers
             }
         }
 
+        [Authorize]
+        [HttpPost("UpdateUserProfile")]
+        public async Task<IActionResult> UpdateUserProfile([FromBody] UserCred userCred)
+        {
+            try
+            {
+                
+                // update
+                var response = await _userService.UpdateUserProfile(userCred);
+
+                return StatusCode((int)(response.IsValid ? HttpStatusCode.OK : HttpStatusCode.BadRequest), response);
+            }
+            catch (Exception ex)
+            {
+                // return error message if there was an exception
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
     
 }

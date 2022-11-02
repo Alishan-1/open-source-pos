@@ -33,5 +33,7 @@ namespace Services
         /// <returns></returns>
         Task<ServiceResponse> GetUsersAsync(string query, int companyId, int limit, int offset);
 
+        Task<ServiceResponse> UpdateUserProfile(UserCred userParam);
+
     }
 }

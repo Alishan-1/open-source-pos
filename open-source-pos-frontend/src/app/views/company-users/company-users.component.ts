@@ -86,7 +86,7 @@ export class CompanyUsersComponent implements OnInit {
           this.messageService.add({severity:'error', summary: 'Error Loading Users!', detail: error, life: 3000});
         }});
 
-        if(data && data == "items/new"){
+        if(data && data == "company-users/new"){
           this.openNew();
         }
       
@@ -113,15 +113,15 @@ export class CompanyUsersComponent implements OnInit {
   }
 
   
-  editProduct(item: posItem) {
-      this.item = {...item};
+  editEntity(entity: User) {
+      this.UserInfo = {...entity};
       this.dialog = true;
       this.isEditing = true;
   }
 
-  deleteProduct(item: posItem) {
+  deleteEntity(entity: User) {
       this.confirmationService.confirm({
-          message: 'You are not allowed to delete ' + item.Description + '?',
+          message: `You are not allowed to delete user :  ${entity.FirstName}  ${entity.LastName} !`,
           header: 'Not Allowed',
           icon: 'pi pi-exclamation-triangle',
           
@@ -141,27 +141,23 @@ export class CompanyUsersComponent implements OnInit {
     this.UserInfo.CompanyID =  this.currentUser.CompanyID;
 
     if(this.isEditing){
-      this.item.UpdateUser =  this.currentUser.UserID;  
-      this.itemService.UpdateItem(this.item).subscribe({
+
+      this._registrationServic.UpdateUserProfile(this.UserInfo).subscribe({
         next: (sr) => {
           debugger;
           this.isRequestProcessing = false;
           this.userFormValidated = false;
-          this.items[this.findIndexById(this.item.ItemId!)] = this.item;
+          this.users[this.findIndexById(this.UserInfo.UserID!)] = this.UserInfo;
 
-          this.messageService.add({severity:'success', summary: 'Successful', detail: 'Product Updated', life: 3000});
+          this.messageService.add({severity:'success', summary: 'Successful', detail: 'User Updated', life: 3000});
           this.dialog = false;
-          this.item = {
-            CustomCode:"",
-            Description:"",
-            Id:"0",                
-          };
-          this.items = [...this.items];
+          this.UserInfo = {};
+          this.users = [...this.users];
         },
         error:(error) =>{
           debugger;
           this.isRequestProcessing = false;
-          console.error(error);
+          console.log(error);
           this.messageService.add({severity:'error', summary: 'error', detail: error, life: 3000});
         }});
     }
@@ -197,10 +193,10 @@ export class CompanyUsersComponent implements OnInit {
     
 }  
 
-  findIndexById(id: string): number {
+  findIndexById(id: number): number {
       let index = -1;
-      for (let i = 0; i < this.items.length; i++) {
-          if (this.items[i].ItemId === id) {
+      for (let i = 0; i < this.users.length; i++) {
+          if (this.users[i].UserID === id) {
               index = i;
               break;
           }

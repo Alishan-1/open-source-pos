@@ -37,7 +37,7 @@ export const POSNavItems: INavData[] = [
     children:[
       {
         name: 'Change Password',
-        url: '/users/change-password'
+        url: '/newPassword'
       },
       {
         name: 'Log Out',

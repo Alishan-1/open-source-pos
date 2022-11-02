@@ -230,7 +230,16 @@ export class RegistrationServic {
         let API_URL = `${this._configuration.WebApi}/User/getCompanyUsers/`;
         return this._http.post(API_URL, data, { headers: this._authService.GetHttpHeaders() })
           .pipe(
-            catchError(this._utilService.handleError) //this._utilService.handleError
+            catchError(this._utilService.handleError) 
           )
-      }
+    }
+      
+    CreateCompanyUser(data: any): Observable<any> {
+        debugger;
+        let API_URL = `${this._configuration.WebApi}/User/CreateCompanyUser/`;
+        return this._http.post(API_URL, data, { headers: this._authService.GetHttpHeaders() })
+            .pipe(
+            catchError(this._utilService.handleError) 
+            )
+    }
 }

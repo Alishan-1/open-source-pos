@@ -8,6 +8,11 @@ namespace Repositories
 {
     public interface IUserRepository
     {
+        /// <summary>
+        /// Creates a new user if email not already exists. Also creates a new company id if not supplied
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>-1 if user email already exists else new user id</returns>
         Task<int> AddUserAsync(UserCred model);
         Task<UserCred> GetUserByEmailAsync(string email);
         Task<UserCred> GetUserByIDAsync(int userId);

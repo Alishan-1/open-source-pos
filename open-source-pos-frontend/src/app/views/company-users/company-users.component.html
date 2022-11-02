@@ -67,73 +67,54 @@
     </p-table>
 </div>
 
-<p-dialog [(visible)]="productDialog" [style]="{width: '450px'}" header="Item/Product Details" [modal]="true" styleClass="p-fluid">
+<p-dialog [(visible)]="dialog" [style]="{width: '450px'}" header="User Details" [modal]="true" styleClass="p-fluid">
     <ng-template pTemplate="content">
         <form cForm 
                 novalidate
-                #posItemForm="ngForm"
+                #posUserForm="ngForm"
                 
-                [validated]="itemFormValidated"
+                [validated]="userFormValidated"
                 class="needs-validation">
                 
                 <p class="text-medium-emphasis"> 
                     <span *ngIf="isEditing; else create" >Update</span>
                     <ng-template #create >Create</ng-template>
-                    an Item/Product
+                     User
                 </p>
+                
                 <c-input-group class="mb-3">
-                  <span cInputGroupText>
-                    <svg cIcon name="cilDescription"></svg>
-                  </span>
-                  <input 
-                    name="Description" 
-                    [(ngModel)]="item.Description" 
-                    autoComplete="Description" 
-                    cFormControl 
-                    placeholder="Description" 
-                    required
-                    type="text"
-                    />
-                    <c-form-feedback [valid]="false">Please provide a valid Description.</c-form-feedback>
-                </c-input-group>
-
-                <c-input-group class="mb-3">
-                    <span cInputGroupText>
-                      <svg cIcon name="cilQrCode"></svg>
-                      <!-- cil-barcode -->
-                    </span>
-                    <input 
-                      name="CustomCode" 
-                      [(ngModel)]="item.CustomCode" 
-                      autoComplete="CustomCode" 
-                      cFormControl 
-                      placeholder="Custom Code" 
-                      required
-                      type="text"
-                      />
-                      <c-form-feedback [valid]="false">Please provide a valid Custom Code.</c-form-feedback>
+                    <span cInputGroupText>@</span>
+                    <input autoComplete="email" cFormControl name="UserEmail" placeholder="Email"
+                    [(ngModel)]="UserInfo.UserEmail"
+                    type="email" required
+                     />
+                     <c-form-feedback [valid]="false">Please provide a valid email address.</c-form-feedback>
                   </c-input-group>
 
-                <c-input-group class="mb-4">
-                  <span cInputGroupText>
-                    <svg cIcon name="cilDollar"></svg>
-                  </span>
-                  <input
-                    name="SalePrice"
-                    [(ngModel)]="item.SalePrice"    
-                    autoComplete="SalePrice"
-                    cFormControl
-                    placeholder="Sale Price"
-                    type="number"
-                    required
-                  />
-                  <c-form-feedback [valid]="false">Please provide a Price grater than zero.</c-form-feedback>
-                </c-input-group>                
+                  <c-input-group class="mb-3">
+                    <span cInputGroupText>
+                      <svg cIcon name="cilUser"></svg>
+                    </span>
+                    <input autoComplete="First Name" cFormControl  
+                    name="FirstName" placeholder="First Name"
+                    [(ngModel)]="UserInfo.FirstName" required type="text"
+                    />
+                    <c-form-feedback [valid]="false">Please provide a valid First Name.</c-form-feedback>
+                  </c-input-group>
+    
+                  <c-input-group class="mb-3">
+                    <span cInputGroupText>
+                      <svg cIcon name="cilUser"></svg>
+                    </span>
+                    <input autoComplete="Last name" cFormControl placeholder="Last name" 
+                      [(ngModel)]="UserInfo.LastName" type="text" required name="LastName" />
+                      <c-form-feedback [valid]="false">Please provide a valid Last name.</c-form-feedback>
+                  </c-input-group>
                 <c-row>
                     <c-col xs="6">
-                      <button [attr.disabled] = "isRequestProcessing || !posItemForm.valid ? '' : null"  
+                      <button [attr.disabled] = "isRequestProcessing || !posUserForm.valid ? '' : null"  
                       cButton class="px-4" color="primary" 
-                      type="submit" (click)="SaveItem()">
+                      type="submit" (click)="SaveUser()">
                         Save <img *ngIf="isRequestProcessing"  class="form-submit-loader" src="assets/img/785.gif" />
                       </button>        
         

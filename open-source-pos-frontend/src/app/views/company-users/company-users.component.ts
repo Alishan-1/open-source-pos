@@ -21,7 +21,7 @@ export class CompanyUsersComponent implements OnInit {
 
 
 
-  public itemFormValidated: boolean = false;
+  public userFormValidated: boolean = false;
   public isRequestProcessing: boolean = false;
   public isFormSubmitted: boolean = false;
   /**Is the item is being updated or created */
@@ -29,7 +29,7 @@ export class CompanyUsersComponent implements OnInit {
 
 
 
-  productDialog!: boolean;  
+  dialog!: boolean;  
 
   /** remove these two */
   items!: posItem[];
@@ -43,7 +43,7 @@ export class CompanyUsersComponent implements OnInit {
   item!: posItem;
   selectedItems!: posItem[];  
   
-  xUser!: User;
+  UserInfo!: User;
   selectedUsers!: User[];  
   
   currentUser:any;
@@ -55,7 +55,16 @@ export class CompanyUsersComponent implements OnInit {
     }
 
   ngOnInit() {
-      debugger;
+    this.UserInfo = {      };
+    this.UserInfo.UserID= 0;
+    this.UserInfo.AppID = 1; //The open source pos Application has app id of 1
+    this.UserInfo.AppRoleID = 3; //When the company user is created from open source pos it is assigned the id of 3 
+    this.UserInfo.UserEmail =  "";
+    this.UserInfo.FirstName = "";
+    this.UserInfo.MiddleName= "";
+    this.UserInfo.LastName = "";
+    this.UserInfo.PhoneNumber = "";
+    debugger;
       let data = this.activatedroute.snapshot.routeConfig?.path;
       let params = {
         query: '',
@@ -91,7 +100,7 @@ export class CompanyUsersComponent implements OnInit {
         Id:"0",                
       };
       
-      this.productDialog = true;
+      this.dialog = true;
   }
 
   deleteSelectedItems() {
@@ -106,7 +115,7 @@ export class CompanyUsersComponent implements OnInit {
   
   editProduct(item: posItem) {
       this.item = {...item};
-      this.productDialog = true;
+      this.dialog = true;
       this.isEditing = true;
   }
 
@@ -120,16 +129,16 @@ export class CompanyUsersComponent implements OnInit {
   }
 
   hideDialog() {
-      this.productDialog = false;
+      this.dialog = false;
       
   }
 
-  SaveItem() {
+  SaveUser() {
     debugger;
-    this.itemFormValidated = true;
+    this.userFormValidated = true;
     this.isFormSubmitted = true;
     this.isRequestProcessing = true;    
-    this.item.CompanyID =  this.currentUser.CompanyID;
+    this.UserInfo.CompanyID =  this.currentUser.CompanyID;
 
     if(this.isEditing){
       this.item.UpdateUser =  this.currentUser.UserID;  
@@ -137,11 +146,11 @@ export class CompanyUsersComponent implements OnInit {
         next: (sr) => {
           debugger;
           this.isRequestProcessing = false;
-          this.itemFormValidated = false;
+          this.userFormValidated = false;
           this.items[this.findIndexById(this.item.ItemId!)] = this.item;
 
           this.messageService.add({severity:'success', summary: 'Successful', detail: 'Product Updated', life: 3000});
-          this.productDialog = false;
+          this.dialog = false;
           this.item = {
             CustomCode:"",
             Description:"",
@@ -157,24 +166,24 @@ export class CompanyUsersComponent implements OnInit {
         }});
     }
     else{
-      this.item.CreateUser =  this.currentUser.UserID;
+      this.UserInfo.CreateUser =  this.currentUser.UserID;
       // this.showLoader = true;
-      this.itemService.SaveItem(this.item).subscribe({
+      this._registrationServic.CreateCompanyUser(this.UserInfo).subscribe({
         next: (sr) => {
           debugger;
           this.isRequestProcessing = false;
-          this.itemFormValidated = false;
+          this.userFormValidated = false;
           // this.showLoader = false;        
-          this.item.ItemId = sr.Data;
-          this.items.push(this.item);
-          this.messageService.add({severity:'success', summary: 'Successful', detail: 'Product Created', life: 3000});
-          this.productDialog = false;
-          this.item = {
-            CustomCode:"",
-            Description:"",
-            Id:"0",                
+          this.UserInfo = sr.Data;
+          this.users.push(this.UserInfo);
+          this.messageService.add({severity:'success', summary: 'Successful', detail: 'User created, Verification email sent', life: 3000});
+          this.dialog = false;
+          this.UserInfo = {
+            UserID: 0,
+            AppID: 1, //The open source pos Application has app id of 1
+            AppRoleID: 3, //When the company user is created from open source pos it is assigned the id of 3
           };
-          this.items = [...this.items];
+          this.users = [...this.users];
         },
         error:(error) =>{
           debugger;

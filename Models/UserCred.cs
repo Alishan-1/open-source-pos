@@ -18,6 +18,7 @@ namespace Models
         public string PasswordHash { get; set; }
         public string PasswordSalt { get; set; }
         public DateTime? CreateDate { get; set; }
+        public int CreateUser { get; set; }
         public string PhoneNumber { get; set; }
         public string Token { get; set; }
         public string UserPhoto { get; set; }

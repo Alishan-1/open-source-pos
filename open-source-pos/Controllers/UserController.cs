@@ -462,6 +462,46 @@ namespace open_source_pos.Controllers
 
         }
 
+        [Authorize]
+        [HttpPost("CreateCompanyUser")]        
+        public async Task<IActionResult> CreateCompanyUser([FromBody] UserCred userCred)
+        {
+            try
+            {
+                var a = Request.Host;
+                // The Company users are not admin.
+                userCred.IsAdmin = false;
+                // save 
+                var x = await _userService.Create(userCred);
+                if (x != null)
+                {
+                    string loginURL = GetLoginUrl(a);
+
+                    string subject = "Email Conformation for open-source-pos";
+                    userCred.LinkOrCode = @"<p> Use the following Password To Login to Your open-source-pos Account <br/>";
+                    userCred.LinkOrCode += userCred.UserPassword + @"</p><p>login  <a href=""";
+                    userCred.LinkOrCode += loginURL;
+                    userCred.LinkOrCode += @"""> here </a></p> ";
+                    userCred.LinkOrCode += "<p>Or paste the following link in your browser address bar </p> ";
+                    userCred.LinkOrCode += "<p>" + loginURL + " </p> ";
+                    await _emailSender.SendEmailAsync(userCred.UserEmail, subject, userCred.LinkOrCode);
+                    userCred.UserPassword = null;
+                }
+                ServiceResponse response = new ServiceResponse();
+                response.Data = x;
+                response.Title = ServiceMessages.TitleSuccess;
+                response.Message = ServiceMessages.DataSaved;
+                response.Flag = true;
+                response.IsValid = true;
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                // return error message if there was an exception
+                return BadRequest( ex.Message );
+            }
+        }
+
     }
     
 }

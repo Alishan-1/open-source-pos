@@ -9,6 +9,8 @@ It contains complete authentication workflow including Register screen, Email Ve
 
 It Contains features of creating products/Items, and Point of sale Screen to enter invoices. 
 
+We can also create multiple companies in this application. Each company's data will be seperated from each other. And we can add further users in each company. (Multi user Multi Company application)
+
 ## Demo
 The online demo will be avialable soon [here](http://www.alishah.pro/) 
 ## Screen Shorts

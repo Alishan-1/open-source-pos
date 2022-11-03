@@ -13,6 +13,7 @@ import { IconModule } from '@coreui/icons-angular';
 import { CountdownTimerModule } from '../../shared/countdown-timer/index';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { NewPasswordComponent } from './new-password/new-password.component';
+import { LogoutComponent } from './logout/logout.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { NewPasswordComponent } from './new-password/new-password.component';
     Page404Component,
     Page500Component,
     ConfirmationComponent,
-    NewPasswordComponent
+    NewPasswordComponent,
+    LogoutComponent
   ],
   imports: [
     CommonModule,

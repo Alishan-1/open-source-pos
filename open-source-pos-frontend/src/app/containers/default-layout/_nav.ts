@@ -52,7 +52,7 @@ export const POSNavItems: INavData[] = [
   {
     name: 'POS Screen',
     url: '/pos',
-    iconComponent: { name: 'cil-puzzle' },
+    iconComponent: { name: 'cil-screen-desktop' },
     children: [
       {
         name: 'Create New',
@@ -79,21 +79,7 @@ export const POSNavItems: INavData[] = [
       },
     ]
   },
-  {
-    name: 'Customers Master',
-    url: '/customers-master',
-    iconComponent: { name: 'cil-puzzle' },
-    children: [
-      {
-        name: 'Create New',
-        url: '/customers-master/new'
-      },
-      {
-        name: 'Customers list',
-        url: '/customers-master/list'
-      },
-    ]
-  },
+ 
   {
     name: 'REPORTS',
     title: true
@@ -101,13 +87,13 @@ export const POSNavItems: INavData[] = [
   {
     name: 'Sale Report',
     url: '/reports/sale-report',
-    iconComponent: { name: 'cil-puzzle' },
+    iconComponent: { name: 'cil-bar-chart' },
     
   },
   {
     name: 'Products report',
     url: '/reports/products-report',
-    iconComponent: { name: 'cil-puzzle' },
+    iconComponent: { name: 'cil-chart-line' },
     
   },
 ];

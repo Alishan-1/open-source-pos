@@ -9,6 +9,9 @@ It contains complete authentication workflow including Register screen, Email Ve
 
 It Contains features of creating products/Items, and Point of sale Screen to enter invoices. 
 
+
+![Products/Items Screen](Docs/Products/Products.png)
+
 # how to run (install) the project
 
 Download and install visual studio 2019 or above  from “https://visualstudio.microsoft.com/downloads/”. During installation of Visual Studio Select the “ASP.NET and web development” workload.

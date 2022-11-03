@@ -12,8 +12,19 @@ It Contains features of creating products/Items, and Point of sale Screen to ent
 ## Demo
 The online demo will be avialable soon [here](http://www.alishah.pro/) 
 ## Screen Shorts
--Products/Items Screen 
+- Products/Items Screen 
 ![Products/Items Screen](Docs/Products/Products.png)
+
+- Login
+![Products/Items Screen](Docs/Account%20Management/Login.png)
+
+- Register
+![Products/Items Screen](Docs/Account%20Management/Register.png)
+
+- Change Password
+![Products/Items Screen](Docs/Account%20Management/Change-Password.png)
+
+
 
 # how to run (install) the project
 

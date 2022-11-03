@@ -16,13 +16,25 @@ The online demo will be avialable soon [here](http://www.alishah.pro/)
 ![Products/Items Screen](Docs/Products/Products.png)
 
 - Login
+
 ![Products/Items Screen](Docs/Account%20Management/Login.png)
 
 - Register
+
 ![Products/Items Screen](Docs/Account%20Management/Register.png)
 
 - Change Password
 ![Products/Items Screen](Docs/Account%20Management/Change-Password.png)
+
+- POS Entry
+![Products/Items Screen](Docs/POS/POS-entry.png)
+
+- POS Listing
+
+![Products/Items Screen](Docs/POS/POS-Listing.png)
+
+- POS View/Edit
+![Products/Items Screen](Docs/POS/POS-View-Edit.png)
 
 
 

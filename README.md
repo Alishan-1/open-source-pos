@@ -9,7 +9,10 @@ It contains complete authentication workflow including Register screen, Email Ve
 
 It Contains features of creating products/Items, and Point of sale Screen to enter invoices. 
 
-
+## Demo
+The online demo will be avialable soon [here](http://www.alishah.pro/) 
+## Screen Shorts
+-Products/Items Screen 
 ![Products/Items Screen](Docs/Products/Products.png)
 
 # how to run (install) the project

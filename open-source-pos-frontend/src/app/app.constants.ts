@@ -29,9 +29,9 @@ export class Configuration {
     // Do not Change anything here it will determin automatically
 
 
-    if (domain === 'erp.bizsecuresoft.com') {
-      this.WebApi = `https://erp.bizsecuresoft.com/api/api/`;
-      this.ImageServerUrl = 'https://erp.bizsecuresoft.com/api/api/';
+    if (domain === 'open-source-pos.alishah.pro') {
+      this.WebApi = `http://open-source-pos.alishah.pro/api/api`;
+      this.ImageServerUrl = 'https://open-source-pos.alishah.pro/api/api/';
     }
     else if (domain === 'localhost') {
       if (window.location.port === '82') { // for spain server

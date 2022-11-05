@@ -126,4 +126,18 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="UpdateDate" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="af6dbf88-a270-4f4f-8c7f-7ce2a52372a1" ChangeDateTime="10/31/2022 09:10:20">
+    <Property Name="ElementName" Value="[dbo].[ITP_USERS_ST].[EMAIL]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ITP_USERS_ST]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Email" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="3de76ad7-6e11-4bc0-8de8-2c650a831cf0" ChangeDateTime="10/31/2022 09:10:29">
+    <Property Name="ElementName" Value="[dbo].[ITP_USERS_ST].[COMPANY_ID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ITP_USERS_ST]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="CompanyID" />
+  </Operation>
 </Operations>

@@ -21,5 +21,5 @@ AS
    -- ELSE 0  
 --END as PasswordExpired  
   
-  from ITP_USERS_ST U   
+  from Users U   
   --where u.IsActive = 1 and u.EmailConfirmed = 1 and u.LockoutEnabled = 0  and u.IsTemp = 0  

@@ -423,7 +423,7 @@ namespace Repositories
                 {
                     string sql = @"SELECT INV.InvoiceNo, INV.InvoiceDate, INV.CreateUser, USR.FirstName+' '+USR.LastName AS UserName, INV.CompanyID, INV.NetAmount, INV.InvoiceType, INV.FiscalYearID, INV.Status, INV.Remarks, COUNT(ITEM.InvoiceNo) AS NoOfItems
                         FROM InvoiceMaster INV
-                        LEFT JOIN ITP_USERS_ST USR ON INV.CreateUser = USR.UserID
+                        LEFT JOIN Users USR ON INV.CreateUser = USR.UserID
                         LEFT JOIN InvoiceDetailItems ITEM ON ITEM.InvoiceNo = INV.InvoiceNo AND ITEM.CompanyID = INV.CompanyID AND ITEM.FiscalYearID = INV.FiscalYearID AND ITEM.InvoiceType = INV.InvoiceType
                         WHERE INV.CompanyID = @CompanyID
                         GROUP BY ITEM.InvoiceNo, INV.InvoiceNo, INV.InvoiceDate, INV.CreateUser, USR.FirstName+' '+USR.LastName, INV.CompanyID, INV.NetAmount, INV.InvoiceType, INV.FiscalYearID, INV.Status, INV.Remarks

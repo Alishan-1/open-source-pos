@@ -15,11 +15,11 @@
     [CreateDate]      DATETIME        NULL,
     [UpdateUser]      INT             NULL,
     [UpdateDate]      DATETIME        NULL,
-    [CompanyID]       INT             NULL,
+    [CompanyID]       INT             NOT NULL,
     [BranchID]        INT             NULL,
     [ModuleID]        VARCHAR (3)     NULL,
-    [FiscalYearID]    INT             NULL,
-    [InvoiceType]     VARCHAR (3)     NULL,
-    CONSTRAINT [PK_InvoiceDetailItems] PRIMARY KEY CLUSTERED ([InvoiceNo] ASC, [SrNo] ASC)
+    [FiscalYearID]    INT             NOT NULL,
+    [InvoiceType]     VARCHAR (3)     NOT NULL,
+    CONSTRAINT [PK_InvoiceDetailItems] PRIMARY KEY CLUSTERED ([InvoiceNo] ASC, [SrNo] ASC, InvoiceType, FiscalYearID, CompanyID)
 );
 

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Cors;
 using Models;
 using Services;
 using System.Net;
+using Newtonsoft.Json.Linq;
 
 namespace open_source_pos.Controllers
 {
@@ -163,7 +164,7 @@ namespace open_source_pos.Controllers
             try
             {
                 var a = Request.Host;
-                // in case of admin flag is not supplied from frontend
+                // The first user will be an Admin user with Users.IsAdmin flag set to true. Further users will not be Admin (Users.IsAdmin flag will be false)
                 if (!userCred.IsAdmin.HasValue)
                 {
                     userCred.IsAdmin = true;
@@ -364,7 +365,7 @@ namespace open_source_pos.Controllers
             }
             else if (hostString.Host == "adminapi.chowchoice.com")
             {
-                loginURL = @"https://admin.chowchoice.com/#/home/login";
+                loginURL = @"";
             }
             else if (hostString.Host == "vss-server")
             {
@@ -418,6 +419,10 @@ namespace open_source_pos.Controllers
             }
         }
 
+        /// <summary>
+        /// Dummy method just for testing
+        /// </summary>
+        /// <returns></returns>
         [Authorize]
         [HttpPost]
         [Route("get")]
@@ -427,5 +432,95 @@ namespace open_source_pos.Controllers
             return Ok(users);
         }
 
+        /// <summary>
+        /// Get Users of a particular company for listing
+        /// </summary>
+        /// <param name="jSearchUsers"></param>
+        /// <returns></returns>
+        [Authorize]
+        [Route("getCompanyUsers")]
+        [HttpPost]
+        public async Task<IActionResult> GetCompanyUsers([FromBody] JObject jSearchUsers)
+        {
+            try
+            {
+                dynamic SearchUsers = jSearchUsers;
+                string query = SearchUsers.query;
+                int companyId = SearchUsers.companyId;
+                int limit = SearchUsers.limit;
+                int offset = SearchUsers.offset;
+
+                ServiceResponse response = await _userService.GetUsersAsync(query, companyId, limit, offset);
+
+
+                return StatusCode((int)(response.IsValid ? HttpStatusCode.OK : HttpStatusCode.BadRequest), response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
+        }
+
+        [Authorize]
+        [HttpPost("CreateCompanyUser")]        
+        public async Task<IActionResult> CreateCompanyUser([FromBody] UserCred userCred)
+        {
+            try
+            {
+                var a = Request.Host;
+                // The Company users are not admin.
+                userCred.IsAdmin = false;
+                // save 
+                var x = await _userService.Create(userCred);
+                if (x != null)
+                {
+                    string loginURL = GetLoginUrl(a);
+
+                    string subject = "Email Conformation for open-source-pos";
+                    userCred.LinkOrCode = @"<p> Use the following Password To Login to Your open-source-pos Account <br/>";
+                    userCred.LinkOrCode += userCred.UserPassword + @"</p><p>login  <a href=""";
+                    userCred.LinkOrCode += loginURL;
+                    userCred.LinkOrCode += @"""> here </a></p> ";
+                    userCred.LinkOrCode += "<p>Or paste the following link in your browser address bar </p> ";
+                    userCred.LinkOrCode += "<p>" + loginURL + " </p> ";
+                    await _emailSender.SendEmailAsync(userCred.UserEmail, subject, userCred.LinkOrCode);
+                    userCred.UserPassword = null;
+                }
+                ServiceResponse response = new ServiceResponse();
+                response.Data = x;
+                response.Title = ServiceMessages.TitleSuccess;
+                response.Message = ServiceMessages.DataSaved;
+                response.Flag = true;
+                response.IsValid = true;
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                // return error message if there was an exception
+                return BadRequest( ex.Message );
+            }
+        }
+
+        [Authorize]
+        [HttpPost("UpdateUserProfile")]
+        public async Task<IActionResult> UpdateUserProfile([FromBody] UserCred userCred)
+        {
+            try
+            {
+                
+                // update
+                var response = await _userService.UpdateUserProfile(userCred);
+
+                return StatusCode((int)(response.IsValid ? HttpStatusCode.OK : HttpStatusCode.BadRequest), response);
+            }
+            catch (Exception ex)
+            {
+                // return error message if there was an exception
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
+    
 }

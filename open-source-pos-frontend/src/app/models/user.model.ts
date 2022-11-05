@@ -35,58 +35,60 @@ export interface UsersGeoLocation {
 }
 
 export interface User {
-    UserID: number;
-    AppID: number;
-    AppRoleID: number;
+    UserID?: number;
+    AppID?: number;
+    AppRoleID?: number;
     UserPassword?: any;
-    UserEmail: string;
-    FirstName: string;
-    MiddleName: string;
-    LastName: string;
+    UserEmail?: string;
+    FirstName?: string;
+    MiddleName?: string;
+    LastName?: string;
     PasswordHash?: any;
     PasswordSalt?: any;
-    CreateDate: Date;
-    PhoneNumber: string;
-    Token: string;
+    CreateDate?: Date;
+    CreateUser?: number;
+    PhoneNumber?: string;
+    Token?: string;
     UserPhoto?: any;
-    PreviousPassword: string;
-    ExpirePassword: Date;
-    IsTemp: boolean;
-    IsDeleted: boolean;
-    IsAdmin: boolean;
-    IsCustomer: boolean;
-    EmailConfirmed: boolean;
-    LockoutEnabled: boolean;
-    IsPasswordExpired: boolean;
-    IsPasswordCorrect: boolean;
+    PreviousPassword?: string;
+    ExpirePassword?: Date;
+    IsTemp?: boolean;
+    IsDeleted?: boolean;
+    IsAdmin?: boolean;
+    IsCustomer?: boolean;
+    EmailConfirmed?: boolean;
+    LockoutEnabled?: boolean;
+    IsPasswordExpired?: boolean;
+    IsPasswordCorrect?: boolean;
     LockoutEnd?: any;
-    AccessFailedCount: number;
-    IsActive: boolean;
-    StartDate: Date;
+    AccessFailedCount?: number;
+    IsActive?: boolean;
+    StartDate?: Date;
     EndDate?: any;
     LinkOrCode?: any;
-    IsForgetPassword: boolean;
+    IsForgetPassword?: boolean;
     CurrentPassword?: any;
-    authenticationResult: AuthenticationResult;
-    UsersGeoLocation: UsersGeoLocation;
-    DeviceInfo: any;
-    RememberUser: boolean;
-    SessionToken: string;
-    TokenExpirationDate: Date;
-    SessionDate: Date;
+    authenticationResult?: AuthenticationResult;
+    UsersGeoLocation?: UsersGeoLocation;
+    DeviceInfo?: any;
+    RememberUser?: boolean;
+    SessionToken?: string;
+    TokenExpirationDate?: Date;
+    SessionDate?: Date;
+    CompanyID?: number;
     // OLD NOT TO BE USED PROPERTIES
     /**
      * OLD NOT TO BE USED PROPERTIES
      * */
-    name: string,
+    name?: string,
     /**
      * OLD NOT TO BE USED PROPERTIES
      * */
-    contact: string,
+    contact?: string,
     /**
      * OLD NOT TO BE USED PROPERTIES
      * */
-    email: string
+    email?: string
 }
 
 

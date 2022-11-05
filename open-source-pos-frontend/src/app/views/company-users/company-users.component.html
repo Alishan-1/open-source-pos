@@ -1,1 +1,140 @@
-<p>company-users works!</p>
+<p-toast></p-toast>
+
+<div class="card">
+    <p-toolbar styleClass="mb-4">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+        </ng-template>
+
+        <!-- <ng-template pTemplate="right">
+            <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="mr-2 inline-block"></p-fileUpload>
+            <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
+        </ng-template> -->
+    </p-toolbar>
+
+    <p-table #dt [value]="users" [rows]="10" [paginator]="true" [globalFilterFields]="['FirstName','LastName','UserEmail','UserID']" responsiveLayout="scroll"
+        [rowHover]="true" dataKey="UserID"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+            <div class="table-cap-container">
+                <span class="table-cap-left">Manage Company Users</span>
+                <span class="p-input-icon-left table-search-right">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt.filterGlobal( $event.target.value, 'contains')" class="p-inputtext-sm" placeholder="Search..."  />                    
+                </span>
+            </div>
+            <div class="table-cap-container-2"></div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                
+                <th pSortableColumn="UserID">User ID <p-sortIcon field="UserID"></p-sortIcon></th>
+                <th pSortableColumn="FirstName">First Name <p-sortIcon field="FirstName"></p-sortIcon></th>
+                <th pSortableColumn="LastName">Last Name <p-sortIcon field="LastName"></p-sortIcon></th>
+                <th pSortableColumn="UserEmail">User Email <p-sortIcon field="UserEmail"></p-sortIcon></th>
+                <th pSortableColumn="EmailConfirmed">Email Confirmed<p-sortIcon field="EmailConfirmed"></p-sortIcon></th>
+                <th pSortableColumn="IsAdmin">Is Admin<p-sortIcon field="IsAdmin"></p-sortIcon></th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-usr>
+            <tr style="padding: 0.2rem 1rem;">
+                
+                <td style="padding: 0.2rem 1rem;">{{usr.UserID}}</td>
+                <td style="padding: 0.2rem 1rem;">{{usr.FirstName}}</td>
+                <td style="padding: 0.2rem 1rem;">{{usr.LastName}}</td>
+                <td style="padding: 0.2rem 1rem;">{{usr.UserEmail }}</td>                
+                <td style="padding: 0.2rem 1rem;">{{usr.EmailConfirmed }}</td>                
+                <td style="padding: 0.2rem 1rem;">{{usr.IsAdmin }}</td>                
+                <td style="padding: 0.2rem 1rem;">
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editEntity(usr)"></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteEntity(usr)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                In total there are {{users ? users.length : 0 }} users.
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+
+<p-dialog [(visible)]="dialog" [style]="{width: '450px'}" header="User Details" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <form cForm 
+                novalidate
+                #posUserForm="ngForm"
+                
+                [validated]="userFormValidated"
+                class="needs-validation">
+                
+                <p class="text-medium-emphasis"> 
+                    <span *ngIf="isEditing; else create" >Update</span>
+                    <ng-template #create >Create</ng-template>
+                     User
+                </p>
+                
+                <c-input-group class="mb-3">
+                    <span cInputGroupText>@</span>
+                    <input autoComplete="email" cFormControl name="UserEmail" placeholder="Email"
+                    [(ngModel)]="UserInfo.UserEmail"
+                    type="email" required
+                    [attr.disabled] = "isEditing ? '' : null"
+                     />
+                     <c-form-feedback [valid]="false">Please provide a valid email address.</c-form-feedback>
+                  </c-input-group>
+
+                  <c-input-group class="mb-3">
+                    <span cInputGroupText>
+                      <svg cIcon name="cilUser"></svg>
+                    </span>
+                    <input autoComplete="First Name" cFormControl  
+                    name="FirstName" placeholder="First Name"
+                    [(ngModel)]="UserInfo.FirstName" required type="text"
+                    />
+                    <c-form-feedback [valid]="false">Please provide a valid First Name.</c-form-feedback>
+                  </c-input-group>
+    
+                  <c-input-group class="mb-3">
+                    <span cInputGroupText>
+                      <svg cIcon name="cilUser"></svg>
+                    </span>
+                    <input autoComplete="Last name" cFormControl placeholder="Last name" 
+                      [(ngModel)]="UserInfo.LastName" type="text" required name="LastName" />
+                      <c-form-feedback [valid]="false">Please provide a valid Last name.</c-form-feedback>
+                  </c-input-group>
+                <c-row>
+                    <c-col xs="6">
+                      <button [attr.disabled] = "isRequestProcessing || !posUserForm.valid ? '' : null"  
+                      cButton class="px-4" color="primary" 
+                      type="submit" (click)="SaveUser()">
+                        Save <img *ngIf="isRequestProcessing"  class="form-submit-loader" src="assets/img/785.gif" />
+                      </button>        
+        
+                    </c-col>
+        
+                    <c-col xs="6">
+                        <button [attr.disabled] = "isRequestProcessing ? '' : null"  
+                        cButton class="px-4" color="primary" 
+                        type="button" (click)="hideDialog()">
+                        Cancel 
+                        </button>        
+          
+                    </c-col>
+                    
+                </c-row>
+                
+              </form>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        
+        
+        
+        
+        
+    </ng-template>
+</p-dialog>
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>

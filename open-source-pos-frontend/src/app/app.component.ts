@@ -3,7 +3,8 @@ import { Router, NavigationEnd } from '@angular/router';
 
 import { IconSetService } from '@coreui/icons-angular';
 import { iconSubset } from './icons/icon-subset';
-import { cilBarcode, cilQrCode, cilDollar, cilDescription, cilBurger } from '@coreui/icons';
+import { cilBarcode, cilQrCode, cilDollar, cilDescription, cilBurger, cilScreenDesktop, cilBarChart,
+  cilChartLine  } from '@coreui/icons';
 import { Title } from '@angular/platform-browser';
 
 @Component({
@@ -21,7 +22,8 @@ export class AppComponent implements OnInit {
   ) {
     titleService.setTitle(this.title);
     // iconSet singleton
-    iconSetService.icons = { ...iconSubset, cilBarcode, cilQrCode, cilDollar, cilDescription, cilBurger };
+    iconSetService.icons = { ...iconSubset, cilBarcode, cilQrCode, cilDollar, cilDescription, cilBurger, cilScreenDesktop,
+      cilBarChart, cilChartLine};
   }
 
   ngOnInit(): void {

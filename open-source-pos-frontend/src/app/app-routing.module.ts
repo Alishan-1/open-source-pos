@@ -14,6 +14,7 @@ import { ProblemOneComponent } from './views/pos/problem-one/problem-one.compone
 import { InvoicesListComponent } from './views/pos/invoices-list/invoices-list.component';
 import { ItemComponent } from './views/item/item.component';
 import { CompanyUsersComponent } from './views/company-users/company-users.component';
+import { LogoutComponent } from './views/pages/logout/logout.component';
 
 import { AuthGuard } from './guards/auth.guard';
 
@@ -136,6 +137,14 @@ const routes: Routes = [
         component: CompanyUsersComponent,
         data: {
           title: 'Company Users'
+        },
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'users/log-out',
+        component: LogoutComponent,
+        data: {
+          title: 'log out'
         },
         canActivate: [AuthGuard]
       },

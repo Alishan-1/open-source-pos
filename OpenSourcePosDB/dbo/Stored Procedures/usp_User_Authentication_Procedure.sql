@@ -104,9 +104,9 @@ BEGIN
   
     set @IsLoginSuccessful = 0;  
  set @IsPasswordExpired = 0;  
-          IF EXISTS(select UserID, AppID, AppRoleID, EMAIL as UserEmail, FirstName,  MiddleName, LastName, PasswordHash, PasswordSalt, CREATE_DATE as CreateDate, PhoneNumber,ExpirePassword,  
+          IF EXISTS(select UserID, AppID, AppRoleID, EMAIL as UserEmail, FirstName,  MiddleName, LastName, PasswordHash, PasswordSalt, CreateDate, PhoneNumber,ExpirePassword,  
   IsTemp, IsDeleted, IsAdmin, IsCustomer, EmailConfirmed, LockoutEnabled, AccessFailedCount, IsActive   
-  from ITP_USERS_ST   
+  from Users   
   where EMAIL = @UserEmail)  
     BEGIN  
     SET @IsEmailCorrect = 1;  
@@ -121,7 +121,7 @@ BEGIN
      BEGIN  
       IF (@IsPasswordValid = 0)  
         BEGIN  
-                                    Update ITP_USERS_ST     
+                                    Update Users     
                                             Set AccessFailedCount = AccessFailedCount + 1,  
                                                 LockoutEnabled = 1,  
                                                 LockoutEnd = DATEADD(MINUTE,10,SYSDATETIMEOFFSET())  
@@ -137,7 +137,7 @@ BEGIN
      BEGIN  
       IF (@IsPasswordValid = 0)  
         BEGIN  
-                                    Update ITP_USERS_ST     
+                                    Update Users     
                                             Set AccessFailedCount = AccessFailedCount + 1,  
                                                 LockoutEnabled = 1,  
                                                 LockoutEnd = DATEADD(MINUTE,10,SYSDATETIMEOFFSET())  
@@ -149,7 +149,7 @@ BEGIN
          SET @AttemptDescription = @AttemptDescription + ', User is locked out because of un successful attempts';  
          If (@IsPasswordValid = 1 )  
        BEGIN  
-           Update ITP_USERS_ST     
+           Update Users     
              Set AccessFailedCount = 0,  
               LockoutEnabled = 0,  
               LockoutEnd = '1900-01-01'  
@@ -169,7 +169,7 @@ BEGIN
                                    BEGIN  
             if (@AccessFailedCount < 3)  
             BEGIN  
-             Update ITP_USERS_ST  
+             Update Users  
               Set AccessFailedCount = AccessFailedCount + 1  
               Where EMAIL = @UserEmail  
              SET @IsCredentialValid = 0;  
@@ -178,7 +178,7 @@ BEGIN
              END    
             Else if (@AccessFailedCount >= 3)  
             BEGIN  
-             Update ITP_USERS_ST     
+             Update Users     
               Set AccessFailedCount = AccessFailedCount + 1,  
                LockoutEnabled = 1,  
                LockoutEnd = DATEADD(MINUTE,10,SYSDATETIMEOFFSET())  
@@ -215,7 +215,7 @@ BEGIN
     BEGIN  
      SET @IsEmailCorrect = 0;  
     END  
-    Select @LockoutEnd = LockoutEnd, @LockoutEnabled = LockoutEnabled from  ITP_USERS_ST   Where EMAIL = @UserEmail  
+    Select @LockoutEnd = LockoutEnd, @LockoutEnabled = LockoutEnabled from  Users   Where EMAIL = @UserEmail  
   
     --insert data in userlog      
     Insert Into UserLog (UserID, AppID, DeviceTypeID, SessStart,  MachineIP, CreateDate,  Ip,  City, Region,  Region_code, Country, Country_name, Continent_code,  In_eu, Postal,  Latitude, Longitude, TimeZone, Utc_offset,  Country_calling_code, Currency,

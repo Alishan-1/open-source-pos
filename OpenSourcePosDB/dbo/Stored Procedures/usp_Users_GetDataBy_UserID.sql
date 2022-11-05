@@ -7,7 +7,7 @@ BEGIN
  SET NOCOUNT ON;  
   
       
-  select UserID, AppID, AppRoleID, EMAIL AS UserEmail, FirstName,  MiddleName, LastName, PasswordHash, PasswordSalt, CREATE_DATE AS CreateDate, PhoneNumber   ,COMPANY_ID AS CompanyID, BRANCH_ID AS BranchID  from ITP_USERS_ST  
+  select UserID, AppID, AppRoleID, EMAIL AS UserEmail, FirstName,  MiddleName, LastName, PasswordHash, PasswordSalt,  CreateDate, PhoneNumber   , CompanyID,  BranchID  from Users  
    
   where UserID = @UserID  
    

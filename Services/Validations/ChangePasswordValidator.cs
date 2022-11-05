@@ -61,4 +61,18 @@ namespace Services.Validations
             RuleFor(user => user.SessionToken).NotEmpty();
         }
     }
+
+    public class UpdateUserProfileValidator : AbstractValidator<UserCred>
+    {
+        //constructor used only for auto fact module 
+        public UpdateUserProfileValidator()
+        {
+            RuleFor(user => user.UserEmail).NotEmpty();
+            RuleFor(user => user.UserID).NotEmpty().GreaterThan(0);
+            RuleFor(user => user.FirstName).NotEmpty();
+            RuleFor(user => user.LastName).NotEmpty();
+        }
+
+
+    }
 }

@@ -4,8 +4,8 @@
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseName>OpenSourcePosDB</TargetDatabaseName>
     <DeployScriptFileName>OpenSourcePosDB.sql</DeployScriptFileName>
-    <TargetConnectionString>Data Source=DESKTOP-7VMKDGE;Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False</TargetConnectionString>
-    <ProfileVersionNumber>1</ProfileVersionNumber>
+    <TargetConnectionString>Data Source=DESKTOP-J8I37L9\SQLEXPRESS;Integrated Security=True;Persist Security Info=False;Pooling=False;MultipleActiveResultSets=False;Connect Timeout=60;Encrypt=False;TrustServerCertificate=False</TargetConnectionString>
     <BlockOnPossibleDataLoss>False</BlockOnPossibleDataLoss>
+    <ProfileVersionNumber>1</ProfileVersionNumber>
   </PropertyGroup>
 </Project>

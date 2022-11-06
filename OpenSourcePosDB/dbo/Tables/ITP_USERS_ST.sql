@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Users] (
     [Email]                VARCHAR (50)       NOT NULL,
-    [CompanyID]           INT                NOT NULL,
+    [CompanyID]           INT                NOT NULL DEFAULT 1,
     [UserID]               BIGINT             IDENTITY (1, 1) NOT NULL,
     [AppID]                BIGINT             NULL,
     [AppRoleID]            BIGINT             NULL,

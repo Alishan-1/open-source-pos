@@ -363,9 +363,9 @@ namespace open_source_pos.Controllers
             {
                 loginURL = @"http://localhost:4200/#/login";
             }
-            else if (hostString.Host == "adminapi.chowchoice.com")
+            else if (hostString.Host == "open-source-pos.alishah.pro")
             {
-                loginURL = @"";
+                loginURL = @"http://open-source-pos.alishah.pro/#/login";
             }
             else if (hostString.Host == "vss-server")
             {

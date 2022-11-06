@@ -12,8 +12,10 @@ It Contains features of creating products/Items, and Point of sale Screen to ent
 We can also create multiple companies in this application. Each company's data will be seperated from each other. And we can add further users in each company. (Multi user Multi Company application)
 
 ## Demo
-The online demo is avialable [here](http://open-source-pos.alishah.pro/) 
+The online demo is avialable [here](http://open-source-pos.alishah.pro/) .
+
 username: admin@alishah.pro
+
 password: 11!!aaAA
 ## Screen Shorts
 - Products/Items Screen 

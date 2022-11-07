@@ -49,8 +49,8 @@ namespace Repositories
                     p.Add("LockoutEnabled", model.LockoutEnabled, DbType.Boolean);
                     p.Add("AccessFailedCount", model.AccessFailedCount, DbType.Int64);
                     p.Add("IsActive", model.IsActive, DbType.Boolean);
-                    p.Add("CompanyID", model.CompanyID, DbType.Boolean);
-                    p.Add("CreateUser", model.CreateUser, DbType.Boolean);
+                    p.Add("CompanyID", model.CompanyID, DbType.Int64);
+                    p.Add("CreateUser", model.CreateUser, DbType.Int64);
 
                     var result = await cmd.ExecuteScalarAsync<int>("usp_Users_AddData", p, commandType: CommandType.StoredProcedure);
                     return result;

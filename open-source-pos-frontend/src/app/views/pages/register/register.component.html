@@ -46,6 +46,9 @@
                   cButton color="primary" (click)="registerUser()">
                   Create Account <img *ngIf="isRequestProcessing"  class="form-submit-loader" src="assets/img/785.gif" />
                 </button>
+                <button cButton class="px-0" color="link"  [routerLink]="['/login']">
+                  Go to login 
+                </button>
               </div>
             </form>
           </c-card-body>

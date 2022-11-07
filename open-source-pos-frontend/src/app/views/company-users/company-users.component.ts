@@ -83,7 +83,7 @@ export class CompanyUsersComponent implements OnInit {
         error:(error) =>{
           debugger;          
           console.error(error);
-          this.messageService.add({severity:'error', summary: 'Error Loading Users!', detail: error, life: 3000});
+          this.messageService.add({severity:'error', summary: 'Error Loading Users!', detail: error.Message, life: 3000});
         }});
 
         if(data && data == "company-users/new"){
@@ -158,7 +158,7 @@ export class CompanyUsersComponent implements OnInit {
           debugger;
           this.isRequestProcessing = false;
           console.log(error);
-          this.messageService.add({severity:'error', summary: 'error', detail: error, life: 3000});
+          this.messageService.add({severity:'error', summary: 'error', detail: error.Message, life: 3000});
         }});
     }
     else{
@@ -185,7 +185,7 @@ export class CompanyUsersComponent implements OnInit {
           debugger;
           this.isRequestProcessing = false;
           console.error(error);
-          this.messageService.add({severity:'error', summary: 'error', detail: error, life: 3000});
+          this.messageService.add({severity:'error', summary: 'error', detail: error.Message, life: 3000});
         }});
     }
     

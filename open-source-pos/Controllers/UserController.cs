@@ -498,7 +498,13 @@ namespace open_source_pos.Controllers
             catch (Exception ex)
             {
                 // return error message if there was an exception
-                return BadRequest( ex.Message );
+                ServiceResponse response = new ServiceResponse();
+                response.Data = null;
+                response.Title = ServiceMessages.TitleFailure;
+                response.Message = ex.Message;
+                response.Flag = false;
+                response.IsValid = false;
+                return StatusCode((int)HttpStatusCode.InternalServerError, response);
             }
         }
 

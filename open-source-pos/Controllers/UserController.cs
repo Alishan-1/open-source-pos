@@ -38,7 +38,7 @@ namespace open_source_pos.Controllers
         {
             try
             {
-
+                //System.Diagnostics.Debugger.Break();
                 var user = await _userService.Authenticate(userParam.UserEmail, userParam.UserPassword, userParam);
 
                 if (user == null)

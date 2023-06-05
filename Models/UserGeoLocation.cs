@@ -37,7 +37,7 @@
         /// <summary>
         /// whether IP address belongs to a country that is a member of European Union (EU)
         /// </summary>
-        public bool in_eu { get; set; }
+        public bool? in_eu { get; set; }
         /// <summary>
         /// postal code
         /// </summary>
@@ -45,11 +45,11 @@
         /// <summary>
         /// latitude
         /// </summary>
-        public double latitude { get; set; }
+        public double? latitude { get; set; }
         /// <summary>
         /// longitude
         /// </summary>
-        public double longitude { get; set; }
+        public double? longitude { get; set; }
         /// <summary>
         /// timezone (IANA format i.e. “Area/Location”)
         /// </summary>

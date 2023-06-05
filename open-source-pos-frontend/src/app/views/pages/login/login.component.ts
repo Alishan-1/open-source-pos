@@ -226,9 +226,22 @@ export class LoginComponent implements OnInit {
          ***/
 
         // get users geo location from ipapi
-        this._geoLocSrvc.GetLocationFromIp().subscribe(loc => {
+        this._geoLocSrvc.GetLocationFromIp().subscribe((loc : any) => {
             debugger;
-            userInfo.UsersGeoLocation = loc;            
+            
+            if(loc){
+                if(!loc.latitude){
+                    loc.latitude = 0;
+                }
+                if(!loc.longitude){
+                    loc.longitude = 0;
+                }
+            }
+            
+            userInfo.UsersGeoLocation = loc;
+            
+            
+            
             this.authenticate(userInfo);
   
         }, error => {

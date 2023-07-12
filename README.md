@@ -109,3 +109,5 @@ ng serve –open
 ```
 
 Project should open in the browser automatically. Register a new user and login with it to explore the application.
+
+Give me a star on Git Hub if you like the project and submit issues for further development.

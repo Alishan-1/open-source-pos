@@ -73,8 +73,12 @@ Open the solution file “open-source-pos.sln” in visual studio. You will see 
 
 Right click on the “OpenSourcePosDB” project and click publish as shown in the following image. 
 
+![publish Database](Docs\Installation\publishBD.jpg)
+
 Publish database dialogue will be shown.
 Enter/select the connection string for your server and write `“OpenSourcePosDB”` in the database name field and click the publish button. As shown in the following image.
+
+![publish Database Settings](Docs\Installation\publishBD_2.jpg)
 
 The database named OpenSourcePosDB will be created on the server.
 
@@ -87,6 +91,8 @@ And update the following connection strings in appsettings.json file with the ne
 Update the email configuration in `appsettings.json` file under the property named `“Email”`
 
 Now launch the project by pressing F5 or Play button. The output of the default Api should now be seen in the browser as shown in the image below.
+
+![output of the default Api](Docs\Installation\Default_api_output.png)
 
 Now to run the frontend project open "open-source-pos\open-source-pos-frontend" folder in command prompt and Run the command 
 ```

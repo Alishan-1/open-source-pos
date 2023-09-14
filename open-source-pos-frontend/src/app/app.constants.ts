@@ -30,7 +30,9 @@ export class Configuration {
 
 
     if (domain === 'open-source-pos.alishah.pro') {
-      this.WebApi = `http://open-source-pos.alishah.pro/api/api`;
+      let protocal: string = this.window.location.protocol;
+      
+      this.WebApi = `${protocal}//open-source-pos.alishah.pro/api/api`;
       this.ImageServerUrl = 'https://open-source-pos.alishah.pro/api/api/';
     }
     else if (domain === 'localhost') {
@@ -49,8 +51,8 @@ export class Configuration {
 
     }
     else {
-      this.WebApi = `http://localhost:27368/api`;
-      this.ImageServerUrl = 'http://localhost:27368/';
+        let protocal: string = this.window.location.protocol;
+        this.WebApi = `${protocal}//${domain}:${window.location.port}/api/api`;
     }
 
 
